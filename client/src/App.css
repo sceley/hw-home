@@ -1,0 +1,48 @@
+.App {
+	background: skyblue;
+}
+.text-title {
+	text-align: center;
+	background: #31708f;
+	color: white;
+	border-radius: 4px;
+}
+.form-login {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	background: #f1f1f1;
+	padding: 15px;
+	border-radius: 10px;
+	padding-bottom: 0;
+
+}
+
+.breadcrumb {
+	border-radius: 4px;
+	background: #f5f5f5;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	padding: 10px;
+}
+
+.ant-carousel, .slick-slide {
+  text-align: center;
+  height: 450px;
+  line-height: 450px;
+  background: #f5f5f5;
+  overflow: hidden;
+}
+
+.ant-carousel, .slick-slide h3 {
+  color: #fff;
+}
+
+.carousel-img-size {
+	height: 450px;
+	margin: 0 auto;
+}
+
+.footer {
+	background: #f5f5f5;
+	margin-top: 30px;
+}
