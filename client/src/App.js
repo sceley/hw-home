@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Home from './components/home';
 import Login from './components/login';
 import Logup from './components/logup';
 import Navigation from './components/navigation';
 
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 
 
 import 'antd/dist/antd.css'; 
-import { Breadcrumb, Icon, Row, Col } from 'antd';
+import { Row, Col } from 'antd';
 
 
 class App extends Component {
@@ -21,9 +21,6 @@ class App extends Component {
   				<Row>
   					<Col span={18} offset={3}>
   						<Row>
-  							{/*<Col className="logo" span={1}>
-  								hw
-  							</Col>*/}
   							<Col span={22} offset={2}>
   								<Navigation/>
                   				<Router>

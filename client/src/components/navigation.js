@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import './navigation.css';
-import { Menu, Row, Col, Input, Modal } from 'antd';
+import { Menu,  Input } from 'antd';
 const Search = Input.Search;
 const SubMenu = Menu.SubMenu;
 
@@ -46,10 +46,10 @@ export default class Navigation extends Component {
 		          		近期事件
 		        	</Menu.Item>
 		        	<Menu.Item key="blog">
-		          		<a href="#" rel="noopener noreferrer">技术博客</a>
+		          		<a href="" rel="noopener noreferrer">技术博客</a>
 		        	</Menu.Item>
 		        	<Menu.Item key="message">
-		          		<a href="#" rel="noopener noreferrer">个人信息</a>
+		          		<a href="" rel="noopener noreferrer">个人信息</a>
 		        	</Menu.Item>
 		        	<SubMenu title={<span>注册登录</span>}>
 		            	<Menu.Item key="setting:4">

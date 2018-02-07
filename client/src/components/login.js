@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import './login.css';
 
-import { Form, Icon, Input, Button, Checkbox, Row, Col, Breadcrumb } from 'antd';
+import { Form, Icon, Input, Button, Checkbox, Row, Breadcrumb } from 'antd';
 const FormItem = Form.Item;
 
 class NormalLoginForm extends Component {

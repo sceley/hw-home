@@ -38,7 +38,7 @@ class RegistrationForm extends Component {
   }
   checkCode = (rule, value, callback) => {
   	let code = 2000;
-  	if (value && code != value) {
+  	if (value && code !== value) {
   		callback('验证码不正确');
   	} else {
   		callback();
@@ -47,10 +47,6 @@ class RegistrationForm extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { autoCompleteResult } = this.state;
-
-    // const formItemLayout = null;
-    // const tailFormItemLayout = null;
 
     return (
       <Form layout="vertical" onSubmit={this.handleSubmit}>
