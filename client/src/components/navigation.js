@@ -1,72 +1,96 @@
 import React, {Component} from 'react';
 
 import './navigation.css';
-import { Menu,  Input } from 'antd';
+import { Menu,  Input, Avatar } from 'antd';
+import logo from '../logo.svg';
 const Search = Input.Search;
 const SubMenu = Menu.SubMenu;
-
 
 
 export default class Navigation extends Component {
   	state = {
     	current: 'home',
   	}
-  	handleClick = (e) => {
-    	this.setState({
-      		current: e.key,
-    	});
-  	}
+
   	handleSearch = (e) => {
   		console.log(e);
   	}
-  	componentWillMount() {
-  		console.log('haha');
+
+  	componentWillMount () {
+  		let key = window.location.pathname.slice(1) || 'home';
+  		this.setState({
+	  		current: key
+		});
   	}
+
   	render() {
+		let logout = false;
+		let NavItem;
+		if(logout)
+	    	NavItem = 
+				<SubMenu title={<Avatar icon="user" />}>
+			    	<Menu.Item key="user">
+			            <a href="/user">个人信息</a>
+			        </Menu.Item>
+			    	<Menu.Item key="member">
+			    		<a href="/member">申请会员</a>
+			    	</Menu.Item>
+			    	<Menu.Item>
+			            <a href="/logout">退出</a>
+			        </Menu.Item>
+				</SubMenu>;
+	    else 
+	    	NavItem = 
+	    		<SubMenu　title={<span>注册｜登录</span>}>
+		    		<Menu.Item key="logup">
+		    			<a href="/logup">注册</a>
+		    		</Menu.Item>
+	    			<Menu.Item key="login">
+	    		        <a href="/login">登录</a>
+	    		    </Menu.Item>
+	    		</SubMenu>;
     	return (
     		<div className="Navigation">
 		      	<Menu
-		        	onClick={this.handleClick}
 		        	selectedKeys={[this.state.current]}
+		        	defaultOpenKeys={['home']}
 		        	mode="horizontal"
 		        	theme="dark"
 		      	>
+		      		<Menu.Item style={{background: 'transparent'}}>
+		      			<img style={{width: '60px'}} src={logo} alt="" />
+		      		</Menu.Item>
 		        	<Menu.Item key="home">
 		          		<a href="/">网站首页</a>
 		        	</Menu.Item>
-		        	<SubMenu title={<span>社团简介</span>}>
-		            	<Menu.Item key="setting:1">社团历史</Menu.Item>
-		            	<Menu.Item key="setting:2">社团成就</Menu.Item>
-		            	<Menu.Item key="setting:3">联系方式</Menu.Item>
-		        	</SubMenu>
-		        	<Menu.Item key="introduce">
-		          		部门简介
-		        	</Menu.Item>
+	            	<Menu.Item key="community">
+	            		<a href="/community">社团简介</a>
+	            	</Menu.Item>
+	            	<Menu.Item key="departments">
+	            		<a href="/departments">部门简介</a>
+	            	</Menu.Item>
 		        	<Menu.Item key="event">
-		          		近期事件
+		          		<a href="event">近期事件</a>
 		        	</Menu.Item>
-		        	<Menu.Item key="blog">
-		          		<a href="" rel="noopener noreferrer">技术博客</a>
-		        	</Menu.Item>
-		        	<Menu.Item key="message">
-		          		<a href="" rel="noopener noreferrer">个人信息</a>
-		        	</Menu.Item>
-		        	<SubMenu title={<span>注册登录</span>}>
-		            	<Menu.Item key="setting:4">
-	                        <a href="/login">登录</a>
-	                    </Menu.Item>
-		            	<Menu.Item key="setting:5">
-	                        <a href="/logup">注册</a>
-	                    </Menu.Item>
-		            	<Menu.Item key="setting:6">申请会员</Menu.Item>
-		        	</SubMenu>
-		        	<Menu.Item>
+	          		<SubMenu title={<span>生态系统</span>}>
+		            	<Menu.Item key="blog">
+		            		<a href="/blog">技术博客</a>
+		            	</Menu.Item>
+		            	<Menu.Item key="resource">
+		            		<a href="/resource">技术资源</a>
+		            	</Menu.Item>
+		            	<Menu.Item key="club">
+		            		<a href="/club">技术论坛</a>
+		            	</Menu.Item>
+	        		</SubMenu>
+		        	<Menu.Item key="search">
 		        		<Search
-		        		      placeholder="input search text"
+		        		      placeholder="搜索"
 		        		      onSearch={this.handleSearch}
 		        		      style={{ width: 200 }}
 		        		    />
 		        	</Menu.Item>
+		        	{NavItem}
 		      	</Menu>
 	    	</div>
     	);

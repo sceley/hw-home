@@ -1,3 +1,18 @@
 .Home {
 	margin-top: 20px;
 }
+
+.ant-carousel, .slick-slide {
+	text-align: center;
+	overflow: hidden;
+}
+
+.ant-carousel, .slick-slide h3 {
+	color: #fff;
+}
+
+.carousel-img-size {
+	/*height: 400px;*/
+	width: 100%;
+	margin: 0 auto;
+}

@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 
 import './login.css';
 
-import { Form, Icon, Input, Button, Checkbox, Row, Breadcrumb } from 'antd';
+import { Form, Icon, Input, Button, Checkbox, Row } from 'antd';
+import Mnav from './mnav';
 const FormItem = Form.Item;
 
 class NormalLoginForm extends Component {
@@ -17,25 +18,27 @@ class NormalLoginForm extends Component {
 	render() {
 		const { getFieldDecorator } = this.props.form;
 		return (
-			<div className="form-login">
-				<Form onSubmit={this.handleSubmit} className="login-form">
-					<FormItem>
-						<div className="text-title">
-							用户登录
-						</div>
-					</FormItem>
-					<FormItem>
+			<div className="log-wrap">
+				<div className="log-title">
+					账号登录
+				</div>
+				<Form onSubmit={this.handleSubmit}>
+					<FormItem
+						label="用户名"
+					>
 						{getFieldDecorator('userName', {
-							rules: [{ required: true, message: 'Please input your username!' }],
+							rules: [{ required: true, message: '请输入你的用户名!' }],
 						})(
-						<Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
+						<Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入用户名" />
 						)}
 					</FormItem>
-					<FormItem>
+					<FormItem
+						label="密码"
+					>
 						{getFieldDecorator('password', {
-							rules: [{ required: true, message: 'Please input your Password!' }],
+							rules: [{ required: true, message: '请输入你的密码!' }],
 						})(
-						<Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+						<Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="请输入密码" />
 						)}
 					</FormItem>
 					<FormItem>
@@ -43,13 +46,13 @@ class NormalLoginForm extends Component {
 							valuePropName: 'checked',
 							initialValue: true,
 						})(
-						<Checkbox>Remember me</Checkbox>
+						<Checkbox>记住我</Checkbox>
 						)}
-						<a className="login-form-forgot" href="">Forgot password</a>
+						<a className="login-form-forgot" href="/forgetpassword">忘记密码</a>
 						<Button type="primary" htmlType="submit" className="login-form-button">
-						Log in
+							Log in
 						</Button>
-						<a href="">register now!</a>
+						<a href="/logup">现在注册!</a>
 					</FormItem>
 				</Form>
 			</div>
@@ -64,18 +67,8 @@ export default class Login extends Component {
 	render () {
 		return (
 				<div className="Login">
-					<div className="breadcrumb">
-	                    <Breadcrumb>
-	                        <Breadcrumb.Item href="/">
-	                            <Icon type="home" />
-	                            <span>首页</span>
-	                        </Breadcrumb.Item>
-	                        <Breadcrumb.Item href="#">
-	                            <span>登录</span>
-	                        </Breadcrumb.Item>
-	                    </Breadcrumb>
-                	</div>
-					<Row type="flex" justify="center">
+					<Mnav name="登录"/>
+					<Row style={{ marginTop: '20px' }} type="flex" justify="center">
 						<WrappedNormalLoginForm/>
 					</Row>
 				</div>
