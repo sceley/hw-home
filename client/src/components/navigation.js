@@ -76,11 +76,11 @@ export default class Navigation extends Component {
 		            	<Menu.Item key="blog">
 		            		<a href="/blog">技术博客</a>
 		            	</Menu.Item>
-		            	<Menu.Item key="resource">
-		            		<a href="/resource">技术资源</a>
-		            	</Menu.Item>
 		            	<Menu.Item key="club">
 		            		<a href="/club">技术论坛</a>
+		            	</Menu.Item>
+		            	<Menu.Item key="resource">
+		            		<a href="/resource">技术资源</a>
 		            	</Menu.Item>
 	        		</SubMenu>
 		        	<Menu.Item key="search">

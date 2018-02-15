@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Editor from './editor';
-import { Icon, Input, Button } from 'antd';
+import { Input, Button } from 'antd';
 import Mnav from './mnav';
 
 export default class TopicCreate extends Component {

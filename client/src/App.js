@@ -14,6 +14,10 @@ import Club from './components/club';
 import Resource from './components/resource';
 import Event from './components/event';
 import ArticleCreate from './components/article-create';
+import User from './components/user';
+import UserEdit from './components/user-edit';
+import UserInfo from './components/user-info';
+import Avatar from './components/avatar';
 
 import './App.css';
 
@@ -38,11 +42,16 @@ class App extends Component {
                                 <Route path="/resource" component={Resource}/>
                                 <Route path="/club" component={Club}/>
                                 <Route path="/event" component={Event}/>
-                                <Route　path="/topics/create" component={TopicCreate}/>
-                                <Route path="/articles/create" component={ArticleCreate}/>
+                                <Route　path="/topic/create" component={TopicCreate}/>
+                                <Route path="/article/create" component={ArticleCreate}/>
+                                <Route exact path="/user" component={User}/>
+                                <Route path="/user/edit" component={UserEdit}>
+                                    <Route path="/info" component={UserInfo}/>
+                                    <Route path="/avatar" component={Avatar}/>
+                                </Route>
                             </div>
           				</Router>
-                        <footer style={{padding: '10px 0', color: '001529', textAlign: 'center'}}>©Create By HelloWorld Web Team</footer>
+                        <footer style={{padding: '10px 0', color: '001529', textAlign: 'center'}}>©Created By HelloWorld Web Team</footer>
                     </Col>
                 </Row>
       		</div>

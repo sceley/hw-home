@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Icon, Card, Col, Row } from 'antd';
+import { Card, Col, Row } from 'antd';
 
 import Mnav from './mnav';
 

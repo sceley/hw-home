@@ -12,8 +12,12 @@ export default class Home extends Component {
 		return (
 				<div className="Home">
 					<Carousel {...settings}>
-						<div><img className="carousel-img-size" src="/img/2.jpg" alt=""/></div>
-						<div><img className="carousel-img-size" src="/img/3.jpg" alt=""/></div>
+						<div className="carousel-item">
+							<img src="/img/2.jpg" alt=""/>
+						</div>
+						<div className="carousel-item">
+							<img src="/img/3.jpg" alt=""/>
+						</div>
 			        </Carousel>
 			        <div style={{ background: 'white', marginTop: '20px', padding: '30px 0' }}>
 						<Row>

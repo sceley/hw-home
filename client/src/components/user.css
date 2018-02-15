@@ -1,0 +1,40 @@
+.user-basic-info {
+	padding: 10px;
+}
+
+.avatar {
+	width: 112px;
+	height: 112px;
+	border-radius: 50%;
+	padding: 3px;
+}
+
+.img-thumbnail {
+	border: 1px solid #ddd;
+}
+
+.media-heading {
+	line-height: 112px;
+}
+
+.follow-info {
+	text-align: center;
+	margin-top: 15px;
+}
+
+.user-basic-info .follow-info a {
+	display: block;
+}
+
+.user-basic-info .follow-info a.count {
+	color: #f4645f;
+	font-size: 25px;
+}
+
+.user-basic-info .follow-info a.text {
+	color: #999;
+}
+
+.user-basic-info .edit-info {
+	text-align: center;
+}
