@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
-import { Form, Button, Input, Icon, Card } from 'antd';
+import { Form, Col, Row, Button, Input, Icon, Card } from 'antd';
+
+import AsideNav from './AsideNav';
 
 const FormItem = Form.Item;
 
@@ -113,10 +115,17 @@ const WrappedRegistrationForm = Form.create()(RegistrationForm);
 export default class UserInfo extends Component {
 	render () {
 		return (
-				<div className="UserInfo">
-					<Card title={<span><Icon type="setting" /><span>编辑个人信息</span></span>}>
-						<WrappedRegistrationForm />
-					</Card>
+				<div className="UserInfo" style={{marginTop: '20px'}}>
+					<Row gutter={16}>
+                        <Col span={8}>
+                            <AsideNav />
+                        </Col>
+                        <Col span={16}>
+                            <div style={{background: 'white'}}>
+                                <WrappedRegistrationForm />
+                            </div>
+                        </Col>
+                    </Row>
 				</div>
 			);
 	}

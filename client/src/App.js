@@ -15,9 +15,9 @@ import Resource from './components/resource';
 import Event from './components/event';
 import ArticleCreate from './components/article-create';
 import User from './components/user';
-import UserEdit from './components/user-edit';
 import UserInfo from './components/user-info';
 import Avatar from './components/avatar';
+import Notify from './components/notify';
 
 import './App.css';
 
@@ -45,10 +45,9 @@ class App extends Component {
                                 <Route　path="/topic/create" component={TopicCreate}/>
                                 <Route path="/article/create" component={ArticleCreate}/>
                                 <Route exact path="/user" component={User}/>
-                                <Route path="/user/edit" component={UserEdit}>
-                                    <Route path="/info" component={UserInfo}/>
-                                    <Route path="/avatar" component={Avatar}/>
-                                </Route>
+                                <Route path="/user/edit/info" component={UserInfo}/>
+                                <Route path="/user/edit/avatar" component={Avatar}/>
+                                <Route path="/user/edit/notify" component={Notify}/>
                             </div>
           				</Router>
                         <footer style={{padding: '10px 0', color: '001529', textAlign: 'center'}}>©Created By HelloWorld Web Team</footer>
