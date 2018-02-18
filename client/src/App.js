@@ -15,13 +15,11 @@ import Resource from './components/resource';
 import Event from './components/event';
 import ArticleCreate from './components/article-create';
 import User from './components/user';
-import UserInfo from './components/user-info';
-import Avatar from './components/avatar';
-import Notify from './components/notify';
-
+import Edit from './components/edit';
 import './App.css';
+import { Row, Col, Layout } from 'antd';
 
-import { Row, Col } from 'antd';
+const { Header, Content, Footer } = Layout;
 
 class App extends Component {
   	render() {
@@ -29,28 +27,26 @@ class App extends Component {
       		<div className="App">
   				<Row type="flex" justify="center">
   					<Col xs={24} sm={23} md={22} lg={21} xl={20}>
-						<Navigation/>
-          				<Router>
-                            <div className="router">
+                        <Navigation/>
+                        <Router>
+                            <section>
           				        <Route exact path="/" component={Home}/>
-          					    <Route path="/login" component={Login}/>
-                                <Route path="/logup" component={Logup}/>
-                                <Route path="/member" component={Member}/>
+          					    <Route exact path="/login" component={Login}/>
+                                <Route exact path="/logup" component={Logup}/>
+                                <Route exact path="/member" component={Member}/>
                                 <Route exact path="/blog" component={Blog}/>
-                                <Route path="/community" component={Community}/>
-                                <Route path="/departments" component={Departments}/>
-                                <Route path="/resource" component={Resource}/>
-                                <Route path="/club" component={Club}/>
-                                <Route path="/event" component={Event}/>
-                                <Route　path="/topic/create" component={TopicCreate}/>
-                                <Route path="/article/create" component={ArticleCreate}/>
+                                <Route exact path="/community" component={Community}/>
+                                <Route exact path="/departments" component={Departments}/>
+                                <Route exact path="/resource" component={Resource}/>
+                                <Route exact path="/club" component={Club}/>
+                                <Route exact path="/event" component={Event}/>
+                                <Route exact path="/topic/create" component={TopicCreate}/>
+                                <Route exact path="/article/create" component={ArticleCreate}/>
                                 <Route exact path="/user" component={User}/>
-                                <Route path="/user/edit/info" component={UserInfo}/>
-                                <Route path="/user/edit/avatar" component={Avatar}/>
-                                <Route path="/user/edit/notify" component={Notify}/>
-                            </div>
+                                <Route path="/user/edit" component={Edit}/>
+                            </section>
           				</Router>
-                        <footer style={{padding: '10px 0', color: '001529', textAlign: 'center'}}>©Created By HelloWorld Web Team</footer>
+                        <footer className="footer">©Created By HelloWorld Web Team</footer>
                     </Col>
                 </Row>
       		</div>

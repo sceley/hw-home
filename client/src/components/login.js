@@ -11,7 +11,20 @@ class NormalLoginForm extends Component {
 		e.preventDefault();
 		this.props.form.validateFields((err, values) => {
 			if (!err) {
-				console.log('Received values of form: ', values);
+				delete values.remember;
+				fetch('http://localhost:8080/login', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify(values)
+				}).then(res => {
+					if (res.ok) {
+						return res.json();
+					}
+				}).then(json => {
+					console.log(json);
+				});
 			}
 		});
 	}
@@ -26,7 +39,7 @@ class NormalLoginForm extends Component {
 					<FormItem
 						label="用户名"
 					>
-						{getFieldDecorator('userName', {
+						{getFieldDecorator('Username', {
 							rules: [{ required: true, message: '请输入你的用户名!' }],
 						})(
 						<Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入用户名" />
@@ -35,7 +48,7 @@ class NormalLoginForm extends Component {
 					<FormItem
 						label="密码"
 					>
-						{getFieldDecorator('password', {
+						{getFieldDecorator('Password', {
 							rules: [{ required: true, message: '请输入你的密码!' }],
 						})(
 						<Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="请输入密码" />

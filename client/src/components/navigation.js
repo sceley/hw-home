@@ -10,6 +10,7 @@ const SubMenu = Menu.SubMenu;
 export default class Navigation extends Component {
   	state = {
     	current: 'home',
+    	log: false
   	}
 
   	handleSearch = (e) => {
@@ -24,33 +25,8 @@ export default class Navigation extends Component {
   	}
 
   	render() {
-		let logout = false;
-		let NavItem;
-		if(logout)
-	    	NavItem = 
-				<SubMenu title={<Avatar icon="user" />}>
-			    	<Menu.Item key="user">
-			            <a href="/user">个人信息</a>
-			        </Menu.Item>
-			    	<Menu.Item key="member">
-			    		<a href="/member">申请会员</a>
-			    	</Menu.Item>
-			    	<Menu.Item>
-			            <a href="/logout">退出</a>
-			        </Menu.Item>
-				</SubMenu>;
-	    else 
-	    	NavItem = 
-	    		<SubMenu　title={<span>注册｜登录</span>}>
-		    		<Menu.Item key="logup">
-		    			<a href="/logup">注册</a>
-		    		</Menu.Item>
-	    			<Menu.Item key="login">
-	    		        <a href="/login">登录</a>
-	    		    </Menu.Item>
-	    		</SubMenu>;
     	return (
-    		<div className="Navigation">
+    		<nav className="Navigation">
 		      	<Menu
 		        	selectedKeys={[this.state.current]}
 		        	defaultOpenKeys={['home']}
@@ -58,7 +34,7 @@ export default class Navigation extends Component {
 		        	theme="dark"
 		      	>
 		      		<Menu.Item style={{background: 'transparent'}}>
-		      			<img style={{width: '60px'}} src={logo} alt="" />
+		      			<a href="/"><img style={{width: '60px'}} src={logo} alt="" /></a>
 		      		</Menu.Item>
 		        	<Menu.Item key="home">
 		          		<a href="/">网站首页</a>
@@ -90,9 +66,30 @@ export default class Navigation extends Component {
 		        		      style={{ width: 200 }}
 		        		    />
 		        	</Menu.Item>
-		        	{NavItem}
+		        	{ this.state.log?
+	        			<SubMenu title={<Avatar icon="user" />}>
+	        		    	<Menu.Item key="user">
+	        		            <a href="/user">个人信息</a>
+	        		        </Menu.Item>
+	        		    	<Menu.Item key="member">
+	        		    		<a href="/member">申请会员</a>
+	        		    	</Menu.Item>
+	        		    	<Menu.Item>
+	        		            <a href="/logout">退出</a>
+	        		        </Menu.Item>
+	        			</SubMenu>
+	        			:
+			    		<SubMenu title={<span>注册｜登录</span>}>
+				    		<Menu.Item key="logup">
+				    			<a href="/logup">注册</a>
+				    		</Menu.Item>
+			    			<Menu.Item key="login">
+			    		        <a href="/login">登录</a>
+			    		    </Menu.Item>
+			    		</SubMenu>
+		        	}
 		      	</Menu>
-	    	</div>
+	    	</nav>
     	);
   	}
 };

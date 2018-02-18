@@ -1,15 +1,16 @@
 import React, { Component } from "react";
-
-import { Row, Col, Card, Divider, Button } from 'antd';
-
+import { Row, Col, Card, Divider, Button, Layout } from 'antd';
 import './user.css';
+
+const { Sider, Content } = Layout;
+
 
 export default class User extends Component {
 	render () {
 		return (
 				<div style={{marginTop: '20px'}} className="User">
-					<Row gutter={16}>
-						<Col span={6}>
+					<Layout>
+						<Sider width={300}>
 							<div style={{background: 'white'}}>
 								<div className="user-basic-info">
 									<Row className="media" gutter={16}>
@@ -45,8 +46,8 @@ export default class User extends Component {
 									</div>
 								</div>
 							</div>
-						</Col>
-						<Col span={18}>
+						</Sider>
+						<Content>
 							<div>
 								<Card title="专栏文章">
 									没有任何数据~~
@@ -58,8 +59,8 @@ export default class User extends Component {
 									没有任何数据~~
 								</Card>
 							</div>
-						</Col>
-					</Row>
+						</Content>
+					</Layout>
 				</div>
 			);
 	}

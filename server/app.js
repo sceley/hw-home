@@ -1,18 +1,21 @@
 const http = require('http');
-const Koa = require('koa');
-const port = process.env.PORT || 8000;
+const express = require('express');
+const port = require('./config').port;
 const router = require('./router');
 
 
-let app = new Koa();
-let server = http.createServer(app.callback());
+let app = express();
+let server = http.createServer(app);
 
-app.use(router.routes());
+app.use((req, res, next) => {
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length');
+	res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE");
+	next();
+});
 
-// app.use(router.allowedMethods());
-
-// app.use(bodyparser());
+app.use(router);
 
 server.listen(port, () => {
-	console.log(`server run at //localhost:${port}`);
+	console.log(`server run at http://localhost:${port}`);
 });

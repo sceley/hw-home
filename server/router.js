@@ -1,22 +1,21 @@
-const Router = require('koa-router');
-const bodyparser = require('koa-bodyparser');
+//package
+const Router = require('express').Router;
+const bodyparser = require('body-parser');
+
+//controller
+const login = require('./controller/login');
+const logup = require('./controller/logup');
+const getCaptcha = require('./controller/getCaptcha');
 
 
-let router = new Router();
-router.use(bodyparser());
+let router = Router();
 
-router.get('/', async ctx => {
-	ctx.body = "helloworld";
-});
+router.use(bodyparser.json());
 
-router.get('/new', async ctx => {
-	ctx.body = 'new';
-});
+router.post('/login', login);
 
-router.post('/new', async ctx => {
-	console.log(ctx.request);
-	ctx.body = ctx.request.body;
-	console.log(ctx.request.files);
-});
+router.post('/logup', logup);
+
+router.post('/getcaptcha', getCaptcha);
 
 module.exports = router;
