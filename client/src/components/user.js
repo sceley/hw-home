@@ -14,12 +14,12 @@ export default class User extends Component {
 							<div style={{background: 'white'}}>
 								<div className="user-basic-info">
 									<Row className="media" gutter={16}>
-										<Col className="media-left" span={12}>
+										<div className="media-left" span={12}>
 											<img src="https://avatars1.githubusercontent.com/u/23139022?v=4&s=120" className="img-thumbnail avatar"/>
-										</Col>
-										<Col className="media-body" span={12}>
+										</div>
+										<div className="media-body" span={12}>
 											<h3 className="media-heading">sceley</h3>
-										</Col>
+										</div>
 									</Row>
 									<Divider />
 									<Row className="follow-info">

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import Mnav from './mnav';
 
-import { List, Avatar, Icon, Button, Col, Row } from 'antd';
+import { List, Avatar, Icon, Button, Col, Row, Layout } from 'antd';
+
+const { Sider, Content } = Layout;
 
 export default class Blog extends Component {
 	
@@ -38,65 +40,63 @@ export default class Blog extends Component {
 		return (
 				<div className="Blog">
 					<Mnav name="技术博客" />
-					<div style={{marginTop: '20px'}}>
-						<Row style={{marginTop: '20px'}} type="flex" justify="space-between">
-							<Col className="club-content" xs={24} xl={18}>
-								<List
-								    size="large"
-								    pagination={this.state}
-								    dataSource={listData}
-								    itemLayout="vertical"
-								    bordered
-								    style={{ background: 'white'}}
-								    renderItem={item => (
-										<List.Item
-											key={item.title}
-											actions={[<IconText type="eye-o" text="156" />, <IconText type="like-o" text="156" />, <IconText type="message" text="2" />]}
-											extra={<img width={272} alt="logo" src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png" />}
-										>
-											<List.Item.Meta
-												avatar={<Avatar src={item.avatar} />}
-												title={item.title}
-												description={
-													<ul className="ant-list-item-action">
-														<li>
-															<IconText type="calendar" text="2018-12-28" />
-															<em className="ant-list-item-action-split"/>
-														</li>
-														<li>
-															<IconText type="folder" text="Web" />
-															<em className="ant-list-item-action-split"/>
-														</li>
-														<li>
-															<IconText type="user" text="张三" />
-														</li>
-													</ul>
-												}
-											/>
-											{item.content}
-											<div style={{marginTop: '20px', textAlign: 'center'}}>
-												<a href=""><Button>README MORE</Button></a>
-											</div>
-										</List.Item>
-									)}
-								/>
-							</Col>
-							<Col xs={0} xl={5}>
-								<div className="card">
-									<div className="breadcrumb">
-										个人信息
-									</div>
+					<Layout style={{marginTop: '20px'}}>
+						<Content>
+							<List
+							    size="large"
+							    pagination={this.state}
+							    dataSource={listData}
+							    itemLayout="vertical"
+							    bordered
+							    style={{ background: 'white'}}
+							    renderItem={item => (
+									<List.Item
+										key={item.title}
+										actions={[<IconText type="eye-o" text="156" />, <IconText type="like-o" text="156" />, <IconText type="message" text="2" />]}
+										extra={<img width={272} alt="logo" src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png" />}
+									>
+										<List.Item.Meta
+											avatar={<Avatar src={item.avatar} />}
+											title={item.title}
+											description={
+												<ul className="ant-list-item-action">
+													<li>
+														<IconText type="calendar" text="2018-12-28" />
+														<em className="ant-list-item-action-split"/>
+													</li>
+													<li>
+														<IconText type="folder" text="Web" />
+														<em className="ant-list-item-action-split"/>
+													</li>
+													<li>
+														<IconText type="user" text="张三" />
+													</li>
+												</ul>
+											}
+										/>
+										{item.content}
+										<div style={{marginTop: '20px', textAlign: 'center'}}>
+											<a href=""><Button>README MORE</Button></a>
+										</div>
+									</List.Item>
+								)}
+							/>
+						</Content>
+						<Sider>
+							<div className="card">
+								<div className="breadcrumb">
+									个人信息
 								</div>
-								<div className="card" style={{textAlign: 'center', padding: '5px', marginTop: '20px'}}>
-									<a href="/article/create">
-										<Button type="primary">
-											发布文章
-										</Button>
-									</a>
-								</div>
-							</Col>
-						</Row>
-					</div>
+							</div>
+							<div className="card" style={{textAlign: 'center', padding: '5px', marginTop: '20px'}}>
+								<a href="/article/create">
+									<Button type="primary">
+										发布文章
+									</Button>
+								</a>
+							</div>
+						</Sider>
+					</Layout>
 				</div>
 			);
 	}

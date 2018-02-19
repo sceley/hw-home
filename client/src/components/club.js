@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import Mnav from './mnav';
-import { Row, Col, List, Avatar, Button } from 'antd';
+import { List, Avatar, Button, Layout } from 'antd';
 import './club.css';
+
+const { Sider, Content } = Layout;
 
 export default class Club extends Component {
 	state = {
@@ -48,8 +50,8 @@ export default class Club extends Component {
 		return (
 			<div className="Club">
 				<Mnav name="技术论坛"/>
-				<Row style={{marginTop: '20px'}} type="flex" justify="space-between">
-					<Col className="club-content" xs={24} xl={18}>
+				<Layout style={{marginTop: '20px'}}>
+					<Content>
 						<div className="breadcrumb">
 							{clubnav}
 						</div>
@@ -65,8 +67,8 @@ export default class Club extends Component {
 								</List.Item>
 					        )}
 						/>
-					</Col>
-					<Col xs={0} xl={5}>
+					</Content>
+					<Sider>
 						<div className="card">
 							<div className="breadcrumb">
 								个人信息
@@ -79,8 +81,8 @@ export default class Club extends Component {
 								</Button>
 							</a>
 						</div>
-					</Col>
-				</Row>
+					</Sider>
+				</Layout>
 			</div>
 			);
 	}

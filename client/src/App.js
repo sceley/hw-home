@@ -17,21 +17,22 @@ import ArticleCreate from './components/article-create';
 import User from './components/user';
 import Edit from './components/edit';
 import './App.css';
-import { Row, Col, Layout } from 'antd';
-
-const { Header, Content, Footer } = Layout;
+import { Row, Col } from 'antd';
 
 class App extends Component {
+
   	render() {
     	return (
       		<div className="App">
-  				<Row type="flex" justify="center">
-  					<Col xs={24} sm={23} md={22} lg={21} xl={20}>
+                <Row type="flex" justify="center">
+                    <Col xs={24} sm={23} md={22} lg={21} xl={20}>
                         <Navigation/>
+                    </Col>
+                    <Col xs={24} sm={23} md={22} lg={21} xl={20}>
                         <Router>
-                            <section>
-          				        <Route exact path="/" component={Home}/>
-          					    <Route exact path="/login" component={Login}/>
+                            <section style={{overflow: 'hidden'}}>
+                                <Route exact path="/" component={Home}/>
+                                <Route exact path="/login" component={Login}/>
                                 <Route exact path="/logup" component={Logup}/>
                                 <Route exact path="/member" component={Member}/>
                                 <Route exact path="/blog" component={Blog}/>
@@ -45,7 +46,9 @@ class App extends Component {
                                 <Route exact path="/user" component={User}/>
                                 <Route path="/user/edit" component={Edit}/>
                             </section>
-          				</Router>
+                        </Router>
+                    </Col>
+                    <Col xs={24} sm={23} md={22} lg={21} xl={20}>
                         <footer className="footer">©Created By HelloWorld Web Team</footer>
                     </Col>
                 </Row>
