@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Profile from './profile1';
 import Mnav from './mnav';
 
 import { List, Avatar, Icon, Button, Col, Row, Layout } from 'antd';
@@ -42,6 +43,7 @@ export default class Blog extends Component {
 					<Mnav name="技术博客" />
 					<Layout style={{marginTop: '20px'}}>
 						<Content>
+							<div style={{paddingRight: '10px'}}>
 							<List
 							    size="large"
 							    pagination={this.state}
@@ -81,19 +83,18 @@ export default class Blog extends Component {
 									</List.Item>
 								)}
 							/>
-						</Content>
-						<Sider>
-							<div className="card">
-								<div className="breadcrumb">
-									个人信息
-								</div>
 							</div>
-							<div className="card" style={{textAlign: 'center', padding: '5px', marginTop: '20px'}}>
-								<a href="/article/create">
-									<Button type="primary">
-										发布文章
-									</Button>
-								</a>
+						</Content>
+						<Sider width={300}>
+							<div className="user-basic-info">
+								<Profile />
+								<div>
+									<a href="/article/create">
+										<Button type="primary">
+											发布文章
+										</Button>
+									</a>
+								</div>
 							</div>
 						</Sider>
 					</Layout>
