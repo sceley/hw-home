@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Card, Icon } from 'antd';
 import Mnav from './mnav';
+const { Meta } = Card;
 export default class Event extends Component {
 	render () {
 		return (
@@ -13,13 +14,38 @@ export default class Event extends Component {
 					<div style={{marginTop: '20px'}}>
 						<Row gutter={16}>
 							<Col span={8}>
-								<Card title="Card title" bordered={false}>Card content</Card>
+								<Card
+								    style={{ width: 300 }}
+								    cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
+								>
+								    <Meta
+								      title="Card title"
+								      description="This is the description"
+								    />
+								</Card>
 							</Col>
 							<Col span={8}>
-								<Card title="Card title" bordered={false}>Card content</Card>
+								<Card
+								    style={{ width: 300 }}
+								    cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
+								 >
+								    <Meta
+								      title="Card title"
+								      description="This is the description"
+								    />
+								
+								</Card>
 							</Col>
 							<Col span={8}>
-								<Card title="Card title" bordered={false}>Card content</Card>
+								<Card
+								    style={{ width: 300 }}
+								    cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
+								>
+								    <Meta
+								      title="Card title"
+								      description="This is the description"
+								    />
+								</Card>
 							</Col>
 					    </Row>
 					</div>

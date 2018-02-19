@@ -46,7 +46,7 @@ export default class Departments extends Component {
 				<Col key={ item.department } xs={24} md={12} xl={8}>
 					<Card
 					    cover={<img alt="example" src={ item.img } />}
-					    style={ {marginTop: "20px"} }
+					    style={ {marginTop: "20px", width: "300px"} }
 					  >
 					    <Meta
 					      title={<h3>{ item.department }</h3>}
@@ -62,7 +62,9 @@ export default class Departments extends Component {
 					<Mnav name="部门介绍"/>
 
                 	<div style={{marginTop: '20px'}}>
-                		<h1>各部门介绍</h1>
+                		<div style={{textAlign: 'center'}}>
+                			<h1>各部门介绍</h1>
+                		</div>
                 		<Row gutter={16}>
                 			{elements}						
 						</Row>
