@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Card, Divider, Button, Layout } from 'antd';
+import { Row, Col, Card, Divider, Button, Layout, Icon } from 'antd';
 import './user.css';
 
 const { Sider, Content } = Layout;
@@ -11,16 +11,19 @@ export default class User extends Component {
 				<div style={{marginTop: '20px'}} className="User">
 					<Layout>
 						<Sider width={300}>
-							<div style={{background: 'white'}}>
+							<div style={{background: 'white', textAlign: 'center'}}>
 								<div className="user-basic-info">
-									<Row className="media" gutter={16}>
-										<div className="media-left" span={12}>
-											<img src="https://avatars1.githubusercontent.com/u/23139022?v=4&s=120" className="img-thumbnail avatar"/>
-										</div>
-										<div className="media-body" span={12}>
-											<h3 className="media-heading">sceley</h3>
-										</div>
-									</Row>
+									<a href="">
+										<img src="https://avatars1.githubusercontent.com/u/23139022?v=4&s=120" className="img-thumbnail avatar"/>
+									</a>
+									<h2>sceley</h2>
+										<Icon type="man" />
+									<p>颠三倒四多翁</p>
+									<ul>
+										<li><Icon type="environment-o" /></li><br/>
+										<li><Icon type="github" /></li>
+										<li><Icon type="global" /></li>
+									</ul>
 									<Divider />
 									<Row className="follow-info">
 										<Col span={8}>
@@ -37,6 +40,7 @@ export default class User extends Component {
 										</Col>
 									</Row>
 									<Divider />
+									<Divider />
 									<div className="edit-info">
 										<a href="/user/edit">
 											<Button type="primary">
@@ -47,7 +51,7 @@ export default class User extends Component {
 								</div>
 							</div>
 						</Sider>
-						<Content>
+						<Content style={{paddingLeft: '10px'}}>
 							<div>
 								<Card title="专栏文章">
 									没有任何数据~~

@@ -38,3 +38,8 @@
 .user-basic-info .edit-info {
 	text-align: center;
 }
+
+.user-basic-info li {
+	display: inline-block;
+	padding: 0 5px;
+}
