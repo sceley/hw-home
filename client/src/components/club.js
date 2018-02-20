@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import Mnav from './mnav';
-import { List, Avatar, Button, Layout } from 'antd';
+import { List, Avatar, Button, Layout, Tabs } from 'antd';
 import Profile from './profile1';
 import './club.css';
 
 const { Sider, Content } = Layout;
+const TabPane = Tabs.TabPane;
 
 export default class Club extends Component {
 	state = {
@@ -54,22 +55,38 @@ export default class Club extends Component {
 				<Layout style={{marginTop: '20px'}}>
 					<Content>
 						<div style={{paddingRight: '10px'}}>
-							{/*<div className="breadcrumb">
-								{clubnav}
-							</div>*/}
-							<List
-								style={{background: 'white'}}
-						        itemLayout="horizontal"
-						        dataSource={data}
-						        renderItem={item => (
-									<List.Item actions={[<span>more</span>]}>
-										<List.Item.Meta
-										avatar={<a href=""><Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" /></a>}
-										title={<a href="https://ant.design">{item.name}</a>}
-										/>
-									</List.Item>
-						        )}
-							/>
+							<Tabs>
+								<TabPane tab="全部" key="all">
+									<List
+										style={{background: 'white'}}
+								        itemLayout="horizontal"
+								        dataSource={data}
+								        renderItem={item => (
+											<List.Item actions={[<span>more</span>]}>
+												<List.Item.Meta
+												avatar={<a href=""><Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" /></a>}
+												title={<a href="https://ant.design">{item.name}</a>}
+												/>
+											</List.Item>
+								        )}
+									/>
+								</TabPane>
+								<TabPane tab="精品" key="good">
+									<List
+										style={{background: 'white'}}
+								        itemLayout="horizontal"
+								        dataSource={data}
+								        renderItem={item => (
+											<List.Item actions={[<span>more</span>]}>
+												<List.Item.Meta
+												avatar={<a href=""><Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" /></a>}
+												title={<a href="https://ant.design">{item.name}</a>}
+												/>
+											</List.Item>
+								        )}
+									/>
+								</TabPane>
+							</Tabs>
 						</div>
 					</Content>
 					<Sider width={300}>
