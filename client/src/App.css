@@ -1,3 +1,15 @@
+.nav {
+	border-top: 4px solid #f46660;
+	background: #001529;
+}
+
+.footer {
+	text-align: center;
+	padding: 24px 50px;
+	color: rgba(0, 0, 0, 0.65);
+	font-size: 14px;
+}
+
 .log-title {
 	text-align: center;
 	background: #31708f;
@@ -12,10 +24,3 @@
 	border-radius: 10px;
 }
 
-
-.footer {
-	text-align: center;
-	padding: 24px 50px;
-	color: rgba(0, 0, 0, 0.65);
-	font-size: 14px;
-}

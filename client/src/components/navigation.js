@@ -1,20 +1,31 @@
 import React, {Component} from 'react';
-
-import './navigation.css';
-import { Menu,  Input, Avatar } from 'antd';
+import { Menu,  Input, Avatar, Modal, Button } from 'antd';
 import logo from '../logo.svg';
+import './navigation.css';
+
 const Search = Input.Search;
 const SubMenu = Menu.SubMenu;
-
 
 export default class Navigation extends Component {
   	state = {
     	current: 'home',
-    	log: false
+    	log: true,
+    	visible: false
   	}
 
   	handleSearch = (e) => {
-  		console.log(e);
+  	} 
+
+  	showModal = () => {
+  		this.setState({
+  			visible: true
+  		});
+  	}
+
+  	handleCancel = () => {
+  		this.setState({
+  			visible: false
+  		});
   	}
 
   	componentWillMount () {
@@ -29,12 +40,13 @@ export default class Navigation extends Component {
     		<nav className="Navigation">
 		      	<Menu
 		        	selectedKeys={[this.state.current]}
-		        	defaultOpenKeys={['home']}
 		        	mode="horizontal"
 		        	theme="dark"
 		      	>
-		      		<Menu.Item style={{background: 'transparent'}}>
-		      			<a href="/"><img style={{width: '60px'}} src={logo} alt="" /></a>
+		      		<Menu.Item>
+		      			<a href="/">
+		      				<img style={{width: '60px'}} src={logo} alt="logo"/>
+		      			</a>
 		      		</Menu.Item>
 		        	<Menu.Item key="home">
 		          		<a href="/">网站首页</a>
@@ -64,7 +76,7 @@ export default class Navigation extends Component {
 		        		      placeholder="搜索"
 		        		      onSearch={this.handleSearch}
 		        		      style={{ width: 200 }}
-		        		    />
+		        		/>
 		        	</Menu.Item>
 		        	{ this.state.log?
 	        			<SubMenu title={<Avatar icon="user" />}>
@@ -75,7 +87,7 @@ export default class Navigation extends Component {
 	        		    		<a href="/member">申请会员</a>
 	        		    	</Menu.Item>
 	        		    	<Menu.Item>
-	        		            <a href="/logout">退出</a>
+	        		            <a onClick={this.showModal} href="javascript:;">退出</a>
 	        		        </Menu.Item>
 	        			</SubMenu>
 	        			:
@@ -89,6 +101,20 @@ export default class Navigation extends Component {
 			    		</SubMenu>
 		        	}
 		      	</Menu>
+	            <Modal
+                	visible={this.state.visible}
+                	closable={false}
+                	footer={null}
+                	bodyStyle={{textAlign: 'center'}}
+                	maskClosable={true}
+                >
+                	<div className="pulse-warning">!</div>
+                	<h3>你确定要退出吗？</h3>
+                	<div style={{marginTop: '20px'}}>
+	                	<Button type="primary">退出</Button>
+	                	<Button onClick={this.handleCancel} type="default" style={{marginLeft: '10px'}}>取消</Button>
+	                </div>
+                </Modal>
 	    	</nav>
     	);
   	}

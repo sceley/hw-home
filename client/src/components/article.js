@@ -1,15 +1,37 @@
 import React, { Component } from 'react';
-import { Layout, Icon, List, Avatar } from 'antd';
+import { Layout, Icon, List, Avatar, Button } from 'antd';
 import CodeMirror from 'codemirror';
+import 'codemirror/mode/markdown/markdown.js';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/keymap/vim.js';
+import 'codemirror/addon/display/fullscreen.js';
+import 'codemirror/addon/display/fullscreen.css';
+import 'codemirror/theme/shadowfox.css';
 
 const { Content, Sider } = Layout;
 
 export default class Article extends Component {
 
+	handleSubmit = () => {
+		let value = this.editor.getValue();
+		console.log(value);
+	}
+
 	componentDidMount () {
 		console.log(this.refs.codeditor);
-		const editor = CodeMirror.fromTextArea(this.refs.codeditor, {
-			lineNumbers: true
+		this.editor = CodeMirror.fromTextArea(this.refs.codeditor, {
+			lineNumbers: true,
+			mode: 'markdown',
+			keyMap: 'vim',
+			theme: 'shadowfox',
+			extraKeys: {
+			    "F11": function(cm) {
+			      cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+			    },
+			    "Esc": function(cm) {
+			      if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+			    }
+			}
 		});
 	}
 
@@ -31,7 +53,7 @@ export default class Article extends Component {
 		return (
 			<div className="Article" style={{marginTop: '20px'}}>
 				<Layout>
-					<Content style={{textAlign: 'center'}}>
+					<Content>
 						<h1>HTTPS安全协议</h1>
 						<Icon type="calendar" />
 						<span>2017-02-10</span>
@@ -55,6 +77,7 @@ export default class Article extends Component {
 						    )}
 						/>
 						<textarea style={{background: "white"}} ref="codeditor"></textarea>
+						<Button type="primary" onClick={this.handleSubmit}>评论</Button>
 					</Content>
 					<Sider width={300}>
 					</Sider>

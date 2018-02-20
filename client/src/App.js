@@ -26,10 +26,12 @@ class App extends Component {
   	render() {
     	return (
       		<div className="App">
-                <Row type="flex" justify="center">
+                <Row className="nav" type="flex" justify="center">
                     <Col xs={24} sm={23} md={22} lg={21} xl={20}>
                         <Navigation/>
                     </Col>
+                </Row>
+                <Row type="flex" justify="center">
                     <Col xs={24} sm={23} md={22} lg={21} xl={20}>
                         <Router>
                             <section style={{overflow: 'hidden'}}>

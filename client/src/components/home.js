@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-
-import { Carousel, Col, Row, Icon } from 'antd';
+import { Carousel, Col, Row, Icon, Layout } from 'antd';
 import './home.css';
 
 
 export default class Home extends Component {
+
 	render () {
-		console.log(this.props);
 		const settings = {
 			autoplay: true
 		};
@@ -20,23 +19,23 @@ export default class Home extends Component {
 							<img src="/img/3.jpg" alt=""/>
 						</div>
 			        </Carousel>
-			        <div style={{ background: 'white', marginTop: '20px', padding: '30px 0' }}>
+			        <div className="contact" style={{marginTop: '20px'}}>
 						<Row>
-							<Col xs={24} md={{span: 12}} xl={{span: 10}}>
+							<Col xs={24} md={12} xl={10}>
 							</Col>
 							<Col xs={24} md={{span: 10, offset: 2}} xl={{span: 8, offset: 6}} style={{background: '#ECECEC', padding: '20px 0px'}}>
 								<Row type="flex" justify="space-around">
 									<Col xs={11} xl={10}>
-										<img style={{ width: "100%" }} src="/img/ccf.png" alt=""/>
+										<img src="/img/ccf.png" alt=""/>
 									</Col>
 									<Col xs={11} xl={10}>
-										<img style={{ width: "100%" }} src="/img/hw.png" alt=""/>
+										<img src="/img/hw.png" alt=""/>
 									</Col>
 								</Row>
 							</Col>
 						</Row>
 			        </div>
-			        <div style={{textAlign: 'center', color: 'white', marginTop: '20px', background: '#4c4f53', padding: '20px'}}>
+			        <div style={{ marginTop: '20px' }}>
 			        	<Row type="flex" justify="center">
 			        		<Col xs={22} md={17} xl={12}>
 			        			<Icon type="message" />
