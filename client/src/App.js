@@ -16,6 +16,8 @@ import Event from './components/event';
 import ArticleCreate from './components/article-create';
 import User from './components/user';
 import Edit from './components/edit';
+import Topic from './components/topic';
+import Article from './components/article';
 import './App.css';
 import { Row, Col } from 'antd';
 
@@ -45,6 +47,8 @@ class App extends Component {
                                 <Route exact path="/article/create" component={ArticleCreate}/>
                                 <Route exact path="/user" component={User}/>
                                 <Route path="/user/edit" component={Edit}/>
+                                <Route path="/topic" component={Topic}/>
+                                <Route path="/article" component={Article}/>
                             </section>
                         </Router>
                     </Col>

@@ -16,5 +16,19 @@ db.query(table1, (err, result) => {
 	console.log(result);
 });
 
+db.query('insert into User(Password, Username) values(?, ?)', ["覃永利", '16051223'], (err, result) => {
+	if (err) {
+		console.log(err);
+	} else {
+		console.log('success', result);
+	}
+});
+
 
 module.exports = db;
+
+
+// const mongoose = require('mongoose');
+// const config = require('../config');
+
+// mongoose.createConnection(`mongodb://${config.dbhost}:${config.dbport}`);

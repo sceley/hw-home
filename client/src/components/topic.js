@@ -1,17 +1,10 @@
 import React, { Component } from 'react';
-import { Layout, Icon, List, Avatar } from 'antd';
-import CodeMirror from 'codemirror';
+import { Card, Layout, List, Avatar, Icon, Input } from 'antd';
 
 const { Content, Sider } = Layout;
+const { TextArea } = Input;
 
-export default class Article extends Component {
-
-	componentDidMount () {
-		console.log(this.refs.codeditor);
-		const editor = CodeMirror.fromTextArea(this.refs.codeditor, {
-			lineNumbers: true
-		});
-	}
+export default class Topic extends Component {
 
 	render () {
 		const data = [
@@ -29,21 +22,29 @@ export default class Article extends Component {
 		  },
 		];
 		return (
-			<div className="Article" style={{marginTop: '20px'}}>
+			<div className="Topic" style={{marginTop: '20px'}}>
 				<Layout>
-					<Content style={{textAlign: 'center'}}>
-						<h1>HTTPS安全协议</h1>
-						<Icon type="calendar" />
-						<span>2017-02-10</span>
-						<Icon type="user" />
-						<span>sceley</span>
-						<Icon type="folder" />
-						大前端
-
+					<Content>
+						<Card title={
+							<div>
+								<h2>默默</h2>
+								<p>
+									由
+									<a href="">sceley</a>
+									在
+									<span>2017-02-01</span>
+									<span>16:00</span>
+									发布
+								</p>
+							</div>
+						}>
+						    <p>Card content</p>
+						    <p>Card content</p>
+						    <p>Card content</p>
+						</Card>
 						<List
 						    itemLayout="horizontal"
 						    dataSource={data}
-						    style={{marginTop: '20px', background: 'white'}}
 						    renderItem={item => (
 						      <List.Item  actions={[<Icon type="like-o" />, <Icon type="enter" />]}>
 						        <List.Item.Meta
@@ -54,9 +55,12 @@ export default class Article extends Component {
 						      </List.Item>
 						    )}
 						/>
-						<textarea style={{background: "white"}} ref="codeditor"></textarea>
+						<div style={{marginTop: '20px'}}>
+							<TextArea rows={4} />
+
+						</div>
 					</Content>
-					<Sider width={300}>
+					<Sider>
 					</Sider>
 				</Layout>
 			</div>

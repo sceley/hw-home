@@ -1,0 +1,12 @@
+version: '2'
+services:
+    mysql:
+        image: mysql
+        volumes:
+            - '$PWD/mysql/data:/var/lib/mysql'
+            - '$PWD/mysql/conf/my.cnf:/etc/mysql/my.cnf'
+            - '$PWD/mysql/logs:/logs'
+        ports: 
+            - '3306:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD : 16051223
