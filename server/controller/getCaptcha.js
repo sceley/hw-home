@@ -6,7 +6,7 @@ module.exports = async (req, res) => {
 	let num = Math.ceil(Math.random() * 1000000);
 	try {
 		let result = await new Promise((resolve, reject) => {
-				redis.set(body.mobile, num, 'EX', 60 * 10, (err, result) => {
+				redis.set(body.Mobile, num, 'EX', 60 * 10, (err, result) => {
 					if (err) {
 						reject(err);
 					} else {
@@ -14,7 +14,6 @@ module.exports = async (req, res) => {
 					}
 				});			
 			});
-			console.log(result);
 	} catch (e) {
 		res.json({
 			errorcode: 555,

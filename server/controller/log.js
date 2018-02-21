@@ -18,13 +18,13 @@ exports.logup = async (req, res) => {
 				msg: '用户名必须为6-16位字符'
 			});
 		}
-		if ((!body.mobile) || (body.mobile && body.mobile.length !== 11)) {
+		if ((!body.Mobile) || (body.Mobile && body.Mobile.length !== 11)) {
 			return res.json({
 				errorcode: 222,
 				msg: '手机号码必须为11位'
 			});
 		}
-		if ((!body.captcha) || (body.captcha && body.captcha.length !== 6)) {
+		if ((!body.Captcha) || (body.Captcha && body.Captcha.length !== 6)) {
 			return res.json({
 				errorcode: 222,
 				msg: '验证码必须为6位'
@@ -49,8 +49,8 @@ exports.logup = async (req, res) => {
 		}
 
 		let mcount = await new Promise((resolve, reject) => {
-			let sql = 'select mobile from `User` where `mobile`=?';
-			db.query(sql, [body.mobile], (err, user) => {
+			let sql = 'select Mobile from `User` where `Mobile`=?';
+			db.query(sql, [body.Mobile], (err, user) => {
 				if (err) {
 					reject(err);
 				} else {
@@ -66,8 +66,8 @@ exports.logup = async (req, res) => {
 			});
 		}
 
-		let captcha = await new Promise((resolve, reject) => {
-			redis.get(body.mobile, (err, result) => {
+		let Captcha = await new Promise((resolve, reject) => {
+			redis.get(body.Mobile, (err, result) => {
 				if (err) {
 					reject(err);
 				} else {
@@ -76,7 +76,7 @@ exports.logup = async (req, res) => {
 			});
 		});
 
-		if (body.captcha !== captcha) {
+		if (body.Captcha !== Captcha) {
 			return res.json({
 				errorcode: 222,
 				msg: '验证码错误'
@@ -95,8 +95,8 @@ exports.logup = async (req, res) => {
 		});
 		body.Password = hash;
 		let result = await new Promise((resolve, reject) => {
-			let sql = 'insert into `User` (`Username`, `Password`, `mobile`) values (?, ?, ?)';
-			db.query(sql, [body.Username, body.Password, body.mobile], (err, result) => {
+			let sql = 'insert into `User` (`Username`, `Password`, `Mobile`) values (?, ?, ?)';
+			db.query(sql, [body.Username, body.Password, body.Mobile], (err, result) => {
 				if (err) {
 					reject(err);
 				} else {
@@ -120,7 +120,7 @@ exports.logup = async (req, res) => {
 exports.login = async (req, res) => {
 	let body = req.body;
 	try {
-		if (!(body.Password || body.Username || body.email)) {
+		if (!(body.Mobile || body.Username || body.Email)) {
 			return res.json({
 				errorcode: 222,
 				msg: '帐号不能为空'
@@ -132,18 +132,26 @@ exports.login = async (req, res) => {
 				msg: '密码长度必须为6-16个字符'
 			});
 		}
-		// console.log(body.Username);
 		let hash = await new Promise((resolve, reject) => {
-			let sql = 'select `Password` from User where `Username`=? or `mobile`=? or `email`=?';
-			db.query(sql, [body.Username, body.mobile, body.email], (err, result) => {
+			let sql = 'select `Password` from User where `Username`=? or `Mobile`=? or `Email`=?';
+			db.query(sql, [body.Username, body.Mobile, body.Email], (err, result) => {
 				if (err) {
 					reject(err);
 				} else {
-					console.log("result", result);
-					resolve(result);
+					if (result.length) {
+						resolve(result[0].Password);
+					} else {
+						resolve(null);
+					}
 				}
 			});
 		});
+		if (!hash) {
+			return res.json({
+				errorcode: 222,
+				msg: '该户名不存在或密码错误'
+			});
+		}
 		let result = await new Promise((resolve, reject) => {
 			bcrypt.compare(body.Password, hash, function(err, result) {
 				if (err) {
@@ -153,7 +161,6 @@ exports.login = async (req, res) => {
 				} 
 			});
 		});
-		console.log(hash);
 		if (result) {
 			req.session.Username = body.Username;
 			return res.json({
@@ -173,4 +180,12 @@ exports.login = async (req, res) => {
 			msg: '服务器错误'
 		});
 	}
+};
+
+exports.logout = async (req, res) => {
+	req.session.Username = null;
+	res.json({
+		errorcode: 0,
+		msg: '退出成功'
+	});
 };

@@ -7,25 +7,14 @@ const db = mysql.createConnection({
 });
 db.connect();
 
-let table1 = 'create table if not exists `User` (`user_id` int unsigned auto_increment, `Username` text, `Password` varchar(100), `mobile` varchar(11), `email` varchar(15), `member` boolean default false, `avatar` varchar(20), primary key(`user_id`)) charset=utf8';
+let table1 = 'create table if not exists `User`(`user_id` int unsigned auto_increment, `Username` varchar(10), `Password` varchar(100), `Mobile` varchar(11), `Email` varchar(20), `Member` boolean default false, `Avatar` varchar(50), `Sex` varchar(5) default "none", `Website` varchar(50), `City` varchar(10), `Introduction` varchar(50) default "这家伙很懒，什么个性签名都没有留下", `Github` varchar(50), primary key(`user_id`)) charset=utf8';
 db.query(table1, (err, result) => {
 	if (err) return console.log(err);
-	console.log(result);
+});
+
+let table2 = 'create table if not exists `Fans`(`Star` varchar(10), `Follower` varchar(10))';
+db.query(table2, (err, result) => {
+	if (err) return console.log(err);
 });
 
 module.exports = db;
-// db.query('insert into User(Password, Username) values(?, ?)', ["覃永利", '16051223'], (err, result) => {
-// 	if (err) {
-// 		console.log(err);
-// 	} else {
-// 		console.log('success', result);
-// 	}
-// });
-
-
-
-
-// const mongoose = require('mongoose');
-// const config = require('../config');
-
-// mongoose.createConnection(`mongodb://${config.dbhost}:${config.dbport}`);
