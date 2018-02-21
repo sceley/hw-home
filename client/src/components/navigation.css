@@ -1,3 +1,7 @@
+/*.Navigation .action {
+	margin-right: 0px !important;
+}*/
+
 .pulse-warning {
 	color: #f8bb86;
 	font-family: 'Helvetica Neue, Helvetica, Arial, sans-serif';
@@ -10,4 +14,8 @@
 	margin: 20px auto 30px;
 	line-height: 80px;
 	-webkit-box-sizing: content-box;
+}
+
+.ant-menu-item .anticon, .ant-menu-submenu-title .anticon {
+	margin-right: 0px;
 }

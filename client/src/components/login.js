@@ -17,6 +17,7 @@ class NormalLoginForm extends Component {
 					headers: {
 						'Content-Type': 'application/json'
 					},
+					credentials: 'include',
 					body: JSON.stringify(values)
 				}).then(res => {
 					if (res.ok) {

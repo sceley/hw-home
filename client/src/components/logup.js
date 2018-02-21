@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import "./logup.css";
 import { Form, Input, Row, Col, Button, Icon } from 'antd';
 import Mnv from './mnav';
-import 'whatwg-fetch';
+// import 'whatwg-fetch';
 const FormItem = Form.Item;
 
 class NormalLogupForm extends Component {
@@ -74,6 +74,7 @@ class NormalLogupForm extends Component {
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                credentials: 'include',
                 body: JSON.stringify({
                     Username: value
                 })
@@ -104,7 +105,7 @@ class NormalLogupForm extends Component {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    mobile: value
+                    Mobile: value
                 })
             }).then(res => {
                 if (res.ok) {
@@ -127,9 +128,9 @@ class NormalLogupForm extends Component {
 
     getCaptcha = () => {
         const form = this.props.form;
-        let mobile = form.getFieldValue('mobile');
+        let Mobile = form.getFieldValue('Mobile');
         let body = {
-            mobile
+            Mobile
         };
         fetch('http://localhost:8080/getcaptcha', {
             method: 'POST',
@@ -149,11 +150,11 @@ class NormalLogupForm extends Component {
     checkCaptcha = (rule, value, callback) => {
         if (value && value.length === 6) {
             const form = this.props.form;
-            let mobile = form.getFieldValue('mobile');
-            let captcha = form.getFieldValue('captcha');
+            let Mobile = form.getFieldValue('Mobile');
+            let Captcha = form.getFieldValue('Captcha');
             let body = {
-                mobile,
-                captcha
+                Mobile,
+                Captcha
             };
             fetch('http://localhost:8080/checkcaptcha', {
                 method: 'POST',
@@ -228,7 +229,7 @@ class NormalLogupForm extends Component {
                     <FormItem
                         label="手机号"
                     >
-                        {getFieldDecorator('mobile', {
+                        {getFieldDecorator('Mobile', {
                             rules: [{
                                 required: true, message: '请输入你的手机号!'
                             }, {
@@ -243,7 +244,7 @@ class NormalLogupForm extends Component {
                     >
                         <Row gutter={8}>
                             <Col span={12}>
-                                {getFieldDecorator('captcha', {
+                                {getFieldDecorator('Captcha', {
                                     rules: [{
                                         required: true, message: '请输入验证码!',
                                     }, {

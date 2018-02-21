@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Menu, Input, Avatar, Modal, Button } from 'antd';
+import { Menu, Input, Avatar, Modal, Button, Badge } from 'antd';
 import logo from '../logo.svg';
 import './navigation.css';
 
@@ -9,8 +9,9 @@ const SubMenu = Menu.SubMenu;
 export default class Navigation extends Component {
 	state = {
 		current: 'home',
-		log: false,
-		visible: false
+		login: false,
+		visible: false,
+		user: ''
 	}
 
 	handleSearch = (e) => {
@@ -28,10 +29,44 @@ export default class Navigation extends Component {
 		});
 	}
 
+	handleLogout = () => {
+		fetch('http://localhost:8080/logout', {
+			method: 'GET',
+			credentials: 'include'
+		}).then(res => {
+			if (res.ok) {
+				return res.json();
+			}
+		}).then(json => {
+			if (json.errorcode === 0) {
+				this.handleCancel();
+				this.setState({
+					login: false
+				});
+			}
+		});
+
+	}
+
 	componentWillMount() {
 		let key = window.location.pathname.slice(1) || 'home';
 		this.setState({
 			current: key
+		});
+		fetch('http://localhost:8080/user', {
+			method: 'GET',
+			credentials: 'include'
+		}).then(res => {
+			if (res.ok) {
+				return res.json();
+			}
+		}).then(json => {
+			console.log(json);
+			if (json.errorcode === 0) {
+				this.setState({
+					login: true
+				});
+			}
 		});
 	}
 
@@ -78,8 +113,8 @@ export default class Navigation extends Component {
 							style={{ width: 200 }}
 						/>
 					</Menu.Item>
-					{this.state.log ?
-						<SubMenu title={<Avatar icon="user" />}>
+					{this.state.login ?
+						<SubMenu title={<span><Badge style={{marginRight: '10px'}} showZero={true} count={0} /><Avatar style={{ backgroundColor: '#87d068' }} size="large" icon="user" /></span>}>
 							<Menu.Item key="user">
 								<a href="/user">个人信息</a>
 							</Menu.Item>
@@ -111,7 +146,7 @@ export default class Navigation extends Component {
 					<div className="pulse-warning">!</div>
 					<h3>你确定要退出吗？</h3>
 					<div style={{ marginTop: '20px' }}>
-						<Button type="primary">退出</Button>
+						<Button onClick={this.handleLogout} type="primary">退出</Button>
 						<Button onClick={this.handleCancel} type="default" style={{ marginLeft: '10px' }}>取消</Button>
 					</div>
 				</Modal>

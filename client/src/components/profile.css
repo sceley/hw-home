@@ -39,3 +39,22 @@
 	display: inline-block;
 	padding: 0 5px;
 }
+
+.icon-list {
+	padding-left: 0;
+    list-style: none;
+    /*margin-left: -5px;*/
+    margin-bottom: 10px;
+}
+
+.icon-list li {
+	padding-left: 5px;
+    padding-right: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 2px 6px;
+    margin-left: 6px;
+    font-size: 1.2em;
+    color: #606060;
+    margin-top: 8px;
+}
