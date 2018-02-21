@@ -10,3 +10,9 @@ services:
             - '3306:3306'
         environment:
             MYSQL_ROOT_PASSWORD : 16051223
+    # redis: 
+    #     image: redis
+    #     volumes:
+    #         - '$PWD/redis/data:/data'
+    #     ports:
+    #         - '6379:6379'

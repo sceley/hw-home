@@ -6,23 +6,23 @@ const { TextArea } = Input;
 
 export default class Topic extends Component {
 
-	render () {
+	render() {
 		const data = [
-		  {
-		    title: 'Ant Design Title 1',
-		  },
-		  {
-		    title: 'Ant Design Title 2',
-		  },
-		  {
-		    title: 'Ant Design Title 3',
-		  },
-		  {
-		    title: 'Ant Design Title 4',
-		  },
+			{
+				title: 'Ant Design Title 1',
+			},
+			{
+				title: 'Ant Design Title 2',
+			},
+			{
+				title: 'Ant Design Title 3',
+			},
+			{
+				title: 'Ant Design Title 4',
+			},
 		];
 		return (
-			<div className="Topic" style={{marginTop: '20px'}}>
+			<div className="Topic" style={{ marginTop: '20px' }}>
 				<Layout>
 					<Content>
 						<Card title={
@@ -38,24 +38,24 @@ export default class Topic extends Component {
 								</p>
 							</div>
 						}>
-						    <p>Card content</p>
-						    <p>Card content</p>
-						    <p>Card content</p>
+							<p>Card content</p>
+							<p>Card content</p>
+							<p>Card content</p>
 						</Card>
 						<List
-						    itemLayout="horizontal"
-						    dataSource={data}
-						    renderItem={item => (
-						      <List.Item  actions={[<Icon type="like-o" />, <Icon type="enter" />]}>
-						        <List.Item.Meta
-						          avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-						          title={<a href="https://ant.design">{item.title}</a>}
-						          description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-						        />
-						      </List.Item>
-						    )}
+							itemLayout="horizontal"
+							dataSource={data}
+							renderItem={item => (
+								<List.Item actions={[<Icon type="like-o" />, <Icon type="enter" />]}>
+									<List.Item.Meta
+										avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+										title={<a href="https://ant.design">{item.title}</a>}
+										description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+									/>
+								</List.Item>
+							)}
 						/>
-						<div style={{marginTop: '20px'}}>
+						<div style={{ marginTop: '20px' }}>
 							<TextArea rows={4} />
 
 						</div>

@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router';
-
+import { Row, Col, Menu, Icon, Layout } from 'antd';
 import Info from './info';
 import Avatar from './avatar';
 import Notify from './notify';
 import Epassword from './epassword';
-
-import { Row, Col, Menu, Icon, Layout } from 'antd';
 
 const { Sider, Content } = Layout;
 
@@ -15,7 +13,7 @@ export default class Edit extends Component {
 		key: 'info'
 	}
 
-	componentDidMount () {
+	componentDidMount() {
 		let arr = window.location.pathname.split('/');
 		let key = arr[3] || 'info';
 		this.setState({
@@ -23,9 +21,9 @@ export default class Edit extends Component {
 		});
 	}
 
-	render () {
+	render() {
 		return (
-			<div className="Edit" style={{marginTop: '20px'}}>
+			<div className="Edit" style={{ marginTop: '20px' }}>
 				<Layout>
 					<Sider>
 						<Menu
@@ -52,16 +50,16 @@ export default class Edit extends Component {
 							</Menu.Item>
 							<Menu.Item key="password">
 								<a href="/user/edit/password">
-									<Icon type="lock"/>修改密码
+									<Icon type="lock" />修改密码
 								</a>
 							</Menu.Item>
 						</Menu>
 					</Sider>
 					<Content>
-						<Route exact path={`${this.props.match.url}`} component={Info}/>
-						<Route exact path={`${this.props.match.url}/avatar`} component={Avatar}/>
-						<Route exact path={`${this.props.match.url}/notify`} component={Notify}/>
-						<Route exact path={`${this.props.match.url}/password`} component={Epassword}/>
+						<Route exact path={`${this.props.match.url}`} component={Info} />
+						<Route exact path={`${this.props.match.url}/avatar`} component={Avatar} />
+						<Route exact path={`${this.props.match.url}/notify`} component={Notify} />
+						<Route exact path={`${this.props.match.url}/password`} component={Epassword} />
 					</Content>
 				</Layout>
 			</div>

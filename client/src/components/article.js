@@ -17,7 +17,7 @@ export default class Article extends Component {
 		console.log(value);
 	}
 
-	componentDidMount () {
+	componentDidMount() {
 		console.log(this.refs.codeditor);
 		this.editor = CodeMirror.fromTextArea(this.refs.codeditor, {
 			lineNumbers: true,
@@ -25,33 +25,33 @@ export default class Article extends Component {
 			keyMap: 'vim',
 			theme: 'shadowfox',
 			extraKeys: {
-			    "F11": function(cm) {
-			      cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-			    },
-			    "Esc": function(cm) {
-			      if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
-			    }
+				"F11": function (cm) {
+					cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+				},
+				"Esc": function (cm) {
+					if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+				}
 			}
 		});
 	}
 
-	render () {
+	render() {
 		const data = [
-		  {
-		    title: 'Ant Design Title 1',
-		  },
-		  {
-		    title: 'Ant Design Title 2',
-		  },
-		  {
-		    title: 'Ant Design Title 3',
-		  },
-		  {
-		    title: 'Ant Design Title 4',
-		  },
+			{
+				title: 'Ant Design Title 1',
+			},
+			{
+				title: 'Ant Design Title 2',
+			},
+			{
+				title: 'Ant Design Title 3',
+			},
+			{
+				title: 'Ant Design Title 4',
+			},
 		];
 		return (
-			<div className="Article" style={{marginTop: '20px'}}>
+			<div className="Article" style={{ marginTop: '20px' }}>
 				<Layout>
 					<Content>
 						<h1>HTTPS安全协议</h1>
@@ -63,20 +63,20 @@ export default class Article extends Component {
 						大前端
 
 						<List
-						    itemLayout="horizontal"
-						    dataSource={data}
-						    style={{marginTop: '20px', background: 'white'}}
-						    renderItem={item => (
-						      <List.Item  actions={[<Icon type="like-o" />, <Icon type="enter" />]}>
-						        <List.Item.Meta
-						          avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-						          title={<a href="https://ant.design">{item.title}</a>}
-						          description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-						        />
-						      </List.Item>
-						    )}
+							itemLayout="horizontal"
+							dataSource={data}
+							style={{ marginTop: '20px', background: 'white' }}
+							renderItem={item => (
+								<List.Item actions={[<Icon type="like-o" />, <Icon type="enter" />]}>
+									<List.Item.Meta
+										avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+										title={<a href="https://ant.design">{item.title}</a>}
+										description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+									/>
+								</List.Item>
+							)}
 						/>
-						<textarea style={{background: "white"}} ref="codeditor"></textarea>
+						<textarea style={{ background: "white" }} ref="codeditor"></textarea>
 						<Button type="primary" onClick={this.handleSubmit}>评论</Button>
 					</Content>
 					<Sider width={300}>

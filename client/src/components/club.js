@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Mnav from './mnav';
 import { List, Avatar, Button, Layout, Tabs } from 'antd';
+import Mnav from './mnav';
 import Profile from './profile1';
 import './club.css';
 
@@ -8,40 +8,15 @@ const { Sider, Content } = Layout;
 const TabPane = Tabs.TabPane;
 
 export default class Club extends Component {
-	state = {
-		clubnav: 'all'
-	}
 
-	componentWillMount () {
+	componentWillMount() {
 	}
 
 	handleNav = (e) => {
 		console.log(e);
 	}
 
-	render () {
-		let clubnav;
-		if (this.state.clubnav === 'all')
-			clubnav = 
-				<ul onClick={this.handleNav} className="club-nav">
-					<li className="club-nav-item nav-active">
-						<a href="">全部</a>
-					</li>
-					<li className="club-nav-item">
-						<a href="">精品</a>
-					</li>
-				</ul>;
-		else
-			clubnav = 
-				<ul onClick={this.handleNav} className="club-nav">
-					<li className="club-nav-item">
-						<a href="/?tab=all">全部</a>
-					</li>
-					<li className="club-nav-item nav-active">
-						<a href="/?tab=good">精品</a>
-					</li>
-				</ul>;
-			
+	render() {
 		let data = [{
 			name: 'sceley'
 		}, {
@@ -51,39 +26,39 @@ export default class Club extends Component {
 		}];
 		return (
 			<div className="Club">
-				<Mnav name="技术论坛"/>
-				<Layout style={{marginTop: '20px'}}>
+				<Mnav name="技术论坛" />
+				<Layout style={{ marginTop: '20px' }}>
 					<Content>
-						<div style={{paddingRight: '10px'}}>
+						<div style={{ paddingRight: '10px' }}>
 							<Tabs>
 								<TabPane tab="全部" key="all">
 									<List
-										style={{background: 'white'}}
-								        itemLayout="horizontal"
-								        dataSource={data}
-								        renderItem={item => (
+										style={{ background: 'white' }}
+										itemLayout="horizontal"
+										dataSource={data}
+										renderItem={item => (
 											<List.Item actions={[<span>more</span>]}>
 												<List.Item.Meta
-												avatar={<a href=""><Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" /></a>}
-												title={<a href="https://ant.design">{item.name}</a>}
+													avatar={<a href=""><Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" /></a>}
+													title={<a href="https://ant.design">{item.name}</a>}
 												/>
 											</List.Item>
-								        )}
+										)}
 									/>
 								</TabPane>
 								<TabPane tab="精品" key="good">
 									<List
-										style={{background: 'white'}}
-								        itemLayout="horizontal"
-								        dataSource={data}
-								        renderItem={item => (
+										style={{ background: 'white' }}
+										itemLayout="horizontal"
+										dataSource={data}
+										renderItem={item => (
 											<List.Item actions={[<span>more</span>]}>
 												<List.Item.Meta
-												avatar={<a href=""><Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" /></a>}
-												title={<a href="https://ant.design">{item.name}</a>}
+													avatar={<a href=""><Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" /></a>}
+													title={<a href="https://ant.design">{item.name}</a>}
 												/>
 											</List.Item>
-								        )}
+										)}
 									/>
 								</TabPane>
 							</Tabs>
@@ -103,6 +78,6 @@ export default class Club extends Component {
 					</Sider>
 				</Layout>
 			</div>
-			);
+		);
 	}
 }

@@ -6,8 +6,8 @@ import './mnav.css';
 export default (props) => (
 	<div className="Mnav">
 		<Breadcrumb>
-		    <Breadcrumb.Item><a href="/">首页</a></Breadcrumb.Item>
-		    <Breadcrumb.Item>{props.name}</Breadcrumb.Item>
+			<Breadcrumb.Item><a href="/">首页</a></Breadcrumb.Item>
+			<Breadcrumb.Item>{props.name}</Breadcrumb.Item>
 		</Breadcrumb>
 	</div>
 )

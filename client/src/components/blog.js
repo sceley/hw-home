@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
+import { List, Avatar, Icon, Button, Col, Row, Layout } from 'antd';
 import Profile from './profile1';
 import Mnav from './mnav';
-
-import { List, Avatar, Icon, Button, Col, Row, Layout } from 'antd';
 
 const { Sider, Content } = Layout;
 
 export default class Blog extends Component {
-	
+
 	state = {
 		pageSize: 10,
 		current: 1,
@@ -18,9 +17,9 @@ export default class Blog extends Component {
 			});
 		},
 	}
-	
 
-	render () {
+
+	render() {
 		const IconText = ({ type, text }) => (
 			<span>
 				<Icon type={type} style={{ marginRight: 8 }} />
@@ -31,27 +30,27 @@ export default class Blog extends Component {
 		];
 		for (let i = 1; i <= 2; i++) {
 			listData.push({
-			    href: 'http://ant.design',
-			    title: `大前端`,
-			    avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-			    content: 'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+				href: 'http://ant.design',
+				title: `大前端`,
+				avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+				content: 'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
 			});
 		}
 
 		return (
-				<div className="Blog">
-					<Mnav name="技术博客" />
-					<Layout style={{marginTop: '20px'}}>
-						<Content>
-							<div style={{paddingRight: '10px'}}>
+			<div className="Blog">
+				<Mnav name="技术博客" />
+				<Layout style={{ marginTop: '20px' }}>
+					<Content>
+						<div style={{ paddingRight: '10px' }}>
 							<List
-							    size="large"
-							    pagination={this.state}
-							    dataSource={listData}
-							    itemLayout="vertical"
-							    bordered
-							    style={{ background: 'white'}}
-							    renderItem={item => (
+								size="large"
+								pagination={this.state}
+								dataSource={listData}
+								itemLayout="vertical"
+								bordered
+								style={{ background: 'white' }}
+								renderItem={item => (
 									<List.Item
 										key={item.title}
 										actions={[<IconText type="eye-o" text="156" />, <IconText type="like-o" text="156" />, <IconText type="message" text="2" />]}
@@ -64,11 +63,11 @@ export default class Blog extends Component {
 												<ul className="ant-list-item-action">
 													<li>
 														<IconText type="calendar" text="2018-12-28" />
-														<em className="ant-list-item-action-split"/>
+														<em className="ant-list-item-action-split" />
 													</li>
 													<li>
 														<IconText type="folder" text="Web" />
-														<em className="ant-list-item-action-split"/>
+														<em className="ant-list-item-action-split" />
 													</li>
 													<li>
 														<IconText type="user" text="张三" />
@@ -77,28 +76,28 @@ export default class Blog extends Component {
 											}
 										/>
 										{item.content}
-										<div style={{marginTop: '20px', textAlign: 'center'}}>
+										<div style={{ marginTop: '20px', textAlign: 'center' }}>
 											<a href=""><Button>README MORE</Button></a>
 										</div>
 									</List.Item>
 								)}
 							/>
-							</div>
-						</Content>
-						<Sider width={300}>
-							<div className="user-basic-info">
-								<Profile />
-								<div>
-									<a href="/article/create">
-										<Button type="primary">
-											发布文章
+						</div>
+					</Content>
+					<Sider width={300}>
+						<div className="user-basic-info">
+							<Profile />
+							<div>
+								<a href="/article/create">
+									<Button type="primary">
+										发布文章
 										</Button>
-									</a>
-								</div>
+								</a>
 							</div>
-						</Sider>
-					</Layout>
-				</div>
-			);
+						</div>
+					</Sider>
+				</Layout>
+			</div>
+		);
 	}
 }
