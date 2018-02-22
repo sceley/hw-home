@@ -48,9 +48,9 @@ class App extends Component {
                                 <Route exact path="/topic/create" component={CreateTopic} />
                                 <Route exact path="/article/create" component={CreateArticle} />
                                 <Route exact path="/user" component={User} />
-                                <Route exact path="/user/edit" component={EditNav} />
                                 <Route exact path="/topic" component={Topic} />
                                 <Route exact path="/article" component={Article} />
+                                <Route path="/user/edit" component={EditNav} />
                             </section>
                         </Router>
                     </Col>

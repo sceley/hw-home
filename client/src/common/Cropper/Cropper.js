@@ -2,20 +2,56 @@ import React, { Component } from 'react';
 import 'cropperjs/dist/cropper.min.css';
 import _Cropper from 'cropperjs';
 
+const optionProps = [
+  'dragMode',
+  'aspectRatio',
+  'data',
+  'crop',
+  // unchangeable props start from here
+  'viewMode',
+  'preview',
+  'responsive',
+  'restore',
+  'checkCrossOrigin',
+  'checkOrientation',
+  'modal',
+  'guides',
+  'center',
+  'highlight',
+  'background',
+  'autoCrop',
+  'autoCropArea',
+  'movable',
+  'rotatable',
+  'scalable',
+  'zoomable',
+  'zoomOnTouch',
+  'zoomOnWheel',
+  'wheelZoomRation',
+  'cropBoxMovable',
+  'cropBoxResizable',
+  'toggleDragModeOnDblclick',
+  'minContainerWidth',
+  'minContainerHeight',
+  'minCanvasWidth',
+  'minCanvasHeight',
+  'minCropBoxWidth',
+  'minCropBoxHeight',
+  'ready',
+  'cropstart',
+  'cropmove',
+  'cropend',
+  'zoom',
+];
 export default class Cropper extends Component {
 	componentDidMount = () => {
-		let cropper = new _Cropper(this.refs.image, {
-			aspectRatio: 16 / 9,
-			crop: function(e) {
-				console.log(e.detail.x);
-				console.log(e.detail.y);
-				console.log(e.detail.width);
-				console.log(e.detail.height);
-				console.log(e.detail.rotate);
-				console.log(e.detail.scaleX);
-				console.log(e.detail.scaleY);
-			}
-		});
+		const options = Object.keys(this.props)
+		.filter(propKey => optionProps.indexOf(propKey) !== -1)
+		.reduce((prevOptions, propKey) =>
+			Object.assign({}, prevOptions, { [propKey]: this.props[propKey] })
+			, {});
+		let cropper = new _Cropper(this.refs.image, options);
+		this.props.cropper = cropper;
 	}
 	render () {
 		return (

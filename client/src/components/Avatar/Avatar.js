@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Card, Icon, Upload, Modal, Button } from 'antd';
-import Cropper from 'react-cropper';
+import Cropper from 'cropperjs';
+import ParseImage from '../../common/ParseImage';
 
 export default class Avatar extends Component {
 	state = {
@@ -42,17 +43,10 @@ export default class Avatar extends Component {
 	}
 
 	handleUpload = () => {
+		let canvas = this.refs.cropper.getCroppedCanvas();
+		let blob = ParseImage(canvas);
 		let body = new FormData();
-		let url = this.refs.cropper.getCroppedCanvas().toDataURL().split(',');
-		let data = url[1];
-		let type = url[0];
-		let byteString = atob(data);
-		let mimeString = type.split(',')[0].split(':')[1].split(';')[0]; 
-		let ia = new Uint8Array(byteString.length);
-		for (let i = 0; i < byteString.length; i++) {  
-		    ia[i] = byteString.charCodeAt(i);  
-		}
-		body.append('avatar', new Blob([ia], {type: mimeString}));
+		body.append('avatar', blob);
 		fetch('http://localhost:8080/user/uploadavatar', {
 			method: 'POST',
 			credentials: 'include',
@@ -65,12 +59,6 @@ export default class Avatar extends Component {
 			console.log(json);
 		});
 	}
-
-	crop = () => 　{
-
-		// console.log();
-	}
-
 	render() {
 		const uploadButton = (
 			<div>
@@ -109,7 +97,6 @@ export default class Avatar extends Component {
 								style={{ height: 350, width: 350 }}
 								aspectRatio={1 / 1}
 								guides={false}
-								crop={this.crop}
 								cropBoxResizable={false}
 								minCropBoxWidth={350}
 								minCropBoxHeight={350}
