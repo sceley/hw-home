@@ -50,13 +50,15 @@ export default class Cropper extends Component {
 		.reduce((prevOptions, propKey) =>
 			Object.assign({}, prevOptions, { [propKey]: this.props[propKey] })
 			, {});
-		let cropper = new _Cropper(this.refs.image, options);
-		this.props.cropper = cropper;
+		this.cropper = new _Cropper(this.refs.image, options);
+	}
+	getCroppedCanvas = () => {
+		return this.cropper.getCroppedCanvas();
 	}
 	render () {
 		return (
 			<div className="Cropper">
-				<img ref="image" src="https://avatars2.githubusercontent.com/u/23139022?s=460&v=4" alt="avatar"/>
+				<img ref="image" src={this.props.url} alt="avatar"/>
 			</div>
 		);
 	}

@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { Row, Col, Card, Icon, Upload, Modal, Button } from 'antd';
-import Cropper from 'cropperjs';
+import Cropper from '../../common/Cropper/Cropper';
 import ParseImage from '../../common/ParseImage';
 
 export default class Avatar extends Component {
 	state = {
-		imageUrl: '',
+		url: '',
 		visible: false
 	}
 
-	handleSubmit = () => {
-
+	handleSubmit = (e) => {
+		console.log(e);
 	}
 
 	beforeUpload = () => {
@@ -29,17 +29,18 @@ export default class Avatar extends Component {
 		});
 	}
 
-	handleChange = (e) => {
+	handleRequest = (e) => {
+		console.log(e.file);
+		let fs = new FileReader();
+		fs.readAsDataURL(e.file);
+		fs.onload = () => {
+			this.setState({
+				url: fs.result
+			});
+		}
 		this.setState({
 			visible: true
 		});
-		let fs = new FileReader();
-		fs.readAsDataURL(e.file.originFileObj);
-		fs.onload = () => {
-			this.setState({
-				imageUrl: fs.result
-			});
-		}
 	}
 
 	handleUpload = () => {
@@ -77,11 +78,9 @@ export default class Avatar extends Component {
 							listType="picture-card"
 							className="avatar-uploader"
 							showUploadList={false}
-							customRequest={this.handleSubmit}
-							beforeUpload={this.beforeUpload}
-							onChange={this.handleChange}
+							customRequest={this.handleRequest}
 						>
-							{this.state.imageUrl ? <img src={this.state.imageUrl} alt="" /> : uploadButton}
+							{this.state.url ? <img src={this.state.url} alt="" /> : uploadButton}
 						</Upload>
 						<Modal
 							width={400}
@@ -93,7 +92,7 @@ export default class Avatar extends Component {
 						>
 							<Cropper
 								ref='cropper'
-								src={this.state.imageUrl}
+								url={this.state.url}
 								style={{ height: 350, width: 350 }}
 								aspectRatio={1 / 1}
 								guides={false}

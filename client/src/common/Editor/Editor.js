@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Upload, Button, Icon, Modal } from "antd";
 import CodeMirror from 'codemirror';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/markdown/markdown.js';

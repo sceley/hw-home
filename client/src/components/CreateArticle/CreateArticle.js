@@ -27,7 +27,7 @@ export default class CreateArticle extends Component {
 		console.log(e);
 	}
 
-	handleImgSubmit = (e) => {
+	handleSubmitImg = (e) => {
 		console.log(e);
 	}
 
