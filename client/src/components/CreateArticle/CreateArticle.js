@@ -10,7 +10,8 @@ const Option = Select.Option;
 export default class CreateArticle extends Component {
 
 	state = {
-		visible: false
+		visible: false,
+		url: ''
 	}
 
 	handleCancel = () => {
@@ -24,14 +25,13 @@ export default class CreateArticle extends Component {
 	}
 
 	handleChange = (e) => {
-		console.log(e);
-	}
-
-	handleSubmitImg = (e) => {
-		console.log(e);
-	}
-
-	showModal = () => {
+		let fs = new FileReader();
+		fs.readAsDataURL(e.file);
+		fs.onload = () => {
+			this.setState({
+				url: fs.result
+			});
+		}
 		this.setState({
 			visible: true
 		});
@@ -63,22 +63,31 @@ export default class CreateArticle extends Component {
 						<div className="list-item">
 							<div style={{marginBottom: '5px'}}>封面: </div>
 							<Upload
-								customRequest={this.handleImgSubmit}
+								customRequest={this.handleChange}
 								accept="image"
 								showUploadList={false}
-								onChange={this.showModal}
 							>
 								<Button>
 									<Icon type="upload" /> 上传封面
 								</Button>
 							</Upload>
 							<Modal
-								title="Basic Modal"
+								title="上传封面"
 								visible={this.state.visible}
 								onCancel={this.handleCancel}
-								footer={null}
+								footer={
+									<div style={{textAlign: 'center'}}>
+										<Button type="primary">上传封面</Button>
+									</div>
+								}
 							>
-								<Cropper />
+								<Cropper
+									url={this.state.url}
+									aspectRatio={8 / 3}
+									cropBoxResizable={false}
+									minCropBoxWidth={472}
+									zoomable={false}
+								/>
 							</Modal>
 			            </div>
 						<div className="list-item">

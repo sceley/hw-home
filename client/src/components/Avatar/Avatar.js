@@ -9,27 +9,13 @@ export default class Avatar extends Component {
 		visible: false
 	}
 
-	handleSubmit = (e) => {
-		console.log(e);
-	}
-
-	beforeUpload = () => {
-
-	}
-
-	handleOk = (e) => {
-		this.setState({
-			visible: false,
-		});
-	}
-
 	handleCancel = (e) => {
 		this.setState({
 			visible: false,
 		});
 	}
 
-	handleRequest = (e) => {
+	handleChange = (e) => {
 		console.log(e.file);
 		let fs = new FileReader();
 		fs.readAsDataURL(e.file);
@@ -67,7 +53,6 @@ export default class Avatar extends Component {
 				<div className="ant-upload-text">Upload</div>
 			</div>
 		);
-
 		return (
 			<div className="Avatar">
 				<Card title={<span><Icon type="picture" 　/>请选择图片</span>}>
@@ -78,7 +63,7 @@ export default class Avatar extends Component {
 							listType="picture-card"
 							className="avatar-uploader"
 							showUploadList={false}
-							customRequest={this.handleRequest}
+							customRequest={this.handleChange}
 						>
 							{this.state.url ? <img src={this.state.url} alt="" /> : uploadButton}
 						</Upload>
@@ -87,8 +72,11 @@ export default class Avatar extends Component {
 							title="上传头像"
 							visible={this.state.visible}
 							onCancel={this.handleCancel}
-							onOk={this.handleOk}
-							footer={<Button onClick={this.handleUpload} type="primary">上传图像</Button>}
+							footer={
+								<div style={{textAlign: 'center'}}>
+									<Button onClick={this.handleUpload} type="primary">上传图像</Button>
+								</div>
+							}
 						>
 							<Cropper
 								ref='cropper'

@@ -55,6 +55,11 @@ export default class Cropper extends Component {
 	getCroppedCanvas = () => {
 		return this.cropper.getCroppedCanvas();
 	}
+    componentWillReceiveProps = (nextProps) => {
+        if (nextProps.url !== this.props.url) {
+          this.cropper.reset().clear().replace(nextProps.url);
+        }
+    }
 	render () {
 		return (
 			<div className="Cropper">
