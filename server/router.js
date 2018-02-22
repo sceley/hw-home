@@ -1,6 +1,7 @@
 //package
 const Router = require('express').Router;
 const bodyparser = require('body-parser');
+const multer = require('multer');
 
 //middleware
 const authLogin = require('./middleware/auth').authLogin;
@@ -15,6 +16,8 @@ const checkUsername = require('./controller/checkout').checkUsername;
 const checkCaptcha = require('./controller/checkout').checkCaptcha;
 const checkEmail = require('./controller/checkout').checkEmail;
 const getUser = require('./controller/user').getUser;
+const editUser = require('./controller/user').editUser;
+const uploadAvatar = require('./controller/user').uploadAvatar;
 
 let router = Router();
 
@@ -30,5 +33,7 @@ router.post('/checkusername', checkUsername);
 router.post('/checkmobile', checkMobile);
 router.post('/checkcaptcha', checkCaptcha);
 router.post('/checkemail', checkEmail);
+router.post('/user/edit', editUser);
+router.post('/user/uploadavatar', multer().single('avatar'), authLogin, uploadAvatar);
 
 module.exports = router;

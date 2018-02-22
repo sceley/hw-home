@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-import Home from './components/home';
-import Login from './components/login';
-import Logup from './components/logup';
-import Navigation from './components/navigation';
-import Member from './components/member';
-import Blog from './components/blog';
-import TopicCreate from './components/topic-create';
-import Community from './components/community';
-import Departments from './components/departments';
-import Club from './components/club';
-import Resource from './components/resource';
-import Event from './components/event';
-import ArticleCreate from './components/article-create';
-import User from './components/user';
-import Edit from './components/edit';
-import Topic from './components/topic';
-import Article from './components/article';
+import Home from './components/Home/Home';
+import Login from './components/Login/Login';
+import Logup from './components/Logup/Logup';
+import Nav from './components/Nav/Nav';
+import Member from './components/Member/Member';
+import Blog from './components/Blog/Blog';
+import CreateTopic from './components/CreateTopic/CreateTopic';
+import Community from './components/Community/Community';
+import Department from './components/Department/Department';
+import Club from './components/Club/Club';
+import Resource from './components/Resource/Resource';
+import Event from './components/Event/Event';
+import CreateArticle from './components/CreateArticle/CreateArticle';
+import User from './components/User/User';
+import EditNav from './components/EditNav/EditNav';
+import Topic from './components/Topic/Topic';
+import Article from './components/Article/Article';
 import './App.css';
 import { Row, Col } from 'antd';
 
@@ -28,7 +28,7 @@ class App extends Component {
             <div className="App">
                 <Row className="nav" type="flex" justify="center">
                     <Col xs={24} sm={23} md={22} lg={21} xl={20}>
-                        <Navigation />
+                        <Nav />
                     </Col>
                 </Row>
                 <Row type="flex" justify="center">
@@ -41,16 +41,16 @@ class App extends Component {
                                 <Route exact path="/member" component={Member} />
                                 <Route exact path="/blog" component={Blog} />
                                 <Route exact path="/community" component={Community} />
-                                <Route exact path="/departments" component={Departments} />
+                                <Route exact path="/department" component={Department} />
                                 <Route exact path="/resource" component={Resource} />
                                 <Route exact path="/club" component={Club} />
                                 <Route exact path="/event" component={Event} />
-                                <Route exact path="/topic/create" component={TopicCreate} />
-                                <Route exact path="/article/create" component={ArticleCreate} />
+                                <Route exact path="/topic/create" component={CreateTopic} />
+                                <Route exact path="/article/create" component={CreateArticle} />
                                 <Route exact path="/user" component={User} />
-                                <Route path="/user/edit" component={Edit} />
-                                <Route path="/topic" component={Topic} />
-                                <Route path="/article" component={Article} />
+                                <Route exact path="/user/edit" component={EditNav} />
+                                <Route exact path="/topic" component={Topic} />
+                                <Route exact path="/article" component={Article} />
                             </section>
                         </Router>
                     </Col>

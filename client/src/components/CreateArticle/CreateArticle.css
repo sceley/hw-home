@@ -1,0 +1,10 @@
+.ant-upload-list-picture-card .ant-upload-list-item {
+	float: left;
+	width: 500px;
+	height: 200px;
+	margin-right: 8px;
+}
+
+.CreateArticle .list .list-item {
+	margin-top: 20px;
+}

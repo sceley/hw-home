@@ -101,12 +101,16 @@ exports.checkEmail = async (req, res) => {
 	let body = req.body;
 	let sql = 'select Email from User where Email=?';
 	try {
-		let result = await new Promise((resolve, reject) => {
+		let _Email = await new Promise((resolve, reject) => {
 			db.query(sql, [body.Email], (err, result) => {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(result);
+					if (result.length) {
+						resolve(result[0].Email);
+					} else {
+						resolve(null);
+					}
 				}
 			});
 		});
@@ -118,20 +122,24 @@ exports.checkEmail = async (req, res) => {
 					if (err) {
 						reject(err);
 					} else {
-						resolve(result[0]);
+						if (result.length) {
+							resolve(result[0].Email);
+						} else {
+							resolve(null);
+						}
 					}
 				});
 			});
 		}
-		if (result.length === 0 || (Email && Email === body.Email)) {
-			res.json({
-				errorcode: 0,
-				msg: '该Email还没被注册'
-			});
-		} else {
+		if (_Email && _Email !== Email) {
 			res.json({
 				errorcode: 111,
 				msg: '该Email已经被注册'
+			});
+		} else {
+			res.json({
+				errorcode: 0,
+				msg: '该Email还没被注册'
 			});
 		}
 	} catch (e) {

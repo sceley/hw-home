@@ -13,7 +13,7 @@ app.use(session({
     secret: 'hw-club',
     key: 'community',
     cookie: {
-    	maxAge: 1000 * 60 * 20
+    	maxAge: 1000 * 60 * 20 * 100
     },
     store: new RedisStore({
     	client: redis
