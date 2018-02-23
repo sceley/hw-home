@@ -8,3 +8,8 @@
 .CreateArticle .list .list-item {
 	margin-top: 20px;
 }
+
+.CreateArticle .poster {
+	border: 1px solid #ddd;
+	border-radius: 5px;
+}

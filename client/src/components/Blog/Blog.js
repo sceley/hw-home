@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { List, Avatar, Icon, Button, Col, Row, Layout } from 'antd';
 import Profile from '../../common/Profile/Profile';
 import BreadCrumb from '../../common/BreadCrumb/BreadCrumb';
+import md from '../../common/Markdown';
 
 const { Sider, Content } = Layout;
 
@@ -11,13 +12,30 @@ export default class Blog extends Component {
 		pageSize: 10,
 		current: 1,
 		total: 20,
-		onChange: (e) => {
-			this.setState({
-				current: e
-			});
-		},
+		articles: ''
 	}
 
+	componentDidMount = () => {
+		fetch('http://localhost:8080/articles')
+		.then(res => {
+			if (res.ok) {
+				return res.json();
+			}
+		}).then(json => {
+			console.log(json);
+			if (json.errorcode === 0) {
+				this.setState({
+					articles: json.articles
+				});
+			}
+		});
+	}
+
+	// onChange = (e) => {
+	// 	this.setState({
+	// 		current: e
+	// 	});
+	// },
 
 	render() {
 		const IconText = ({ type, text }) => (
@@ -26,39 +44,26 @@ export default class Blog extends Component {
 				{text}
 			</span>
 		);
-		let listData = [
-		];
-		for (let i = 1; i <= 2; i++) {
-			listData.push({
-				href: 'http://ant.design',
-				title: `大前端`,
-				avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-				content: 'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-			});
-		}
-
 		return (
 			<div className="Blog">
 				<BreadCrumb name="技术博客" />
-				<Layout style={{ marginTop: '20px' }}>
-					<Content>
-						<div style={{ paddingRight: '10px' }}>
+				<Row gutter={16} style={{ marginTop: '20px' }}>
+					<Col span={18}>
 							<List
 								size="large"
-								pagination={this.state}
-								dataSource={listData}
+								dataSource={this.state.articles}
 								itemLayout="vertical"
 								bordered
 								style={{ background: 'white' }}
-								renderItem={item => (
+								renderItem={article => (
 									<List.Item
-										key={item.title}
+										key={article.Title}
 										actions={[<IconText type="eye-o" text="156" />, <IconText type="like-o" text="156" />, <IconText type="message" text="2" />]}
-										extra={<img width={272} alt="logo" src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png" />}
+										extra={<img width={272} alt="logo" src={article.Poster} />}
 									>
 										<List.Item.Meta
-											avatar={<Avatar src={item.avatar} />}
-											title={item.title}
+											avatar={<Avatar src={article.Poster} />}
+											title={article.Title}
 											description={
 												<ul className="ant-list-item-action">
 													<li>
@@ -75,16 +80,18 @@ export default class Blog extends Component {
 												</ul>
 											}
 										/>
-										{item.content}
+										<div dangerouslySetInnerHTML={{
+											__html: md(article.Body.slice(0, 50))
+										}}>
+										</div>
 										<div style={{ marginTop: '20px', textAlign: 'center' }}>
-											<a href=""><Button>README MORE</Button></a>
+											<a href={`/article/${article.blog_id}`}><Button>README MORE</Button></a>
 										</div>
 									</List.Item>
 								)}
 							/>
-						</div>
-					</Content>
-					<Sider width={300}>
+					</Col>
+					<Col span={6}>
 						<div className="user-basic-info">
 							<Profile />
 							<div>
@@ -95,8 +102,8 @@ export default class Blog extends Component {
 								</a>
 							</div>
 						</div>
-					</Sider>
-				</Layout>
+					</Col>
+				</Row>
 			</div>
 		);
 	}

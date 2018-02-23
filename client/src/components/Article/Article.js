@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import { Layout, Icon, List, Avatar, Button } from 'antd';
+import md from '../../common/Markdown';
 
 const { Content, Sider } = Layout;
 
 export default class Article extends Component {
+
+	state = {
+		article: ''
+	}
 
 	handleSubmit = () => {
 		let value = this.editor.getValue();
@@ -11,23 +16,29 @@ export default class Article extends Component {
 	}
 
 	componentDidMount() {
-		
+		let id = this.props.match.params.id;
+		fetch(`http://localhost:8080/article/${id}`)
+		.then(res => {
+			if (res.ok) {
+				return res.json();
+			}
+		}).then(json => {
+			if (json.errorcode === 0) {
+				json.article.Body = md(json.article.Body);
+				console.log(json);
+				this.setState({
+					article: json.article
+				});
+			}
+		});
+		console.log();
 	}
 
 	render() {
 		const data = [
 			{
 				title: 'Ant Design Title 1',
-			},
-			{
-				title: 'Ant Design Title 2',
-			},
-			{
-				title: 'Ant Design Title 3',
-			},
-			{
-				title: 'Ant Design Title 4',
-			},
+			}
 		];
 		return (
 			<div className="Article" style={{ marginTop: '20px' }}>
@@ -40,7 +51,9 @@ export default class Article extends Component {
 						<span>sceley</span>
 						<Icon type="folder" />
 						大前端
-
+						<div dangerouslySetInnerHTML={{
+							__html: this.state.article.Body
+						}}></div>
 						<List
 							itemLayout="horizontal"
 							dataSource={data}

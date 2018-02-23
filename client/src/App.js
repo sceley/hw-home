@@ -46,10 +46,10 @@ class App extends Component {
                                 <Route exact path="/club" component={Club} />
                                 <Route exact path="/event" component={Event} />
                                 <Route exact path="/topic/create" component={CreateTopic} />
-                                <Route exact path="/article/create" component={CreateArticle} />
                                 <Route exact path="/user" component={User} />
                                 <Route exact path="/topic" component={Topic} />
-                                <Route exact path="/article" component={Article} />
+                                <Route exact path="/article/:id" component={Article} />
+                                <Route exact path="/create/article" component={CreateArticle} />
                                 <Route path="/user/edit" component={EditNav} />
                             </section>
                         </Router>

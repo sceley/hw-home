@@ -14,10 +14,13 @@ export default class Home extends Component {
 			<div className="Home">
 				<Carousel {...settings}>
 					<div className="carousel-item">
-						<img src="/img/2.jpg" alt="" />
+						<img src="http://ozkbfywab.bkt.clouddn.com/luBlz_8-moEhhpUGebfO4PL6alg9" alt="" />
 					</div>
 					<div className="carousel-item">
-						<img src="/img/3.jpg" alt="" />
+						<img src="http://ozkbfywab.bkt.clouddn.com/FvrQpeSd7-I6LPm4fMJzFGt8EJKB" alt="" />
+					</div>
+					<div className="carousel-item">
+						<img src="http://ozkbfywab.bkt.clouddn.com/FiBRevSslENTiTPP1gUjjbD5hGEs" alt="" />
 					</div>
 				</Carousel>
 				<Layout className="contact" style={{ marginTop: '20px' }}>

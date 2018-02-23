@@ -18,11 +18,17 @@ const checkEmail = require('./controller/checkout').checkEmail;
 const getUser = require('./controller/user').getUser;
 const editUser = require('./controller/user').editUser;
 const uploadAvatar = require('./controller/user').uploadAvatar;
+const upload = require('./controller/upload').upload;
+const createArticle = require('./controller/article').createArticle;
+const getArticles = require('./controller/article').getArticles;
+const getArticle = require('./controller/article').getArticle;
 
 let router = Router();
 
 router.get('/logout', logout);
 router.get('/user', authLogin, getUser);
+router.get('/articles', getArticles);
+router.get('/article/:id', getArticle);
 
 router.use(bodyparser.json());
 
@@ -35,5 +41,7 @@ router.post('/checkcaptcha', checkCaptcha);
 router.post('/checkemail', checkEmail);
 router.post('/user/edit', editUser);
 router.post('/user/uploadavatar', multer().single('avatar'), authLogin, uploadAvatar);
+router.post('/user/upload', multer().single('image'), authLogin, upload);
+router.post('/article/create', createArticle);
 
 module.exports = router;

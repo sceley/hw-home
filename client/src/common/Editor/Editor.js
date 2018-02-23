@@ -24,6 +24,9 @@ export default class Editor extends Component {
 			}
 		});
 	}
+	getValue = () => {
+		return this.editor.getValue();
+	}
 	render () {
 		return (
 			<div className="Editor">

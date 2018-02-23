@@ -122,6 +122,7 @@ export default class Navigation extends Component {
 						<Search
 							placeholder="搜索"
 							onSearch={this.handleSearch}
+							enterButton
 							style={{ width: 200 }}
 						/>
 					</Menu.Item>

@@ -17,7 +17,7 @@ db.query(table2, (err, result) => {
 	if (err) return console.log(err);
 });
 
-let table3 = 'create table if not exists `Blog`(`blog_id` int unsigned auto_increment, `Author` varchar(10), `Title` varchar(50), `Categories` varchar(10), `Body` longtext, `View` int, `Like` int, primary key(blog_id)) charset=utf8';
+let table3 = 'create table if not exists `Blog`(`blog_id` int unsigned auto_increment, `Author` varchar(10), `Title` varchar(50), `Categories` varchar(10), `Poster` varchar(100), `Body` longtext, `View` int, `Like` int, primary key(blog_id)) charset=utf8';
 db.query(table3, (err,result) => {
 	if (err) return console.log(err);
 });

@@ -5,7 +5,7 @@ import ParseImage from '../../common/ParseImage';
 
 export default class Avatar extends Component {
 	state = {
-		url: '',
+		src: '',
 		visible: false
 	}
 
@@ -16,12 +16,11 @@ export default class Avatar extends Component {
 	}
 
 	handleChange = (e) => {
-		console.log(e.file);
 		let fs = new FileReader();
 		fs.readAsDataURL(e.file);
 		fs.onload = () => {
 			this.setState({
-				url: fs.result
+				src: fs.result
 			});
 		}
 		this.setState({
@@ -65,7 +64,7 @@ export default class Avatar extends Component {
 							showUploadList={false}
 							customRequest={this.handleChange}
 						>
-							{this.state.url ? <img src={this.state.url} alt="" /> : uploadButton}
+							{this.state.src ? <img src={this.state.src} alt="" /> : uploadButton}
 						</Upload>
 						<Modal
 							width={400}
@@ -80,7 +79,7 @@ export default class Avatar extends Component {
 						>
 							<Cropper
 								ref='cropper'
-								url={this.state.url}
+								src={this.state.src}
 								style={{ height: 350, width: 350 }}
 								aspectRatio={1 / 1}
 								guides={false}
