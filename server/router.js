@@ -22,6 +22,9 @@ const upload = require('./controller/upload').upload;
 const createArticle = require('./controller/article').createArticle;
 const getArticles = require('./controller/article').getArticles;
 const getArticle = require('./controller/article').getArticle;
+const articleComment = require('./controller/article').articleComment;
+const applyMember = require('./controller/member').applyMember;
+const createTopic = require('./controller/topic').createTopic;
 
 let router = Router();
 
@@ -43,5 +46,9 @@ router.post('/user/edit', editUser);
 router.post('/user/uploadavatar', multer().single('avatar'), authLogin, uploadAvatar);
 router.post('/user/upload', multer().single('image'), authLogin, upload);
 router.post('/article/create', createArticle);
+router.post('/article/:id/comment', articleComment);
+router.post('/member/apply', authLogin, applyMember);
+router.post('/topic/create', authLogin, createTopic);
+
 
 module.exports = router;

@@ -31,12 +31,6 @@ export default class Blog extends Component {
 		});
 	}
 
-	// onChange = (e) => {
-	// 	this.setState({
-	// 		current: e
-	// 	});
-	// },
-
 	render() {
 		const IconText = ({ type, text }) => (
 			<span>

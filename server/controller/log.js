@@ -120,7 +120,7 @@ exports.logup = async (req, res) => {
 exports.login = async (req, res) => {
 	let body = req.body;
 	try {
-		if (!(body.Mobile || body.Username || body.Email)) {
+		if (!body.Account) {
 			return res.json({
 				errorcode: 222,
 				msg: '帐号不能为空'
@@ -132,28 +132,24 @@ exports.login = async (req, res) => {
 				msg: '密码长度必须为6-16个字符'
 			});
 		}
-		let hash = await new Promise((resolve, reject) => {
-			let sql = 'select `Password` from User where `Username`=? or `Mobile`=? or `Email`=?';
-			db.query(sql, [body.Username, body.Mobile, body.Email], (err, result) => {
+		let users = await new Promise((resolve, reject) => {
+			let sql = 'select Password, Username from User where `Username`=? or `Mobile`=? or `Email`=?';
+			db.query(sql, [body.Account, body.Account, body.Account], (err, result) => {
 				if (err) {
 					reject(err);
 				} else {
-					if (result.length) {
-						resolve(result[0].Password);
-					} else {
-						resolve(null);
-					}
+					resolve(result);
 				}
 			});
 		});
-		if (!hash) {
+		if (!users.length) {
 			return res.json({
 				errorcode: 222,
 				msg: '该户名不存在或密码错误'
 			});
-		}
+		} 
 		let result = await new Promise((resolve, reject) => {
-			bcrypt.compare(body.Password, hash, function(err, result) {
+			bcrypt.compare(body.Password, users[0].Password, function(err, result) {
 				if (err) {
 					reject(err);
 				} else {
@@ -162,7 +158,8 @@ exports.login = async (req, res) => {
 			});
 		});
 		if (result) {
-			req.session.Username = body.Username;
+			console.log(users[0].Username);
+			req.session.Username = users[0].Username;
 			return res.json({
 				errorcode: 0,
 				msg: '登录成功'

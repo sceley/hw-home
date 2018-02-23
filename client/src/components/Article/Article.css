@@ -1,0 +1,33 @@
+.Article .article {
+	border: 1px solid #e7e7e7;
+	border-radius: 4px;
+	background: white;
+	padding: 20px;
+}
+
+.Article .list-action li {
+	color: rgba(0, 0, 0, 0.45);
+	font-size: 14px;
+	list-style: none;
+	display: inline-block;
+	padding: 0 16px;
+	position: relative;
+}
+
+.Article .action-split {
+	background-color: #e8e8e8;
+	margin-top: -7px;
+	position: absolute;
+	top: 50%;
+	right: 0;
+	width: 1px;
+	height: 14px;
+}
+
+.Article .list-action i {
+	margin-right: 8px;
+}
+
+.list-action li:first-child {
+	padding-left: 0;
+}

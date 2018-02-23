@@ -1,17 +1,14 @@
 import React, { Component } from "react";
-import { Row, Col, Card, Divider, Button, Layout, Icon } from 'antd';
+import { Row, Col, Card, Divider, Button, Icon } from 'antd';
 import Profile from '../../common/Profile/Profile';
 import './User.css';
-
-const { Sider, Content } = Layout;
-
 
 export default class User extends Component {
 	render() {
 		return (
 			<div style={{ marginTop: '20px' }} className="User">
-				<Layout>
-					<Sider width={300}>
+				<Row gutter={16}>
+					<Col span={6}>
 						<div className="user-basic-info">
 							<Profile />
 							<div className="edit-info">
@@ -22,8 +19,8 @@ export default class User extends Component {
 								</a>
 							</div>
 						</div>
-					</Sider>
-					<Content style={{ paddingLeft: '10px' }}>
+					</Col>
+					<Col span={18}>
 						<div>
 							<Card title="专栏文章">
 								没有任何数据~~
@@ -33,10 +30,10 @@ export default class User extends Component {
 								</Card>
 							<Card style={{ marginTop: '20px' }} title="最新评论">
 								没有任何数据~~
-								</Card>
+							</Card>
 						</div>
-					</Content>
-				</Layout>
+					</Col>
+				</Row>
 			</div>
 		);
 	}

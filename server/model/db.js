@@ -17,16 +17,29 @@ db.query(table2, (err, result) => {
 	if (err) return console.log(err);
 });
 
-let table3 = 'create table if not exists `Blog`(`blog_id` int unsigned auto_increment, `Author` varchar(10), `Title` varchar(50), `Categories` varchar(10), `Poster` varchar(100), `Body` longtext, `View` int, `Like` int, primary key(blog_id)) charset=utf8';
+let table3 = 'create table if not exists `Blog`(`blog_id` int unsigned auto_increment, `Author` varchar(10), `Title` varchar(50), `Categories` varchar(10), `Date` date, `Poster` varchar(100), `Body` longtext, `View` int, `Like` int, primary key(blog_id)) charset=utf8';
 db.query(table3, (err,result) => {
 	if (err) return console.log(err);
 });
 
-let table4 = 'create table if not exists `Blog_Comment`(`pid` int unsigned, `Author` varchar(10), `Mentioner` varchar(10), `Body` longtext, foreign key(`pid`) references `Blog`(`blog_id`)) charset=utf8';
+let table4 = 'create table if not exists `Blog_Comment`(`pid` int unsigned, `Author` varchar(10), `Mentioner` varchar(10), `Body` longtext, `Date` date, foreign key(`pid`) references `Blog`(`blog_id`)) charset=utf8';
 db.query(table4, (err, result) => {
 	if (err) return console.log(err);
 });
 
+let table5 = 'create table if not exists `Member`(`mid` int unsigned, `Name` varchar(10), `Team` varchar(10), `SchoolNumber` varchar(8), `Active` boolean default false, `Description` varchar(100), foreign key(`mid`) references `User`(`user_id`)) charset=utf8';
+db.query(table5, (err, result) => {
+	if (err) return console.log(err);
+});
 
+let table6 = 'create table if not exists `Topic`(`topic_id` int unsigned auto_increment, `Title` varchar(50), `Body` longtext, `Author` varchar(10), `Date` date, primary key(topic_id)) charset=utf8';
+db.query(table6, (err, result) => {
+	if (err) return console.log(err);
+});
+
+let table7 = 'create table if not exists `Topic_Comment`(`pid` int unsigned, `Author` varchar(10), `Mentioner` varchar(10), `Body` longtext, `Date` date, foreign key(`pid`) references `Topic`(`topic_id`)) charset=utf8';
+db.query(table7, (err, result) => {
+	if (err) return console.log(err);
+});
 
 module.exports = db;

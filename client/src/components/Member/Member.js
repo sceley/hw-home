@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-
 import { Select, Form, Button, Input, Icon, Row } from 'antd';
 import BreadCrumb from '../../common/BreadCrumb/BreadCrumb';
+import config from '../../config';
 
 const { TextArea } = Input;
 const FormItem = Form.Item;
@@ -18,7 +18,14 @@ class RegistrationForm extends Component {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
+                fetch(`${config.server}/member/apply`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify(values)
+                });
             }
         });
     }
@@ -43,14 +50,13 @@ class RegistrationForm extends Component {
                     <FormItem
                         label="所属部门"
                     >
-                        {getFieldDecorator('team', {
-                            initialValue: "none",
+                        {getFieldDecorator('Team', {
+                            initialValue: "webteam",
                             rules: [{
                                 required: true, message: '请选择组别!',
                             }],
                         })(
                             <Select>
-                                <Option value="none">未选择</Option>
                                 <Option value="webteam">Web组</Option>
                                 <Option value="androidteam">Android组</Option>
                                 <Option value="iosteam">IOS组</Option>
@@ -64,34 +70,34 @@ class RegistrationForm extends Component {
                     <FormItem
                         label="姓名"
                     >
-                        {getFieldDecorator('userName', {
+                        {getFieldDecorator('Name', {
                             rules: [{ required: true, message: '请输入你的姓名' }],
                         })(
-                            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入你的姓名" />
+                            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="真实姓名" />
                             )}
                     </FormItem>
                     <FormItem
                         label="学号"
                     >
-                        {getFieldDecorator('studentNumber', {
+                        {getFieldDecorator('SchoolNumber', {
                             rules: [{
                                 required: true, message: '请输入你的学号'
                             }, {
                                 validator: this.checkDescription
                             }],
                         })(
-                            <Input placeholder="请输入你的学号" />
+                            <Input placeholder="学号" />
                             )}
                     </FormItem>
                     <FormItem
                         label="描述"
                     >
-                        {getFieldDecorator('description', {
+                        {getFieldDecorator('Description', {
                             rules: [{
                                 required: true, message: '请输入有必要的描述!'
                             }],
                         })(
-                            <TextArea rows={4} placeholder="请输入有必要的描述" />
+                            <TextArea rows={4} placeholder="有必要的描述" />
                             )}
                     </FormItem>
                     <FormItem>

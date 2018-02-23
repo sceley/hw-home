@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Input, Upload, Icon, Select, Modal, Form } from 'antd';
+import moment from 'moment';
 import BreadCrumb from '../../common/BreadCrumb/BreadCrumb';
 import Editor from '../../common/Editor/Editor';
 import Cropper from '../../common/Cropper/Cropper';
@@ -77,6 +78,7 @@ class CreateArticleForm extends Component {
 				}
 				values.Body = this.refs.editor.getValue();
 				values.Poster = this.state.url;
+				values.Date = moment().format("YYYY-MM-DD");
 				console.log(values);
 				fetch('http://localhost:8080/article/create', {
 					method: 'POST',

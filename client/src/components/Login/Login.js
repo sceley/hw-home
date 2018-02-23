@@ -10,7 +10,6 @@ class NormalLoginForm extends Component {
 	handleSubmit = (e) => {
 		e.preventDefault();
 		this.props.form.validateFields((err, values) => {
-			console.log(values);
 			if (!err) {
 				fetch('http://localhost:8080/login', {
 					method: 'POST',
@@ -38,9 +37,9 @@ class NormalLoginForm extends Component {
 				</div>
 				<Form onSubmit={this.handleSubmit}>
 					<FormItem
-						label="用户名"
+						label="帐号"
 					>
-						{getFieldDecorator('Username', {
+						{getFieldDecorator('Account', {
 							rules: [{ required: true, message: '账号不能为空!' }],
 						})(
 							<Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="手机号/邮箱/用户名" />

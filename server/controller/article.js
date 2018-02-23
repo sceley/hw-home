@@ -4,8 +4,8 @@ exports.createArticle = async (req, res) => {
 	try {
 		let Author = req.session.Username;
 		let result = await new Promise((resolve, reject) => {
-			let sql = "insert into Blog(Title, Categories, Poster, Body, Author) values(?, ?, ?, ?)";
-			db.query(sql, [body.Title, body.Categories, body.Poster, body.Body, Author], (err, result) => {
+			let sql = "insert into Blog(Title, Categories, Poster, Body, Author, Date) values(?, ?, ?, ?, ?, ?)";
+			db.query(sql, [body.Title, body.Categories, body.Poster, body.Body, Author, body.Date], (err, result) => {
 				if (err) {
 					reject(err);
 				} else {
@@ -49,8 +49,8 @@ exports.getArticles = async (req, res) => {
 	}
 };
 exports.getArticle = async (req, res) => {
+	let id = req.params.id;
 	try {
-		let id = req.params.id;
 		let article = await new Promise((resolve, reject) => {
 			let sql = "select * from Blog where blog_id=?";
 			db.query(sql, [id], (err, result) => {
@@ -61,10 +61,21 @@ exports.getArticle = async (req, res) => {
 				}
 			});
 		});
+		let comment = await new Promise((resolve, reject) => {
+			let sql = 'select * from Blog_Comment where pid=?';
+			db.query(sql, [id], (err, result) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(result);
+				}
+			});
+		});
 		res.json({
 			errorcode: 0,
 			msg: '成功',
-			article
+			article,
+			comment
 		});
 	} catch (e) {
 		res.json({
@@ -73,3 +84,26 @@ exports.getArticle = async (req, res) => {
 		});
 	}
 };
+exports.articleComment = async (req, res) => {
+	let id = req.params.id;
+	let body = req.body;
+	let Author = req.session.Username;
+	try {
+		let result = await new Promise((resolve, reject) => {
+			let sql = "insert into Blog_Comment(Author, Body, pid, Mentioner, Date) values(?, ?, ?, ?, ?)";
+			db.query(sql, [Author, body.Body, id, body.Mentioner, body.Date], (err, result) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(result);
+				}
+			});
+		});
+	} catch (e) {
+		console.log(e);
+		res.json({
+			errorcode: 0,
+			msg: '服务器出错了'
+		});
+	}
+}

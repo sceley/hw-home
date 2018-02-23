@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Input, Button } from 'antd';
 import BreadCrumb from '../../common/BreadCrumb/BreadCrumb';
 import Editor from '../../common/Editor/Editor';
+import config from '../../config';
+import moment from 'moment';
 import './CreateTopic.css';
 
 export default class TopicCreate extends Component {
@@ -10,7 +12,29 @@ export default class TopicCreate extends Component {
 		title: ''
 	}
 	handleSubmit = (value) => {
-		console.log(value);
+		let Title = this.refs.Title.input.value;
+		let Body = this.refs.editor.getValue();
+		let body = {
+			Title,
+			Body,
+			Date: moment().format("YYYY-MM-DD")
+		};
+		fetch(`${config.server}/topic/create`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(body),
+			credentials: 'include'
+		}).then(res => {
+			if (res.ok) {
+				return res.json();
+			}
+		}).then(json => {
+			if (json.errorcode === 0) {
+				console.log(json);
+			}
+		});
 	}
 	render() {
 		return (
@@ -21,14 +45,14 @@ export default class TopicCreate extends Component {
 					<div className="list">
 						<div className="list-item">
 							<div style={{marginBottom: '5px'}}>标题: </div>
-							<Input ref="blogInput" placeholder="请填写标题" />
+							<Input ref="Title" placeholder="请填写标题" />
 						</div>
 						<div className="list-item">
 							<div style={{marginBottom: '5px'}}>正文: </div>
-							<Editor/>
+							<Editor ref="editor"/>
 						</div>
 						<div className="list-item" style={{ textAlign: 'center' }}>
-							<Button type="primary">提交</Button>
+							<Button onClick={this.handleSubmit} type="primary">提交</Button>
 						</div>
 					</div>
 				</div>

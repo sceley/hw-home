@@ -27,7 +27,7 @@ export default class Profile1 extends Component {
 
 	render() {
 		return (
-			<div className="Profile1">
+			<div className="Profile">
 				<a href="#">
 					{
 						this.state.info && this.state.info.Avatar ?

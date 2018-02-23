@@ -27,6 +27,9 @@ export default class Editor extends Component {
 	getValue = () => {
 		return this.editor.getValue();
 	}
+	setValue = value => {
+		this.editor.setValue(value);
+	}
 	render () {
 		return (
 			<div className="Editor">
