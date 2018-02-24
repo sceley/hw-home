@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router';
-import { Row, Col, Menu, Icon, Layout } from 'antd';
+import { Row, Col, Menu, Icon } from 'antd';
 import Info from '../Info/Info';
 import Avatar from '../Avatar/Avatar';
 import Notify from '../Notify/Notify';
 import EditPassword from '../EditPassword/EditPassword';
-
-const { Sider, Content } = Layout;
 
 export default class Edit extends Component {
 	state = {
@@ -24,8 +22,8 @@ export default class Edit extends Component {
 	render() {
 		return (
 			<div className="EditNav" style={{ marginTop: '20px' }}>
-				<Layout>
-					<Sider>
+				<Row gutter={16}>
+					<Col span={5}>
 						<Menu
 							onClick={this.handleClick}
 							selectedKeys={[this.state.key]}
@@ -54,14 +52,14 @@ export default class Edit extends Component {
 								</a>
 							</Menu.Item>
 						</Menu>
-					</Sider>
-					<Content>
+					</Col>
+					<Col span={19}>
 						<Route exact path={`${this.props.match.url}`} component={Info} />
 						<Route exact path={`${this.props.match.url}/avatar`} component={Avatar} />
 						<Route exact path={`${this.props.match.url}/notify`} component={Notify} />
 						<Route exact path={`${this.props.match.url}/password`} component={EditPassword} />
-					</Content>
-				</Layout>
+					</Col>
+				</Row>
 			</div>
 		);
 	}

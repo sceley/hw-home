@@ -1,28 +1,40 @@
 import React, { Component } from 'react';
-import { List, Avatar, Icon, Button, Col, Row, Layout } from 'antd';
+import { List, Avatar, Icon, Button, Col, Row } from 'antd';
 import Profile from '../../common/Profile/Profile';
 import BreadCrumb from '../../common/BreadCrumb/BreadCrumb';
+import config from '../../config';
 import md from '../../common/Markdown';
 
-const { Sider, Content } = Layout;
-
 export default class Blog extends Component {
-
 	state = {
-		pageSize: 10,
+		count: '',
 		current: 1,
-		total: 20,
 		articles: ''
 	}
 
 	componentDidMount = () => {
-		fetch('http://localhost:8080/articles')
+		fetch(`${config.server}/articles/count`)
 		.then(res => {
 			if (res.ok) {
 				return res.json();
 			}
 		}).then(json => {
-			console.log(json);
+			if (!json.errorcode) {
+				this.setState({
+					count: json.count
+				});
+			}
+		});
+		this.pullData(this.state.current);
+	}
+
+	pullData = (page) => {
+		fetch(`${config.server}/articles?page=${page}`)
+		.then(res => {
+			if (res.ok) {
+				return res.json();
+			}
+		}).then(json => {
 			if (json.errorcode === 0) {
 				this.setState({
 					articles: json.articles
@@ -32,6 +44,17 @@ export default class Blog extends Component {
 	}
 
 	render() {
+		const pagination = {
+			pageSize: 5,
+			current: this.state.current,
+			total: Number(this.state.count),
+			onChange: ((e) => {
+				this.setState({
+					current: e
+				});
+				this.pullData(e);
+			}),
+		};
 		const IconText = ({ type, text }) => (
 			<span>
 				<Icon type={type} style={{ marginRight: 8 }} />
@@ -44,6 +67,7 @@ export default class Blog extends Component {
 				<Row gutter={16} style={{ marginTop: '20px' }}>
 					<Col span={18}>
 							<List
+								pagination={pagination}
 								size="large"
 								dataSource={this.state.articles}
 								itemLayout="vertical"

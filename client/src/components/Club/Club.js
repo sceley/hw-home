@@ -2,43 +2,62 @@ import React, { Component } from 'react';
 import { List, Avatar, Button, Tabs, Col, Row } from 'antd';
 import BreadCrumb from '../../common/BreadCrumb/BreadCrumb';
 import Profile from '../../common/Profile/Profile';
+import config from '../../config';
+import ParseDate from '../../common/ParseDate';
 import './Club.css';
 
 const TabPane = Tabs.TabPane;
 
 export default class Club extends Component {
-
-	componentWillMount() {
+	state = {
+		good_topics: '',
+		topics: '',
 	}
-
-	handleNav = (e) => {
-		console.log(e);
+	componentWillMount() {
+		this.pullData('all');
+	}
+	pullData = (e) => {
+		fetch(`${config.server}/topics?tab=${e}`)
+		.then(res => {
+			if (res.ok) {
+				return res.json();
+			}
+		}).then(json => {
+			if (!json.errorcode) {
+				if (e === 'all') {
+					this.setState({
+						topics: json.topics
+					});
+				} else {
+					this.setState({
+						good_topics: json.topics
+					});
+				}
+			}
+		});
+	}
+	handleClick = (e) => {
+		this.pullData(e);
 	}
 
 	render() {
-		let data = [{
-			name: 'sceley'
-		}, {
-			name: 'qin'
-		}, {
-			name: 'yongli'
-		}];
 		return (
 			<div className="Club">
 				<BreadCrumb name="技术论坛" />
 				<Row gutter={16} style={{ marginTop: '20px' }}>
 					<Col span={18}>
-						<Tabs style={{background: 'white'}}>
+						<Tabs onChange={this.handleClick} style={{background: 'white'}}>
 							<TabPane tab="全部" key="all">
 								<List
 									style={{ background: 'white' }}
 									itemLayout="horizontal"
-									dataSource={data}
+									dataSource={this.state.topics}
 									renderItem={item => (
-										<List.Item actions={[<span>more</span>]}>
+										<List.Item actions={[<span>{ParseDate(item.Date)}</span>]}>
 											<List.Item.Meta
-												avatar={<a href=""><Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" /></a>}
-												title={<a href="https://ant.design">{item.name}</a>}
+												avatar={<a href=""><Avatar src={item.Avatar} /></a>}
+												title={<a href="https://ant.design">{item.Author}</a>}
+												description={<h3><a href={`/topic/${item.topic_id}`}>{item.Title}</a></h3>}
 											/>
 										</List.Item>
 									)}
@@ -48,12 +67,13 @@ export default class Club extends Component {
 								<List
 									style={{ background: 'white' }}
 									itemLayout="horizontal"
-									dataSource={data}
+									dataSource={this.state.good_topics}
 									renderItem={item => (
 										<List.Item actions={[<span>more</span>]}>
 											<List.Item.Meta
-												avatar={<a href=""><Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" /></a>}
-												title={<a href="https://ant.design">{item.name}</a>}
+												avatar={<a href=""><Avatar src={item.Avatar} /></a>}
+												title={<a href="https://ant.design">{item.Author}</a>}
+												description={<h3><a href={`/topic/${item.topic_id}`}>{item.Title}</a></h3>}
 											/>
 										</List.Item>
 									)}

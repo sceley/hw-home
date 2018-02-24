@@ -4,6 +4,7 @@ import md from '../../common/Markdown';
 import Editor from '../../common/Editor/Editor';
 import moment from 'moment';
 import Profile from '../../common/Profile/Profile';
+import ParseDate from '../../common/ParseDate';
 import './Article.css';
 
 const { Link } = Anchor;
@@ -89,6 +90,13 @@ export default class Article extends Component {
 							<Icon type="folder" />
 							{this.state.article.Categories}
 						</span>
+						<em className="action-split"/>
+					</li>
+					<li className="list-action-item">
+						<span>
+							<Icon type="eye-o" />
+							{this.state.article.Categories}
+						</span>
 					</li>
 				</ul>
 			</div>
@@ -103,14 +111,19 @@ export default class Article extends Component {
 						</Card>
 						<Card title={<span>{`${this.state.comment.length}个回复`}</span>} style={{marginTop: '20px'}}>
 							<List
-						        className="demo-loadmore-list"
+						        className="comment-list"
 						        itemLayout="horizontal"
 						        dataSource={this.state.comment}
 						        renderItem={item => (
 						          <List.Item actions={[<a><Icon type="like-o"/></a>, <a data-name={item.Author} href="#editor" onClick={this.handleEnter}><Icon type="enter"/></a>]}>
 						            <List.Item.Meta
 						              avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-						              title={<a href="https://ant.design">sceley</a>}
+						              title={
+						              	<em className="date">
+						              		<a style={{marginRight: '5px'}} href="https://ant.design">sceley</a>
+						              		{ParseDate(item.Date)}
+						              	</em>
+						              }
 						              description={
 						              	<div>
 						              		{

@@ -22,9 +22,15 @@ const upload = require('./controller/upload').upload;
 const createArticle = require('./controller/article').createArticle;
 const getArticles = require('./controller/article').getArticles;
 const getArticle = require('./controller/article').getArticle;
+const getArticlesCount = require('./controller/article').getArticlesCount;
 const articleComment = require('./controller/article').articleComment;
 const applyMember = require('./controller/member').applyMember;
+const getMembers = require('./controller/member').getMembers
 const createTopic = require('./controller/topic').createTopic;
+const getTopics = require('./controller/topic').getTopics;
+const getTopic = require('./controller/topic').getTopic;
+const topicComment = require('./controller/topic').topicComment;
+const allowMember = require('./controller/admin').allowMember;
 
 let router = Router();
 
@@ -32,6 +38,10 @@ router.get('/logout', logout);
 router.get('/user', authLogin, getUser);
 router.get('/articles', getArticles);
 router.get('/article/:id', getArticle);
+router.get('/articles/count', getArticlesCount);
+router.get('/members', getMembers);
+router.get('/topics', getTopics);
+router.get('/topic/:id', getTopic);
 
 router.use(bodyparser.json());
 
@@ -49,6 +59,7 @@ router.post('/article/create', createArticle);
 router.post('/article/:id/comment', articleComment);
 router.post('/member/apply', authLogin, applyMember);
 router.post('/topic/create', authLogin, createTopic);
-
+router.post('/topic/:id/comment', authLogin, topicComment);
+router.post('/member/:id/allow', allowMember);
 
 module.exports = router;

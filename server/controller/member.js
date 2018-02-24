@@ -35,3 +35,27 @@ exports.applyMember = async (req, res) => {
 		});
 	}
 };
+
+exports.getMembers = async (req, res) => {
+	try {
+		let result = await new Promise((resolve, reject) => {
+			let sql = "select * from Member";
+			db.query(sql, (err, result) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(result);
+				}
+			});
+		});
+		res.json({
+			errorcode: 0,
+			members: result
+		});
+	} catch (e) {
+		res.json({
+			errorcode: 555,
+			msg: '服务器出错了'
+		})
+	}
+};

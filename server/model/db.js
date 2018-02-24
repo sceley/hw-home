@@ -32,7 +32,7 @@ db.query(table5, (err, result) => {
 	if (err) return console.log(err);
 });
 
-let table6 = 'create table if not exists `Topic`(`topic_id` int unsigned auto_increment, `Title` varchar(50), `Body` longtext, `Author` varchar(10), `Date` date, primary key(topic_id)) charset=utf8';
+let table6 = 'create table if not exists `Topic`(`topic_id` int unsigned auto_increment, `Title` varchar(50), `Body` longtext, `Author` varchar(10), `Date` date, `tab` varchar(10), primary key(topic_id)) charset=utf8';
 db.query(table6, (err, result) => {
 	if (err) return console.log(err);
 });

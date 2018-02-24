@@ -41,11 +41,11 @@ export default class Profile1 extends Component {
 					this.state.info && this.state.info.Sex == "woman" ?
 					<Icon type="woman" />:<Icon type="man" />
 				}
-				<p>{ this.state.info && this.state.info.Introduction }</p>
+				<p><em>{ this.state.info && this.state.info.Introduction }</em></p>
 				<ul className="icon-list">
 					{
 						this.state.info && this.state.info.City ? 
-						<li><Icon type="environment" />{this.state.info.City}</li>
+						<li><Icon type="environment" /><em style={{fontSize: '10px'}}>{this.state.info.City}</em></li>
 						:null
 					}
 				</ul>

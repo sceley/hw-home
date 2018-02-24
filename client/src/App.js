@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import Home from './components/Home/Home';
 import Login from './components/Login/Login';
@@ -20,6 +20,7 @@ import Topic from './components/Topic/Topic';
 import Article from './components/Article/Article';
 import Admin from './components/Admin/Admin';
 import AdminLogin from './components/Admin/AdminLogin';
+import NotFound from './components/NotFound/NotFound';
 import { Row, Col } from 'antd';
 import './App.css';
 
@@ -37,24 +38,28 @@ class App extends Component {
                     <Col xs={24} sm={23} md={22} lg={21} xl={20}>
                         <Router>
                             <section style={{ overflow: 'hidden' }}>
-                                <Route exact path="/" component={Home} />
-                                <Route exact path="/login" component={Login} />
-                                <Route exact path="/logup" component={Logup} />
-                                <Route exact path="/member" component={Member} />
-                                <Route exact path="/blog" component={Blog} />
-                                <Route exact path="/community" component={Community} />
-                                <Route exact path="/department" component={Department} />
-                                <Route exact path="/resource" component={Resource} />
-                                <Route exact path="/club" component={Club} />
-                                <Route exact path="/event" component={Event} />
-                                <Route exact path="/topic/create" component={CreateTopic} />
-                                <Route exact path="/user" component={User} />
-                                <Route exact path="/topic" component={Topic} />
-                                <Route exact path="/article/:id" component={Article} />
-                                <Route exact path="/create/article" component={CreateArticle} />
-                                <Route path="/user/edit" component={EditNav} />
-                                <Route path="/admin/login" component={AdminLogin}/>
-                                <Route path="/admin/manage" component={Admin}/>
+                                <Switch>
+                                    <Route exact path="/" component={Home} />
+                                    <Route exact path="/login" component={Login} />
+                                    <Route exact path="/logup" component={Logup} />
+                                    <Route exact path="/member" component={Member} />
+                                    <Route exact path="/blog" component={Blog} />
+                                    <Route exact path="/community" component={Community} />
+                                    <Route exact path="/department" component={Department} />
+                                    <Route exact path="/resource" component={Resource} />
+                                    <Route exact path="/club" component={Club} />
+                                    <Route exact path="/event" component={Event} />
+                                    <Route exact path="/create/topic" component={CreateTopic} />
+                                    <Route exact path="/user" component={User} />
+                                    <Route exact path="/topic/:id" component={Topic} />
+                                    <Route exact path="/article/:id" component={Article} />
+                                    <Route exact path="/create/article" component={CreateArticle} />
+                                    <Route exact path="/admin/login" component={AdminLogin}/>
+                                    <Route path="/user/edit" component={EditNav} />
+                                    <Route path="/admin/manage" component={Admin}/>
+                                    {/*<Redirect from="/admin" to="/admin/manage" />*/}
+                                    <Route path="*" component={NotFound} />
+                                </Switch>
                             </section>
                         </Router>
                     </Col>

@@ -25,9 +25,15 @@ exports.createArticle = async (req, res) => {
 	}
 };
 exports.getArticles = async (req, res) => {
+	let page = req.query.page;
 	try {
 		let result = await new Promise((resolve, reject) => {
-			let sql = "select * from Blog";
+			let sql;
+			if (page) {
+				sql = `select * from Blog limit ${5 * (page - 1)}, 5`;
+			} else {
+				sql = "select * from Blog";
+			}
 			db.query(sql, (err, result) => {
 				if (err) {
 					reject(err);
@@ -42,6 +48,7 @@ exports.getArticles = async (req, res) => {
 			articles: result
 		});
 	} catch (e) {
+		console.log(e);
 		res.json({
 			errorcode: 555,
 			msg: '服务器出错了'
@@ -100,10 +107,33 @@ exports.articleComment = async (req, res) => {
 			});
 		});
 	} catch (e) {
-		console.log(e);
 		res.json({
 			errorcode: 0,
 			msg: '服务器出错了'
 		});
 	}
-}
+};
+
+exports.getArticlesCount = async (req, res) => {
+	try {
+		let count = await new Promise((resolve, reject) => {
+			let sql = "select * from Blog";
+			db.query(sql, (err, result) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(result.length);
+				}
+			});
+		});
+		res.json({
+			errorcode: 0,
+			count
+		});
+	} catch (e) {
+		res.json({
+			errorcode: 0,
+			msg: '服务器出错了'
+		});
+	}
+};
