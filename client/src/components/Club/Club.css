@@ -10,20 +10,9 @@ ul, li {
 	margin: 0;
 }
 
-.club-nav-item {
-	list-style: none;
+.Topics {
+	background: white;
+}
+.Topics .tab-list-item {
 	display: inline-block;
-}
-
-.club-nav-item a {
-	padding: 0px 5px;
-}
-
-.nav-active {
-	background: #80bd01;
-	border-radius: 4px;
-}
-
-.nav-active a {
-	color: white;
 }
