@@ -3,7 +3,7 @@ import { Row, Col, Icon, List, Avatar, Button, Divider, Card, Anchor } from 'ant
 import md from '../../common/Markdown';
 import Editor from '../../common/Editor/Editor';
 import moment from 'moment';
-import Profile from '../../common/Profile/Profile';
+import Profile from '../../common/Profile1/Profile';
 import ParseDate from '../../common/ParseDate';
 import './Article.css';
 

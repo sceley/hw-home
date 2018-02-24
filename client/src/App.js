@@ -57,7 +57,6 @@ class App extends Component {
                                     <Route exact path="/admin/login" component={AdminLogin}/>
                                     <Route path="/user/edit" component={EditNav} />
                                     <Route path="/admin/manage" component={Admin}/>
-                                    {/*<Redirect from="/admin" to="/admin/manage" />*/}
                                     <Route path="*" component={NotFound} />
                                 </Switch>
                             </section>

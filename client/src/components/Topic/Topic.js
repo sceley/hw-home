@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Col, Row, List, Avatar, Icon, Input, Button } from 'antd';
 import Editor from '../../common/Editor/Editor';
-import Profile from '../../common/Profile/Profile';
+import Profile from '../../common/Profile1/Profile';
 import config from '../../config';
 import ParseDate from '../../common/ParseDate';
 import moment from 'moment';

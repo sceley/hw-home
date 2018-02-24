@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { List, Avatar, Icon, Button, Col, Row } from 'antd';
-import Profile from '../../common/Profile/Profile';
+import { List, Avatar, Icon, Button, Col, Row, Divider } from 'antd';
+import Profile from '../../common/Profile2/Profile';
 import BreadCrumb from '../../common/BreadCrumb/BreadCrumb';
 import config from '../../config';
 import md from '../../common/Markdown';
@@ -76,7 +76,7 @@ export default class Blog extends Component {
 								renderItem={article => (
 									<List.Item
 										key={article.Title}
-										actions={[<IconText type="eye-o" text="156" />, <IconText type="like-o" text="156" />, <IconText type="message" text="2" />]}
+										actions={[<IconText type="eye-o" text="156" />, <IconText type="message" text="2" />, <IconText type="like-o" text="156" />]}
 										extra={<img width={272} alt="logo" src={article.Poster} />}
 									>
 										<List.Item.Meta
@@ -112,11 +112,13 @@ export default class Blog extends Component {
 					<Col span={6}>
 						<div className="user-basic-info">
 							<Profile />
+							<Divider/>
+							<Divider/>
 							<div>
-								<a href="/article/create">
+								<a href="/create/article">
 									<Button type="primary">
 										发布文章
-										</Button>
+									</Button>
 								</a>
 							</div>
 						</div>

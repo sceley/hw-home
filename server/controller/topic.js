@@ -113,3 +113,33 @@ exports.topicComment = async (req, res) => {
 		});
 	}
 };
+
+exports.getTopicsCount = async (req, res) => {
+	let tab = req.query.tab;
+	try {
+		let sql;
+		if (tab === 'all' || tab === undefined) {
+			sql = 'select * from Topic';
+		} else {
+			sql = `select * from Topic where tab=${tab}`;
+		}
+		let count = await new Promise((resolve, reject) => {
+			db.query(sql, (err, result) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(result.length);
+				}
+			});
+		});
+		res.json({
+			errorcode: 0,
+			count
+		});
+	} catch (e) {
+		res.json({
+			errorcode: 555,
+			msg: '服务器出错了'
+		});
+	}
+};

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Icon, Row, Col, Divider, Avatar } from 'antd';
+import { Icon, Row, Col, Divider, Avatar, Button } from 'antd';
 import './Profile.css';
 
-export default class Profile1 extends Component {
+export default class Profile extends Component {
 
 	state = {
 		info: ''
@@ -37,10 +37,10 @@ export default class Profile1 extends Component {
 					}
 				</a>
 				<h1>{ this.state.info && this.state.info.Username }</h1>
-				{
-					this.state.info && this.state.info.Sex == "woman" ?
-					<Icon type="woman" />:<Icon type="man" />
-				}
+					{
+						this.state.info && this.state.info.Sex == "woman" ?
+						<Icon type="woman" />:<Icon type="man" />
+					}
 				<p><em>{ this.state.info && this.state.info.Introduction }</em></p>
 				<ul className="icon-list">
 					{
@@ -62,22 +62,22 @@ export default class Profile1 extends Component {
 					}
 				</ul>
 				<Divider />
-				<Row className="follow-info">
-					<Col span={8}>
-						<a className="count">0</a>
-						<a className="text">关注者</a>
-					</Col>
-					<Col span={8}>
-						<a className="count">0</a>
-						<a className="text">编博客</a>
-					</Col>
-					<Col span={8}>
-						<a className="count">0</a>
-						<a className="text">编话题</a>
-					</Col>
-				</Row>
-				<Divider />
-				<Divider />
+				<div>
+					<Row className="follow-info">
+						<Col span={8}>
+							<a className="count">0</a>
+							<a className="text">关注者</a>
+						</Col>
+						<Col span={8}>
+							<a className="count">0</a>
+							<a className="text">编博客</a>
+						</Col>
+						<Col span={8}>
+							<a className="count">0</a>
+							<a className="text">编话题</a>
+						</Col>
+					</Row>
+				</div>
 			</div>
 		);
 	}

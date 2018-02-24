@@ -29,6 +29,7 @@ const getMembers = require('./controller/member').getMembers
 const createTopic = require('./controller/topic').createTopic;
 const getTopics = require('./controller/topic').getTopics;
 const getTopic = require('./controller/topic').getTopic;
+const getTopicsCount = require('./controller/topic').getTopicsCount;
 const topicComment = require('./controller/topic').topicComment;
 const allowMember = require('./controller/admin').allowMember;
 
@@ -42,6 +43,7 @@ router.get('/articles/count', getArticlesCount);
 router.get('/members', getMembers);
 router.get('/topics', getTopics);
 router.get('/topic/:id', getTopic);
+router.get('/topics/count', getTopicsCount)
 
 router.use(bodyparser.json());
 

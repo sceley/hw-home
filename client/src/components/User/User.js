@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Row, Col, Card, Divider, Button, Icon } from 'antd';
-import Profile from '../../common/Profile/Profile';
+import Profile from '../../common/Profile2/Profile';
 import './User.css';
 
 export default class User extends Component {
@@ -11,11 +11,13 @@ export default class User extends Component {
 					<Col span={6}>
 						<div className="user-basic-info">
 							<Profile />
+							<Divider/>
+							<Divider/>
 							<div className="edit-info">
 								<a href="/user/edit">
 									<Button type="primary">
 										编辑个人资料
-										</Button>
+									</Button>
 								</a>
 							</div>
 						</div>
