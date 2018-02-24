@@ -18,8 +18,10 @@ import User from './components/User/User';
 import EditNav from './components/EditNav/EditNav';
 import Topic from './components/Topic/Topic';
 import Article from './components/Article/Article';
-import './App.css';
+import Admin from './components/Admin/Admin';
+import AdminLogin from './components/Admin/AdminLogin';
 import { Row, Col } from 'antd';
+import './App.css';
 
 class App extends Component {
 
@@ -51,6 +53,8 @@ class App extends Component {
                                 <Route exact path="/article/:id" component={Article} />
                                 <Route exact path="/create/article" component={CreateArticle} />
                                 <Route path="/user/edit" component={EditNav} />
+                                <Route path="/admin/login" component={AdminLogin}/>
+                                <Route path="/admin/manage" component={Admin}/>
                             </section>
                         </Router>
                     </Col>
