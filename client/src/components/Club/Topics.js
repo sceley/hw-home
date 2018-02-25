@@ -37,6 +37,21 @@ export default class Topics extends Component {
 			}
 		});
 	}
+	pullTopics = (key) => {
+		let tab = this.props.tab;
+		fetch(`${config.server}/topics?tab=${tab}&page=${key}`)
+		.then(res => {
+			if (res.ok) {
+				return res.json();
+			}
+		}).then(json => {
+			if (!json.errorcode) {
+				this.setState({
+					topics: json.topics
+				});
+			}
+		});
+	}
 
 	render () {
 		const pagination = {
@@ -47,6 +62,7 @@ export default class Topics extends Component {
 				this.setState({
 					current: key
 				});
+				this.pullTopics(key);
 			}),
 		};
 		return (

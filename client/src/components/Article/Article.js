@@ -98,6 +98,9 @@ export default class Article extends Component {
 							{this.state.article.Categories}
 						</span>
 					</li>
+					<li style={{float: 'right'}} className="list-action-item">
+						<a><Icon type="heart-o" /></a>
+					</li>
 				</ul>
 			</div>
 		return (

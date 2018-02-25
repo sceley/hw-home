@@ -12,3 +12,7 @@
 	font-size: 8px;
 	margin-left: 8px;
 }
+
+.topic-title .list .list-item:last-child {
+	float: right;
+}

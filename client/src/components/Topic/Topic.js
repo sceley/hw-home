@@ -7,6 +7,7 @@ import ParseDate from '../../common/ParseDate';
 import moment from 'moment';
 import md from '../../common/Markdown';
 import './Topic.css';
+import 'highlightjs/styles/atom-one-light.css';
 
 const { TextArea } = Input;
 
@@ -90,6 +91,9 @@ export default class Topic extends Component {
 									</li>
 									<li className="list-item">
 										<em>浏览: {this.state.topic.View}</em>
+									</li>
+									<li className="list-item">
+										<a><Icon type="heart" /></a>
 									</li>
 								</ul>
 							</div>

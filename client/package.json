@@ -6,15 +6,13 @@
     "antd": "^3.2.0",
     "codemirror": "^5.35.0",
     "cropperjs": "^1.2.2",
-    "font-awesome": "^4.7.0",
+    "highlightjs": "^9.10.0",
     "markdown-it": "^8.4.1",
     "moment": "^2.20.1",
     "react": "^16.2.0",
-    "react-cropper": "^1.0.1",
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.0",
-    "showdown": "^1.8.6",
     "whatwg-fetch": "^2.0.3"
   },
   "scripts": {
@@ -25,6 +23,7 @@
   },
   "devDependencies": {
     "babel-plugin-import": "^1.6.3",
+    "highlight": "^0.2.4",
     "react-app-rewired": "^1.4.1"
   }
 }

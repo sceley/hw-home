@@ -25,36 +25,6 @@ exports.createTopic = async (req, res) => {
 	}
 };
 
-exports.getTopics = async (req, res) => {
-	let tab = req.query.tab;
-	try {
-		let result = await new Promise((resolve, reject) => {
-			let sql;
-			if (tab === 'all' || tab === undefined) {
-				sql = 'select Title, topic_id, Author, Avatar, Date from Topic, User where Topic.Author=User.Username';
-			} else {
-				sql = `select Title, topic_id, Author, Avatar, Date from Topic, User where Topic.Author=User.Username where tab=${tab}`;
-			}
-			db.query(sql, (err, result) => {
-				if (err) {
-					reject(err);
-				} else {
-					resolve(result);
-				}
-			});
-		});
-		res.json({
-			errorcode: 0,
-			msg: '话题',
-			topics: result
-		});
-	} catch (e) {
-		res.json({
-			errorcode: 555,
-			msg: '服务器出错了'
-		});
-	}
-};
 exports.getTopic = async (req, res) => {
 	let id = req.params.id;
 	try {
@@ -114,17 +84,40 @@ exports.topicComment = async (req, res) => {
 	}
 };
 
+exports.getTopics = async (req, res) => {
+	let tab = req.query.tab;
+	let page = req.query.page;
+	if (page === undefined)
+		page = 1;
+	try {
+		let topics = await new Promise((resolve, reject) => {
+			let sql = `select Title, topic_id, Author, Avatar, Date from Topic, User where Topic.Author=User.Username and Tab=? limit ?, ?`;
+			db.query(sql, [tab, 5 * (page - 1), 5], (err, result) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(result);
+				}
+			});
+		});
+		res.json({
+			errorcode: 0,
+			topics
+		});
+	} catch (e) {
+		console.log(e);
+		res.json({
+			errorcode: 555,
+			msg: '服务器出错了'
+		});
+	}
+};
 exports.getTopicsCount = async (req, res) => {
 	let tab = req.query.tab;
 	try {
-		let sql;
-		if (tab === 'all' || tab === undefined) {
-			sql = 'select * from Topic';
-		} else {
-			sql = `select * from Topic where tab=${tab}`;
-		}
 		let count = await new Promise((resolve, reject) => {
-			db.query(sql, (err, result) => {
+			let sql = `select * from Topic where Tab=?`;
+			db.query(sql, [tab], (err, result) => {
 				if (err) {
 					reject(err);
 				} else {
@@ -137,6 +130,7 @@ exports.getTopicsCount = async (req, res) => {
 			count
 		});
 	} catch (e) {
+		console.log(e);
 		res.json({
 			errorcode: 555,
 			msg: '服务器出错了'

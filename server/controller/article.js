@@ -26,26 +26,23 @@ exports.createArticle = async (req, res) => {
 };
 exports.getArticles = async (req, res) => {
 	let page = req.query.page;
+	if (page === undefined)
+		page = 1;
 	try {
-		let result = await new Promise((resolve, reject) => {
-			let sql;
-			if (page) {
-				sql = `select * from Blog limit ${5 * (page - 1)}, 5`;
-			} else {
-				sql = "select * from Blog";
-			}
-			db.query(sql, (err, result) => {
+		let articles = await new Promise((resolve, reject) => {
+			let sql = `select * from Blog limit ?, ?`;
+			db.query(sql, [5 * (page - 1), 5], (err, articles) => {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(result);
+					resolve(articles);
 				}
 			});
 		});
 		res.json({
 			errorcode: 0,
 			msg: '成功',
-			articles: result
+			articles: articles
 		});
 	} catch (e) {
 		console.log(e);
