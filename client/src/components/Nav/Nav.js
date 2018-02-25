@@ -38,7 +38,7 @@ export default class Navigation extends Component {
 				return res.json();
 			}
 		}).then(json => {
-			if (json.errorcode === 0) {
+			if (json.err === 0) {
 				this.handleCancel();
 				this.setState({
 					login: false
@@ -61,7 +61,6 @@ export default class Navigation extends Component {
 				return res.json();
 			}
 		}).then(json => {
-			console.log(json);
 			if (json.errorcode === 0) {
 				this.setState({
 					login: true,
@@ -72,7 +71,6 @@ export default class Navigation extends Component {
 	}
 
 	render() {
-		console.log(this.state.info);
 		const avatar = 
 			<div>
 				<Badge style={{marginRight: '10px'}} showZero={true} count={0} />

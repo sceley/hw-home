@@ -4,7 +4,6 @@ const cdnStore = require('../common/store').cdnStore;
 
 exports.getUser = async (req, res) => {
 	let Username = req.session.Username;
-	console.log(Username);
 	let sql = 'select * from User where Username=?';
 	try {
 		let user = await new Promise((resolve, reject) => {
@@ -53,7 +52,7 @@ exports.editUser = async (req, res) => {
 			msg: "网站过长"
 		});
 	}
-	if (body.City && body.City.length > 10) {
+	if (body.Location && body.Location.length > 10) {
 		return res.json({
 			errorcode: 222,
 			msg: "城市过长"
@@ -90,9 +89,6 @@ exports.editUser = async (req, res) => {
 				});
 			}
 		} else {
-			if (body.Website) {
-				body.Website = body.prefix + body.Website;
-			}
 			let sql = "update User set Email=?, Username=?, Sex=?, Website=?, Github=?, City=?, Introduction=? where Username=?";
 			let result = await new Promise((resolve, reject) => {
 				db.query(sql, [body.Email, body.Username, body.Sex, body.Website, body.Github, body.City, body.Introduction, req.session.Username], (err, result) => {

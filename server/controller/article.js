@@ -4,8 +4,8 @@ exports.createArticle = async (req, res) => {
 	try {
 		let Author = req.session.Username;
 		let result = await new Promise((resolve, reject) => {
-			let sql = "insert into Blog(Title, Categories, Poster, Body, Author, Date) values(?, ?, ?, ?, ?, ?)";
-			db.query(sql, [body.Title, body.Categories, body.Poster, body.Body, Author, body.Date], (err, result) => {
+			let sql = "insert into Article(Title, Categories, Poster, Body, Author, CreateAt) values(?, ?, ?, ?, ?, ?)";
+			db.query(sql, [body.Title, body.Categories, body.Poster, body.Body, Author, body.CreateAt], (err, result) => {
 				if (err) {
 					reject(err);
 				} else {
@@ -30,7 +30,7 @@ exports.getArticles = async (req, res) => {
 		page = 1;
 	try {
 		let articles = await new Promise((resolve, reject) => {
-			let sql = `select * from Blog limit ?, ?`;
+			let sql = `select * from Article limit ?, ?`;
 			db.query(sql, [5 * (page - 1), 5], (err, articles) => {
 				if (err) {
 					reject(err);
@@ -56,7 +56,7 @@ exports.getArticle = async (req, res) => {
 	let id = req.params.id;
 	try {
 		let article = await new Promise((resolve, reject) => {
-			let sql = "select * from Blog where blog_id=?";
+			let sql = "select * from Article where id=?";
 			db.query(sql, [id], (err, result) => {
 				if (err) {
 					reject(err);
@@ -66,7 +66,7 @@ exports.getArticle = async (req, res) => {
 			});
 		});
 		let comment = await new Promise((resolve, reject) => {
-			let sql = 'select * from Blog_Comment where pid=?';
+			let sql = 'select * from Article_Comment where aid=?';
 			db.query(sql, [id], (err, result) => {
 				if (err) {
 					reject(err);
@@ -94,8 +94,8 @@ exports.articleComment = async (req, res) => {
 	let Author = req.session.Username;
 	try {
 		let result = await new Promise((resolve, reject) => {
-			let sql = "insert into Blog_Comment(Author, Body, pid, Mentioner, Date) values(?, ?, ?, ?, ?)";
-			db.query(sql, [Author, body.Body, id, body.Mentioner, body.Date], (err, result) => {
+			let sql = "insert into Article_Comment(Author, Body, aid, Mentioner, CreateAt) values(?, ?, ?, ?, ?)";
+			db.query(sql, [Author, body.Body, id, body.Mentioner, body.CreateAt], (err, result) => {
 				if (err) {
 					reject(err);
 				} else {
@@ -114,7 +114,7 @@ exports.articleComment = async (req, res) => {
 exports.getArticlesCount = async (req, res) => {
 	try {
 		let count = await new Promise((resolve, reject) => {
-			let sql = "select * from Blog";
+			let sql = "select * from Article";
 			db.query(sql, (err, result) => {
 				if (err) {
 					reject(err);

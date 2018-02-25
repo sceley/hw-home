@@ -7,6 +7,7 @@ const { Content, Sider } = Layout;
 export default class Home extends Component {
 
 	render() {
+		console.log(this.state);
 		const settings = {
 			autoplay: true
 		};

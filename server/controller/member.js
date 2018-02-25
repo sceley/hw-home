@@ -4,12 +4,12 @@ exports.applyMember = async (req, res) => {
 	let Username = req.session.Username;
 	try {
 		let id = await new Promise((resolve, reject) => {
-			let sql = 'select user_id from User where Username=?';
+			let sql = 'select id from User where Username=?';
 			db.query(sql, [Username], (err, result) => {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(result[0].user_id);
+					resolve(result[0].id);
 				}
 			});
 		});

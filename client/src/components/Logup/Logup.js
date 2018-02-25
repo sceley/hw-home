@@ -6,7 +6,7 @@ import BreadCrumb from '../../common/BreadCrumb/BreadCrumb';
 // import 'whatwg-fetch';
 const FormItem = Form.Item;
 
-class NormalLogupForm extends Component {
+class Logup extends Component {
 
     state = {
         confirmDirty: false,
@@ -28,10 +28,8 @@ class NormalLogupForm extends Component {
                         return res.json();
                     }
                 }).then(json => {
-                    if (json.errorcode) {
-                        console.log(json.msg);
-                    } else {
-                        console.log('成功');
+                    if (!json.err) {
+                        this.props.history.push('/login');
                     }
                 });
             }
@@ -138,12 +136,6 @@ class NormalLogupForm extends Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(body)
-        }).then(res => {
-            return res.json();
-        }).then(json => {
-            if (json.errorcode === 0) {
-                console.log(json.msg);
-            }
         });
     }
 
@@ -180,107 +172,95 @@ class NormalLogupForm extends Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
-
-        return (
-            <div className="Logup-form">
-                <div className="log-title">
-                    账户注册
-            </div>
-                <Form onSubmit={this.handleSubmit}>
-                    <FormItem
-                        label="用户名"
-                    >
-                        {getFieldDecorator('Username', {
-                            rules: [{
-                                required: true, message: '请输入你的用户名!',
-                            }, {
-                                validator: this.checkUsername
-                            }],
-                        })(
-                            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="4-10个字符（汉字、字符、数字、下划线）" />
-                            )}
-                    </FormItem>
-                    <FormItem
-                        label="密码"
-                    >
-                        {getFieldDecorator('Password', {
-                            rules: [{
-                                required: true, message: '请输入你的密码!',
-                            }, {
-                                validator: this.checkConfirm,
-                            }],
-                        })(
-                            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="6-16个字符（字母、数字、符号的组合）" />
-                            )}
-                    </FormItem>
-                    <FormItem
-                        label="确认密码"
-                    >
-                        {getFieldDecorator('confirm', {
-                            rules: [{
-                                required: true, message: '请确认你的密码!',
-                            }, {
-                                validator: this.checkPassword,
-                            }],
-                        })(
-                            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="确认密码" onBlur={this.handleConfirmBlur} />
-                            )}
-                    </FormItem>
-                    <FormItem
-                        label="手机号"
-                    >
-                        {getFieldDecorator('Mobile', {
-                            rules: [{
-                                required: true, message: '请输入你的手机号!'
-                            }, {
-                                validator: this.checkMobile
-                            }],
-                        })(
-                            <Input prefix={<Icon type="mobile" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="11位手机号" />
-                            )}
-                    </FormItem>
-                    <FormItem
-                        label="邮箱验证码"
-                    >
-                        <Row gutter={8}>
-                            <Col span={12}>
-                                {getFieldDecorator('Captcha', {
-                                    rules: [{
-                                        required: true, message: '请输入验证码!',
-                                    }, {
-                                        validator: this.checkCaptcha,
-                                    }],
-                                })(
-                                    <Input prefix={<Icon type="code-o" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="验证码" />
-                                    )}
-                            </Col>
-                            <Col span={12}>
-                                <Button disabled={this.state.btnDisabled} onClick={this.getCaptcha}>获取验证码</Button>
-                            </Col>
-                        </Row>
-                    </FormItem>
-                    <FormItem>
-                        <Button type="primary" htmlType="submit">注册</Button>
-                    </FormItem>
-                </Form>
-            </div>
-        );
-    }
-}
-
-const WrappedNormalLogupForm = Form.create()(NormalLogupForm);
-
-
-export default class Logup extends Component {
-    render() {
-        console.log(this.props);
         return (
             <div className="Logup">
                 <BreadCrumb name="注册" />
                 <Row style={{ marginTop: '20px' }} type="flex" justify="center">
-                    <WrappedNormalLogupForm />
+                    <div className="log-wrap">
+                        <div className="log-title">
+                            账户注册
+                        </div>
+                        <Form onSubmit={this.handleSubmit}>
+                            <FormItem
+                                label="用户名"
+                            >
+                                {getFieldDecorator('Username', {
+                                    rules: [{
+                                        required: true, message: '请输入你的用户名!',
+                                    }, {
+                                        validator: this.checkUsername
+                                    }],
+                                })(
+                                    <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="4-10个字符（汉字、字符、数字、下划线）" />
+                                    )}
+                            </FormItem>
+                            <FormItem
+                                label="密码"
+                            >
+                                {getFieldDecorator('Password', {
+                                    rules: [{
+                                        required: true, message: '请输入你的密码!',
+                                    }, {
+                                        validator: this.checkConfirm,
+                                    }],
+                                })(
+                                    <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="6-16个字符（字母、数字、符号的组合）" />
+                                    )}
+                            </FormItem>
+                            <FormItem
+                                label="确认密码"
+                            >
+                                {getFieldDecorator('confirm', {
+                                    rules: [{
+                                        required: true, message: '请确认你的密码!',
+                                    }, {
+                                        validator: this.checkPassword,
+                                    }],
+                                })(
+                                    <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="确认密码" onBlur={this.handleConfirmBlur} />
+                                    )}
+                            </FormItem>
+                            <FormItem
+                                label="手机号"
+                            >
+                                {getFieldDecorator('Mobile', {
+                                    rules: [{
+                                        required: true, message: '请输入你的手机号!'
+                                    }, {
+                                        validator: this.checkMobile
+                                    }],
+                                })(
+                                    <Input prefix={<Icon type="mobile" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="11位手机号" />
+                                    )}
+                            </FormItem>
+                            <FormItem
+                                label="邮箱验证码"
+                            >
+                                <Row gutter={8}>
+                                    <Col span={12}>
+                                        {getFieldDecorator('Captcha', {
+                                            rules: [{
+                                                required: true, message: '请输入验证码!',
+                                            }, {
+                                                validator: this.checkCaptcha,
+                                            }],
+                                        })(
+                                            <Input prefix={<Icon type="code-o" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="验证码" />
+                                            )}
+                                    </Col>
+                                    <Col span={12}>
+                                        <Button disabled={this.state.btnDisabled} onClick={this.getCaptcha}>获取验证码</Button>
+                                    </Col>
+                                </Row>
+                            </FormItem>
+                            <FormItem>
+                                <Button type="primary" htmlType="submit">注册</Button>
+                            </FormItem>
+                        </Form>
+                    </div>
                 </Row>
             </div>
         );
     }
 };
+export default Form.create()(Logup);;

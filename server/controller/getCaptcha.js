@@ -14,9 +14,12 @@ module.exports = async (req, res) => {
 					}
 				});			
 			});
+		res.json({
+			err: 0
+		});
 	} catch (e) {
 		res.json({
-			errorcode: 555,
+			err: 555,
 			msg: '服务器错误'
 		});
 	}
