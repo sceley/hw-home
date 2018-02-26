@@ -13,21 +13,21 @@
 	line-height: 112px;
 }
 
-.follow-info {
+.follow-user {
 	text-align: center;
 	margin-top: 15px;
 }
 
-.Profile .follow-info a {
+.Profile .follow-user a {
 	display: block;
 }
 
-.Profile .follow-info a.count {
+.Profile .follow-user a.count {
 	color: #f4645f;
 	font-size: 25px;
 }
 
-.Profile .follow-info a.text {
+.Profile .follow-user a.text {
 	color: #999;
 }
 

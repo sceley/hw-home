@@ -131,7 +131,7 @@ exports.login = async (req, res) => {
 			});
 		}
 		let users = await new Promise((resolve, reject) => {
-			let sql = 'select Password, Username from User where Username=? or Mobile=? or Email=?';
+			let sql = 'select * from User where Username=? or Mobile=? or Email=?';
 			db.query(sql, [body.Account, body.Account, body.Account], (err, result) => {
 				if (err) {
 					reject(err);
@@ -156,10 +156,10 @@ exports.login = async (req, res) => {
 			});
 		});
 		if (result) {
-			console.log(users[0].Username);
 			req.session.Username = users[0].Username;
 			return res.json({
 				err: 0,
+				user: users[0]
 			});
 		} else {
 			return res.json({

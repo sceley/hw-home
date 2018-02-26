@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
+import { Link, Route } from 'react-router-dom';
 import { Menu, Col, Row, Icon, Card } from 'antd';
-import { Route } from 'react-router';
 import ManageMember from './ManageMember';
 
 export default class Admin extends Component {
 	state = {
-		key: ''
+		current: 'home'
 	}
 	handleClick = (e) => {
 		this.setState({
-			key: e.key
+			current: e.key
 		});
 	}
 	render () {
@@ -19,35 +19,34 @@ export default class Admin extends Component {
 					<Col span={5}>
 						<Menu
 							onClick={this.handleClick}
-							selectedKeys={[this.state.key]}
-							defaultSelectedKeys={['info']}
+							selectedKeys={[this.state.current]}
 							mode="inline"
 							theme="dark"
 						>
 							<Menu.Item key="home">
-								<a href="/user/edit">
+								<Link to="/user/edit">
 									<Icon type="home" />首页编辑
-								</a>
+								</Link>
 							</Menu.Item>
 							<Menu.Item key="community">
-								<a href="/user/edit/password">
+								<Link to="/user/edit/password">
 									<Icon type="lock" />社团编辑
-								</a>
+								</Link>
 							</Menu.Item>
 							<Menu.Item key="department">
-								<a href="/user/edit/password">
+								<Link to="/user/edit/password">
 									<Icon type="lock" />部门编辑
-								</a>
+								</Link>
 							</Menu.Item>
 							<Menu.Item key="member">
-								<a href="/admin/manage/member">
+								<Link to={`${this.props.match.url}/member`}>
 									<Icon type="picture" />会员管理
-								</a>
+								</Link>
 							</Menu.Item>
 							<Menu.Item key="event">
-								<a href="/user/edit/notify">
+								<Link to="/user/edit/notify">
 									<Icon type="notification" />事件编辑
-								</a>
+								</Link>
 							</Menu.Item>
 						</Menu>
 					</Col>

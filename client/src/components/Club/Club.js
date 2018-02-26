@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { List, Avatar, Button, Tabs, Col, Row, Divider, Card } from 'antd';
 import BreadCrumb from '../../common/BreadCrumb/BreadCrumb';
 import Profile from '../../common/Profile2/Profile';
@@ -30,11 +31,11 @@ export default class Club extends Component {
 							<Divider/>
 							<Divider/>
 							<div>
-								<a href="/create/topic">
+								<Link to="/create/topic">
 									<Button type="primary">
 										发布话题
 									</Button>
-								</a>
+								</Link>
 							</div>
 						</div>
 					</Col>

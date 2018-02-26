@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from 'react-router-dom';
 import { Row, Col, Card, Divider, Button, Icon } from 'antd';
 import Profile from '../../common/Profile2/Profile';
 import './User.css';
@@ -14,11 +15,11 @@ export default class User extends Component {
 							<Divider/>
 							<Divider/>
 							<div className="edit-info">
-								<a href="/user/edit">
+								<Link to="/user/edit">
 									<Button type="primary">
 										编辑个人资料
 									</Button>
-								</a>
+								</Link>
 							</div>
 						</div>
 					</Col>

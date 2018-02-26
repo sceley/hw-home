@@ -8,7 +8,6 @@ import './CreateTopic.css';
 
 export default class TopicCreate extends Component {
 	state = {
-		mdValue: '',
 		title: ''
 	}
 	handleSubmit = (value) => {
@@ -16,8 +15,7 @@ export default class TopicCreate extends Component {
 		let Body = this.refs.editor.getValue();
 		let body = {
 			Title,
-			Body,
-			Date: moment().format("YYYY-MM-DD")
+			Body
 		};
 		fetch(`${config.server}/topic/create`, {
 			method: 'POST',

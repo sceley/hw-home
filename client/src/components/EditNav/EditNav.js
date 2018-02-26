@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router';
+import { Route, Link } from 'react-router-dom';
 import { Row, Col, Menu, Icon } from 'antd';
 import Info from '../Info/Info';
 import Avatar from '../Avatar/Avatar';
@@ -8,14 +8,15 @@ import EditPassword from '../EditPassword/EditPassword';
 
 export default class Edit extends Component {
 	state = {
-		key: 'info'
+		current: 'info'
 	}
 
 	componentDidMount() {
-		let arr = window.location.pathname.split('/');
-		let key = arr[3] || 'info';
+	}
+
+	handleClick = (e) => {
 		this.setState({
-			key
+			current: e.key
 		});
 	}
 
@@ -26,30 +27,29 @@ export default class Edit extends Component {
 					<Col span={5}>
 						<Menu
 							onClick={this.handleClick}
-							selectedKeys={[this.state.key]}
-							defaultSelectedKeys={['info']}
+							selectedKeys={[this.state.current]}
 							mode="inline"
 							theme="dark"
 						>
 							<Menu.Item key="info">
-								<a href="/user/edit">
+								<Link to="/user/edit">
 									<Icon type="profile" />个人信息
-								</a>
+								</Link>
 							</Menu.Item>
 							<Menu.Item key="avatar">
-								<a href="/user/edit/avatar">
+								<Link to="/user/edit/avatar">
 									<Icon type="picture" />修改图像
-								</a>
+								</Link>
 							</Menu.Item>
 							<Menu.Item key="notify">
-								<a href="/user/edit/notify">
+								<Link to="/user/edit/notify">
 									<Icon type="notification" />信息通知
-								</a>
+								</Link>
 							</Menu.Item>
 							<Menu.Item key="password">
-								<a href="/user/edit/password">
+								<Link to="/user/edit/password">
 									<Icon type="lock" />修改密码
-								</a>
+								</Link>
 							</Menu.Item>
 						</Menu>
 					</Col>

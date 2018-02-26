@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import Home from './components/Home/Home';
 import Login from './components/Login/Login';
 import Logup from './components/Logup/Logup';
@@ -25,22 +24,29 @@ import { Row, Col } from 'antd';
 import './App.css';
 
 class App extends Component {
-
+    state = {
+        user: ''
+    }
+    deliver = (user) => {
+        this.setState({
+            user: user
+        });
+    }
     render() {
         return (
             <div className="App">
-                <Row className="nav" type="flex" justify="center">
-                    <Col xs={24} sm={23} md={22} lg={21} xl={20}>
-                        <Nav />
-                    </Col>
-                </Row>
-                <Row type="flex" justify="center">
-                    <Col xs={24} sm={23} md={22} lg={21} xl={20}>
-                        <Router>
-                            <section style={{ overflow: 'hidden' }}>
+                <Router>
+                    <section style={{ overflow: 'hidden' }}>
+                        <Row className="nav" type="flex" justify="center">
+                            <Col xs={24} sm={23} md={22} lg={21} xl={20}>
+                                <Nav/>
+                            </Col>
+                        </Row>
+                        <Row type="flex" justify="center">
+                            <Col xs={24} sm={23} md={22} lg={21} xl={20}>
                                 <Switch>
                                     <Route exact path="/" component={Home} />
-                                    <Route exact path="/login" component={Login} />
+                                    <Route deliver={this.deliver} exact path="/login" component={Login} />
                                     <Route exact path="/logup" component={Logup} />
                                     <Route exact path="/member" component={Member} />
                                     <Route exact path="/blog" component={Blog} />
@@ -57,18 +63,18 @@ class App extends Component {
                                     <Route exact path="/admin/login" component={AdminLogin}/>
                                     <Route path="/user/edit" component={EditNav} />
                                     <Route path="/admin/manage" component={Admin}/>
+                                    <Redirect from="/admin" to="/admin/manage"/>
                                     <Route path="*" component={NotFound} />
                                 </Switch>
-                            </section>
-                        </Router>
-                    </Col>
-                    <Col xs={24} sm={23} md={22} lg={21} xl={20}>
-                        <footer className="footer">©Created By HelloWorld Web Team</footer>
-                    </Col>
-                </Row>
+                            </Col>
+                            <Col xs={24} sm={23} md={22} lg={21} xl={20}>
+                                <footer className="extra">©Created By HelloWorld Web Team</footer>
+                            </Col>
+                        </Row>
+                    </section>
+                </Router>
             </div>
         );
     }
 };
-
 export default App;

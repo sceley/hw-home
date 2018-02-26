@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { Menu, Input, Avatar, Modal, Button, Badge } from 'antd';
 import logo from './logo.svg';
 import './Nav.css';
@@ -9,9 +10,8 @@ const SubMenu = Menu.SubMenu;
 export default class Navigation extends Component {
 	state = {
 		current: 'home',
-		login: false,
 		visible: false,
-		user: ''
+		user: null,
 	}
 
 	handleSearch = (e) => {
@@ -29,6 +29,15 @@ export default class Navigation extends Component {
 		});
 	}
 
+	handleClick = (e) => {
+		if (e.key === 'logo' || e.key === 'search') {
+			return;
+		}
+		this.setState({
+			current: e.key
+		});
+	}
+
 	handleLogout = () => {
 		fetch('http://localhost:8080/logout', {
 			method: 'GET',
@@ -41,7 +50,7 @@ export default class Navigation extends Component {
 			if (json.err === 0) {
 				this.handleCancel();
 				this.setState({
-					login: false
+					user: null
 				});
 			}
 		});
@@ -49,10 +58,6 @@ export default class Navigation extends Component {
 	}
 
 	componentWillMount() {
-		let key = window.location.pathname.slice(1) || 'home';
-		this.setState({
-			current: key
-		});
 		fetch('http://localhost:8080/user', {
 			method: 'GET',
 			credentials: 'include'
@@ -61,22 +66,22 @@ export default class Navigation extends Component {
 				return res.json();
 			}
 		}).then(json => {
-			if (json.errorcode === 0) {
+			if (json.err === 0) {
 				this.setState({
-					login: true,
-					info: json.user
+					user: json.user
 				});
 			}
 		});
 	}
 
 	render() {
+		console.log(this.props);
 		const avatar = 
 			<div>
 				<Badge style={{marginRight: '10px'}} showZero={true} count={0} />
 				{
-					this.state.info && this.state.info.Avatar ?
-					<Avatar src={this.state.info.Avatar}/>
+					this.state.user && this.state.user.Avatar ?
+					<Avatar src={this.state.user.Avatar}/>
 					:
 					<Avatar style={{ backgroundColor: '#87d068' }} size="large" icon="user" />
 				}
@@ -87,33 +92,48 @@ export default class Navigation extends Component {
 					selectedKeys={[this.state.current]}
 					mode="horizontal"
 					theme="dark"
+					onClick={this.handleClick}
 				>
-					<Menu.Item>
-						<a href="/">
+					<Menu.Item key="logo">
+						<Link to="/">
 							<img style={{ width: '60px' }} src={logo} alt="logo" />
-						</a>
+						</Link>
 					</Menu.Item>
 					<Menu.Item key="home">
-						<a href="/">网站首页</a>
+						<Link to="/">
+							网站首页
+						</Link>
 					</Menu.Item>
 					<Menu.Item key="community">
-						<a href="/community">社团简介</a>
+						<Link to="/community">
+							社团简介
+						</Link>
 					</Menu.Item>
 					<Menu.Item key="department">
-						<a href="/department">部门简介</a>
+						<Link to="/department">
+							部门简介
+						</Link>
 					</Menu.Item>
 					<Menu.Item key="event">
-						<a href="event">近期事件</a>
+						<Link to="/event">
+							近期事件
+						</Link>
 					</Menu.Item>
 					<SubMenu title={<span>生态系统</span>}>
 						<Menu.Item key="blog">
-							<a href="/blog">技术博客</a>
+							<Link to="/blog">
+								技术博客
+							</Link>
 						</Menu.Item>
 						<Menu.Item key="club">
-							<a href="/club">技术论坛</a>
+							<Link to="/club">
+								技术论坛
+							</Link>
 						</Menu.Item>
 						<Menu.Item key="resource">
-							<a href="/resource">技术资源</a>
+							<Link to="/resource">
+								技术资源
+							</Link>
 						</Menu.Item>
 					</SubMenu>
 					<Menu.Item key="search">
@@ -124,25 +144,35 @@ export default class Navigation extends Component {
 							style={{ width: 200 }}
 						/>
 					</Menu.Item>
-					{this.state.login ?
+					{this.state.user ?
 						<SubMenu title={avatar}>
 							<Menu.Item key="user">
-								<a href="/user">个人信息</a>
+								<Link to="/user">
+									个人信息
+								</Link>
 							</Menu.Item>
 							<Menu.Item key="member">
-								<a href="/member">申请会员</a>
+								<Link to="/member">
+									申请会员
+								</Link>
 							</Menu.Item>
 							<Menu.Item>
-								<a onClick={this.showModal} href="javascript:;">退出</a>
+								<a onClick={this.showModal} href="javascript:;">
+									退出
+								</a>
 							</Menu.Item>
 						</SubMenu>
 						:
 						<SubMenu title={<span>注册｜登录</span>}>
 							<Menu.Item key="logup">
-								<a href="/logup">注册</a>
+								<Link to="/logup">
+									注册
+								</Link>
 							</Menu.Item>
 							<Menu.Item key="login">
-								<a href="/login">登录</a>
+								<Link to="/login">
+									登录
+								</Link>
 							</Menu.Item>
 						</SubMenu>
 					}

@@ -5,7 +5,7 @@ import './Profile.css';
 export default class Profile1 extends Component {
 
 	state = {
-		info: ''
+		user: ''
 	}
 
 	componentDidMount = () => {
@@ -17,9 +17,9 @@ export default class Profile1 extends Component {
 				return res.json();
 			}
 		}).then(json => {
-			if (json.errorcode === 0) {
+			if (json.err === 0) {
 				this.setState({
-					info: json.user
+					user: json.user
 				});
 			}
 		});
@@ -30,34 +30,34 @@ export default class Profile1 extends Component {
 			<div className="Profile">
 				<a href="#">
 					{
-						this.state.info && this.state.info.Avatar ?
-							<img src={this.state.info.Avatar} alt="avatar" className="img-thumbnail avatar" />
+						this.state.user && this.state.user.Avatar ?
+							<img src={this.state.user.Avatar} alt="avatar" className="img-thumbnail avatar" />
 							:
 							<Avatar style={{ backgroundColor: '#87d068' }} size="large" icon="user" />
 					}
 				</a>
-				<h1>{ this.state.info && this.state.info.Username }</h1>
+				<h1>{ this.state.user && this.state.user.Username }</h1>
 					{
-						this.state.info && this.state.info.Sex == "woman" ?
+						this.state.user && this.state.user.Sex == "woman" ?
 						<Icon type="woman" />:<Icon type="man" />
 					}
-				<p><em>{ this.state.info && this.state.info.Introduction }</em></p>
+				<p><em>{ this.state.user && this.state.user.Introduction }</em></p>
 				<ul className="icon-list">
 					{
-						this.state.info && this.state.info.City ? 
-						<li><Icon type="environment" /><em style={{fontSize: '10px'}}>{this.state.info.City}</em></li>
+						this.state.user && this.state.user.City ? 
+						<li><Icon type="environment" /><em style={{fontSize: '10px'}}>{this.state.user.City}</em></li>
 						:null
 					}
 				</ul>
 				<ul className="icon-list icon-list-link">
 					{
-						this.state.info && this.state.info.Github ?
-						<li><a href={`https://github.com/${this.state.info.Github}`}><Icon type="github" /></a></li>
+						this.state.user && this.state.user.Github ?
+						<li><a href={`https://github.com/${this.state.user.Github}`}><Icon type="github" /></a></li>
 						:null
 					}
 					{
-						this.state.info && this.state.info.Website ?
-						<li><a href={this.state.info.Website}><Icon type="global" /></a></li>
+						this.state.user && this.state.user.Website ?
+						<li><a href={this.state.user.Website}><Icon type="global" /></a></li>
 						:null
 					}
 				</ul>

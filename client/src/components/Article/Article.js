@@ -25,7 +25,6 @@ export default class Article extends Component {
 		let id = this.props.match.params.id;
 		let body = {
 			Body,
-			Date: moment().format('YYYY-MM-DD'),
 			Mentioner
 		};
 		fetch(`http://localhost:8080/article/${id}/comment`, {
@@ -40,8 +39,8 @@ export default class Article extends Component {
 				return res.json();
 			}
 		}).then(json => {
-			if (!json.errorcode) {
-				console.log(json);
+			if (!json.err) {
+				
 			}
 		});
 	}
@@ -57,8 +56,7 @@ export default class Article extends Component {
 				return res.json();
 			}
 		}).then(json => {
-			if (json.errorcode === 0) {
-				json.article.Body = md(json.article.Body);
+			if (!json.err) {
 				this.setState({
 					article: json.article,
 					comment: json.comment
@@ -74,7 +72,8 @@ export default class Article extends Component {
 				<ul className="list-action">
 					<li className="list-action-item">
 						<span>
-							<Icon type="calendar" />2017-02-10
+							<Icon type="calendar" />
+							{ moment(this.state.article.CreateAt).format("YYYY-MM-DD")}
 						</span>
 						<em className="action-split"/>
 					</li>
@@ -95,7 +94,7 @@ export default class Article extends Component {
 					<li className="list-action-item">
 						<span>
 							<Icon type="eye-o" />
-							{this.state.article.Categories}
+							{this.state.article.VisitCount}
 						</span>
 					</li>
 					<li style={{float: 'right'}} className="list-action-item">
@@ -109,7 +108,7 @@ export default class Article extends Component {
 					<Col span={18}>
 						<Card title={title}>
 							<div dangerouslySetInnerHTML={{
-								__html: this.state.article.Body
+								__html: md(String(this.state.article.Body))
 							}}></div>
 						</Card>
 						<Card title={<span>{`${this.state.comment.length}个回复`}</span>} style={{marginTop: '20px'}}>
@@ -134,7 +133,9 @@ export default class Article extends Component {
 						              			<a href="">{`@${item.Mentioner} `}</a>:null
 						              		}
 						              		{
-						              			item.Body
+						              			<div dangerouslySetInnerHTML={{
+						              				__html: md(item.Body)
+						              			}}></div>
 						              		}
 						              	</div>
 						              }

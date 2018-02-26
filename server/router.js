@@ -24,6 +24,7 @@ const getArticles = require('./controller/article').getArticles;
 const getArticle = require('./controller/article').getArticle;
 const getArticlesCount = require('./controller/article').getArticlesCount;
 const articleComment = require('./controller/article').articleComment;
+const articleLike = require('./controller/article').articleLike;
 const applyMember = require('./controller/member').applyMember;
 const getMembers = require('./controller/member').getMembers
 const createTopic = require('./controller/topic').createTopic;
@@ -39,6 +40,7 @@ router.get('/logout', logout);
 router.get('/user', authLogin, getUser);
 router.get('/articles', getArticles);
 router.get('/article/:id', getArticle);
+router.get('/article/:id/like', articleLike);
 router.get('/articles/count', getArticlesCount);
 router.get('/members', getMembers);
 router.get('/topics', getTopics);

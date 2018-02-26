@@ -1,4 +1,5 @@
 const http = require('http');
+const path = require('path');
 const express = require('express');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
@@ -9,6 +10,7 @@ const redis = require('./model/redis');
 let app = express();
 let server = http.createServer(app);
 
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret: 'hw-club',
     key: 'community',

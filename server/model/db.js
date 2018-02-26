@@ -63,8 +63,10 @@ let table4 = `
 			Categories varchar(10), 
 			Poster varchar(100), 
 			Body longtext, 
-			Visit int,
-			CreateAt date, 
+			VisitCount int default 0,
+			CommentCount int default 0,
+			LikeCount int default 0,
+			CreateAt date,
 			primary key(id),
 			foreign key(uid) references User(id))
 			charset=utf8`;
@@ -170,7 +172,7 @@ let table12 = `
 				create table if not exists Topic_Comment_Like(
 				tcid int unsigned,
 				uid int unsigned,
-				foreign key(tcid) references Article_Comment(id),
+				foreign key(tcid) references Topic_Comment(id),
 				foreign key(uid) references User(id))
 				charset=utf8`;
 

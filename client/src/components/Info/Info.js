@@ -10,9 +10,8 @@ class EditInfoForm extends Component {
 	state = {
 		confirmDirty: false,
 		autoCompleteResult: [],
-		info: ''
+		user: ''
 	};
-
 
 	handleSubmit = (e) => {
 		e.preventDefault();
@@ -105,10 +104,10 @@ class EditInfoForm extends Component {
 				return res.json();
 			}
 		}).then(json => {
-			if (json.errorcode === 0) {
-				// console.log(json);
+			console.log(json);
+			if (!json.err) {
 				this.setState({
-					info: json.user
+					user: json.user
 				});
 			}
 		});
@@ -116,119 +115,102 @@ class EditInfoForm extends Component {
 
 	render() {
 		const { getFieldDecorator } = this.props.form;
-		const selectBefore = getFieldDecorator('prefix', {
-			initialValue: 'http://',
-		})(
-			<Select style={{ width: 90 }}>
-				<Option value="http://">Http://</Option>
-				<Option value="https://">Https://</Option>
-			</Select>
-			);
-
-		return (
-			<div className="EditInfoForm">
-				<Form onSubmit={this.handleSubmit}>
-					<FormItem
-						label="邮箱"
-					>
-						{getFieldDecorator('Email', {
-							initialValue: this.state.info && this.state.info.Email,
-							rules: [{
-								type: 'email', message: '邮箱格式不正确',
-							}, {
-								validator: this.checkEmail
-							}],
-						})(
-							<Input prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="如：name@website.com" />
-							)}
-					</FormItem>
-					<FormItem
-						label="用户名"
-					>
-						{getFieldDecorator('Username', {
-							initialValue: this.state.info && this.state.info.Username,
-							rules: [{
-								required: true, message: '请输入你的用户名!',
-							}, {
-								validator: this.checkUsername
-							}],
-						})(
-							<Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="4-10个字符（汉字、字符、数字、下划线）" />
-							)}
-					</FormItem>
-					<FormItem
-						label="性别"
-					>
-						{getFieldDecorator('Sex', {
-							initialValue: [this.state.info && this.state.info.Sex]
-						})
-							(
-							<Select style={{ width: 120 }} onChange={this.handleChange}>
-								<Option value="none">未选择</Option>
-								<Option value="man">男</Option>
-								<Option value="women">女</Option>
-							</Select>
-							)}
-					</FormItem>
-					<FormItem
-						label="个人网站"
-					>
-						{getFieldDecorator('Website', {
-							initialValue: this.state.info && this.state.info.Website
-						})
-							(
-							<Input prefix={<Icon type="global" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="如：example.com" />
-							)}
-					</FormItem>
-					<FormItem
-						label="Github Name"
-					>
-						{getFieldDecorator('Github', {
-							initialValue: this.state.info && this.state.info.Github
-						})
-							(
-							<Input prefix={<Icon type="github" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请跟 GitHub 上保持一致" />
-							)}
-					</FormItem>
-					<FormItem
-						label="城市"
-					>
-						{getFieldDecorator('City', {
-							initialValue: this.state.info && this.state.info.City
-						})
-							(
-							<Input prefix={<Icon type="environment" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="如：北京、广州" />
-							)}
-					</FormItem>
-					<FormItem
-						label="个人简介"
-					>
-						{getFieldDecorator('Introduction', {
-							initialValue: this.state.info && this.state.info.Introduction
-						})
-							(
-							<TextArea rows={4} />
-							)}
-					</FormItem>
-					<FormItem>
-						<Button type="primary" htmlType="submit">修改</Button>
-					</FormItem>
-				</Form>
-			</div>
-		);
-	}
-};
-
-const EditInfo = Form.create()(EditInfoForm);
-
-export default class Info extends Component {
-	render() {
 		return (
 			<div className="Info">
 				<Card title={<span><Icon type="setting" />编辑个人资料</span>}>
-					<EditInfo />
+					<div className="EditInfoForm">
+						<Form onSubmit={this.handleSubmit}>
+							<FormItem
+								label="邮箱"
+							>
+								{getFieldDecorator('Email', {
+									initialValue: this.state.user && this.state.user.Email,
+									rules: [{
+										type: 'email', message: '邮箱格式不正确',
+									}, {
+										validator: this.checkEmail
+									}],
+								})(
+									<Input prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="如：name@website.com" />
+									)}
+							</FormItem>
+							<FormItem
+								label="用户名"
+							>
+								{getFieldDecorator('Username', {
+									initialValue: this.state.user && this.state.user.Username,
+									rules: [{
+										required: true, message: '请输入你的用户名!',
+									}, {
+										validator: this.checkUsername
+									}],
+								})(
+									<Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="4-10个字符（汉字、字符、数字、下划线）" />
+									)}
+							</FormItem>
+							<FormItem
+								label="性别"
+							>
+								{getFieldDecorator('Sex', {
+									initialValue: [this.state.user && this.state.user.Sex]
+								})
+									(
+									<Select style={{ width: 120 }} onChange={this.handleChange}>
+										<Option value="none">未选择</Option>
+										<Option value="man">男</Option>
+										<Option value="women">女</Option>
+									</Select>
+									)}
+							</FormItem>
+							<FormItem
+								label="个人网站"
+							>
+								{getFieldDecorator('Website', {
+									initialValue: this.state.user && this.state.user.Website
+								})
+									(
+									<Input prefix={<Icon type="global" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="如：example.com" />
+									)}
+							</FormItem>
+							<FormItem
+								label="Github Name"
+							>
+								{getFieldDecorator('Github', {
+									initialValue: this.state.user && this.state.user.Github
+								})
+									(
+									<Input prefix={<Icon type="github" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请跟 GitHub 上保持一致" />
+									)}
+							</FormItem>
+							<FormItem
+								label="城市"
+							>
+								{getFieldDecorator('Location', {
+									initialValue: this.state.user && this.state.user.Location
+								})
+									(
+									<Input prefix={<Icon type="environment" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="如：北京、广州" />
+									)}
+							</FormItem>
+							<FormItem
+								label="个人简介"
+							>
+								{getFieldDecorator('Introduction', {
+									initialValue: this.state.user && this.state.user.Introduction
+								})
+									(
+									<TextArea rows={4} />
+									)}
+							</FormItem>
+							<FormItem>
+								<Button type="primary" htmlType="submit">修改</Button>
+							</FormItem>
+						</Form>
+					</div>
 				</Card>
 			</div>
 		);
 	}
 };
+
+export default Form.create()(EditInfoForm);

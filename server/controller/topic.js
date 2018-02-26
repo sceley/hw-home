@@ -1,11 +1,13 @@
 const db = require('../model/db');
+const moment = require('moment');
 exports.createTopic = async (req, res) => {
 	let body = req.body;
+	let CreateAt = moment().format("YYYY-MM-DD");
 	try {
 		let Author = req.session.Username;
 		let result = await new Promise((resolve, reject) => {
-			let sql = "insert into Topic(Title, Body, Author, Date) values(?, ?, ?, ?)";
-			db.query(sql, [body.Title, body.Body, Author, body.Date], (err, result) => {
+			let sql = "insert into Topic(Title, Body, Author, CreateAt) values(?, ?, ?, ?)";
+			db.query(sql, [body.Title, body.Body, Author, CreateAt], (err, result) => {
 				if (err) {
 					reject(err);
 				} else {
@@ -65,10 +67,11 @@ exports.topicComment = async (req, res) => {
 	let id = req.params.id;
 	let body = req.body;
 	let Author = req.session.Username;
+	let CreateAt = moment().format("YYYY-MM-DD");
 	try {
 		let result = await new Promise((resolve, reject) => {
-			let sql = "insert into Topic_Comment(Author, Body, pid, Mentioner, Date) values(?, ?, ?, ?, ?)";
-			db.query(sql, [Author, body.Body, id, body.Mentioner, body.CreateAt], (err, result) => {
+			let sql = "insert into Topic_Comment(Author, Body, pid, Mentioner, CreateAt) values(?, ?, ?, ?, ?)";
+			db.query(sql, [Author, body.Body, id, body.Mentioner, CreateAt], (err, result) => {
 				if (err) {
 					reject(err);
 				} else {

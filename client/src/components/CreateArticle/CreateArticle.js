@@ -39,6 +39,9 @@ class CreateArticleForm extends Component {
 	}
 
 	handleUpload = () => {
+		if (this.state.url) {
+			return 0;
+		}
 		let canvas = this.refs.cropper.getCroppedCanvas();
 		let blob = ParseImage(canvas);
 		let body = new FormData();
@@ -52,9 +55,10 @@ class CreateArticleForm extends Component {
 				return res.json();
 			}
 		}).then(json => {
-			if (json.errorcode === 0) {
+			if (!json.err) {
 				this.setState({
-					url: json.url
+					url: json.url,
+					visible: false
 				});
 			}
 		});
@@ -78,8 +82,6 @@ class CreateArticleForm extends Component {
 				}
 				values.Body = this.refs.editor.getValue();
 				values.Poster = this.state.url;
-				values.Date = moment().format("YYYY-MM-DD");
-				console.log(values);
 				fetch('http://localhost:8080/article/create', {
 					method: 'POST',
 					headers: {
@@ -92,7 +94,9 @@ class CreateArticleForm extends Component {
 						return res.json();
 					}
 				}).then(json => {
-					console.log(json);
+					if (!json.err) {
+						this.props.history.push('/blog');
+					}
 				});
 			} else {
 				console.log(err);
@@ -162,7 +166,7 @@ class CreateArticleForm extends Component {
 									<Cropper
 										ref="cropper"
 										src={this.state.src}
-										aspectRatio={8 / 3}
+										aspectRatio={6 / 4}
 										cropBoxResizable={false}
 										minCropBoxWidth={472}
 										zoomable={false}

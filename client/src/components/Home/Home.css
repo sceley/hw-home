@@ -17,7 +17,16 @@
 	overflow: hidden;
 }
 
-.contact img {
-	width: 50%;
-	margin: 0 auto;
+.contact {
+	background: white;
+	padding: 30px 20px;
+}
+
+.qr-wrap {
+	text-align: center;
+}
+
+.footer {
+	background: white;
+	padding: 30px 0;
 }

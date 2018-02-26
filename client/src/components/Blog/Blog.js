@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { List, Avatar, Icon, Button, Col, Row, Divider } from 'antd';
 import Profile from '../../common/Profile2/Profile';
 import BreadCrumb from '../../common/BreadCrumb/BreadCrumb';
 import config from '../../config';
 import md from '../../common/Markdown';
+import moment from 'moment';
 
 export default class Blog extends Component {
 	state = {
@@ -19,7 +21,7 @@ export default class Blog extends Component {
 				return res.json();
 			}
 		}).then(json => {
-			if (!json.errorcode) {
+			if (!json.err) {
 				this.setState({
 					count: json.count
 				});
@@ -35,11 +37,25 @@ export default class Blog extends Component {
 				return res.json();
 			}
 		}).then(json => {
-			if (json.errorcode === 0) {
+			if (!json.err) {
 				this.setState({
 					articles: json.articles
 				});
 			}
+		});
+	}
+
+	handleLikeClick = (e) => {
+		let id = e.currentTarget.getAttribute('data-id');
+		fetch(`${config.server}/article/${id}/like`, {
+			method: 'GET',
+			credentials: 'include'
+		}).then(res => {
+			if (res.ok) {
+				return res.json();
+			}
+		}).then(json => {
+			console.log(json);
 		});
 	}
 
@@ -76,7 +92,10 @@ export default class Blog extends Component {
 								renderItem={article => (
 									<List.Item
 										key={article.Title}
-										actions={[<IconText type="eye-o" text="156" />, <IconText type="message" text="2" />, <IconText type="like-o" text="156" />]}
+										actions={[<IconText type="eye-o" text={article.VisitCount} />, 
+												<IconText type="message" text={article.CommentCount} />, 
+												<a href="javascript:;" data-id={article.id} onClick={this.handleLikeClick}>
+												<IconText type="like" text={article.LikeCount} /></a>]}
 										extra={<img width={272} alt="logo" src={article.Poster} />}
 									>
 										<List.Item.Meta
@@ -85,25 +104,27 @@ export default class Blog extends Component {
 											description={
 												<ul className="ant-list-item-action">
 													<li>
-														<IconText type="calendar" text="2018-12-28" />
+														<IconText type="calendar" text={moment(article.CreateAt).format('YYYY-MM-DD')} />
 														<em className="ant-list-item-action-split" />
 													</li>
 													<li>
-														<IconText type="folder" text="Web" />
+														<IconText type="folder" text={article.Categories} />
 														<em className="ant-list-item-action-split" />
 													</li>
 													<li>
-														<IconText type="user" text="张三" />
+														<IconText type="user" text={article.Author} />
 													</li>
 												</ul>
 											}
 										/>
 										<div dangerouslySetInnerHTML={{
-											__html: md(article.Body.slice(0, 50))
+											__html: md(article.Body)
 										}}>
 										</div>
 										<div style={{ marginTop: '20px', textAlign: 'center' }}>
-											<a href={`/article/${article.blog_id}`}><Button>README MORE</Button></a>
+											<Link to={`/article/${article.id}`}>
+												<Button>README MORE</Button>
+											</Link>
 										</div>
 									</List.Item>
 								)}
@@ -115,11 +136,11 @@ export default class Blog extends Component {
 							<Divider/>
 							<Divider/>
 							<div>
-								<a href="/create/article">
+								<Link to="/create/article">
 									<Button type="primary">
 										发布文章
 									</Button>
-								</a>
+								</Link>
 							</div>
 						</div>
 					</Col>

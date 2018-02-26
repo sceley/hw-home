@@ -27,7 +27,6 @@ export default class Topic extends Component {
 			if (!json.errorcode) {
 				json.topic.Body = md(json.topic.Body
 					);
-				console.log(json.topic);
 				this.setState({
 					topic: json.topic,
 					comment: json.comment
@@ -46,7 +45,6 @@ export default class Topic extends Component {
 		let id = this.props.match.params.id;
 		let body = {
 			Body,
-			Date: moment().format('YYYY-MM-DD'),
 			Mentioner
 		};
 		fetch(`http://localhost:8080/topic/${id}/comment`, {
