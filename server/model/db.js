@@ -1,10 +1,6 @@
 const mysql = require('mysql');
-const db = mysql.createConnection({
-	host     : 'localhost',
-	user     : 'root',
-	password : '16051223',
-	database : 'hw'
-});
+const config = require('../config');
+const db = mysql.createConnection(config.db);
 db.connect();
 
 let table1 = `
@@ -66,6 +62,7 @@ let table4 = `
 			VisitCount int default 0,
 			CommentCount int default 0,
 			LikeCount int default 0,
+			Likes json,
 			CreateAt date,
 			primary key(id),
 			foreign key(uid) references User(id))
@@ -80,7 +77,9 @@ let table5 = `
 			aid int unsigned, 
 			Author varchar(10), 
 			Mentioner varchar(10),
-			Body longtext, 
+			Likes json,
+			LikeCount int default 0,
+			Body longtext,
 			CreateAt date, 
 			primary key(id),
 			foreign key(aid) references Article(id))
@@ -127,6 +126,8 @@ let table8 = `
 			Mentioner varchar(10),
 			Body longtext,
 			CreateAt date,
+			LikeCount int default 0,
+			Likes json,
 			primary key(id),
 			foreign key(tid) references Topic(id))
 			charset=utf8`;
@@ -143,40 +144,6 @@ let table9 =`
 			foreign key(tid) references Topic(id))
 			charset=utf8`;
 db.query(table9, (err, result) => {
-	if (err) return console.log(err);
-});
-
-let table10 = `
-				create table if not exists Article_Like(
-				aid int unsigned,
-				uid int unsigned,
-				foreign key(aid) references Article(id),
-				foreign key(uid) references User(id))
-				charset=utf8`;
-db.query(table10, (err, result) => {
-	if (err) return console.log(err);
-});
-
-let table11 = `
-				create table if not exists Article_Comment_Like(
-				acid int unsigned,
-				uid int unsigned,
-				foreign key(acid) references Article_Comment(id),
-				foreign key(uid) references User(id))
-				charset=utf8`
-db.query(table11, (err, result) => {
-	if (err) return console.log(err);
-});
-
-let table12 = `
-				create table if not exists Topic_Comment_Like(
-				tcid int unsigned,
-				uid int unsigned,
-				foreign key(tcid) references Topic_Comment(id),
-				foreign key(uid) references User(id))
-				charset=utf8`;
-
-db.query(table12, (err, result) => {
 	if (err) return console.log(err);
 });
 

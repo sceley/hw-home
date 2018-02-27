@@ -44,8 +44,8 @@ export default class Profile1 extends Component {
 				<p><em>{ this.state.user && this.state.user.Introduction }</em></p>
 				<ul className="icon-list">
 					{
-						this.state.user && this.state.user.City ? 
-						<li><Icon type="environment" /><em style={{fontSize: '10px'}}>{this.state.user.City}</em></li>
+						this.state.user && this.state.user.Location ? 
+						<li><Icon type="environment" /><em style={{fontSize: '10px'}}>{this.state.user.Location}</em></li>
 						:null
 					}
 				</ul>

@@ -5,6 +5,7 @@ import Editor from '../../common/Editor/Editor';
 import moment from 'moment';
 import Profile from '../../common/Profile1/Profile';
 import ParseDate from '../../common/ParseDate';
+import config from '../../config';
 import './Article.css';
 
 const { Link } = Anchor;
@@ -12,7 +13,9 @@ const { Link } = Anchor;
 export default class Article extends Component {
 	state = {
 		article: '',
-		comment: ''
+		comment: '',
+		uid: '',
+		collected: ''
 	}
 	handleSubmit = () => {
 		let Body = this.refs.editor.getValue();
@@ -40,7 +43,25 @@ export default class Article extends Component {
 			}
 		}).then(json => {
 			if (!json.err) {
-				
+				this.componentDidMount();
+				this.refs.editor.setValue('');
+			}
+		});
+	}
+	collectClick = () => {
+		let id = this.props.match.params.id;
+		fetch(`${config.server}/article/${id}/collect`, {
+			method: 'GET',
+			credentials: 'include'
+		}).then(res => {
+			if (res.ok) {
+				return res.json();
+			}
+		}).then(json => {
+			if (!json.err) {
+				this.setState({
+					collected: !this.state.collected
+				});
 			}
 		});
 	}
@@ -48,10 +69,27 @@ export default class Article extends Component {
 		let name = e.currentTarget.getAttribute('data-name');
 		this.refs.editor.setValue(`@${name} `);
 	}
+	likeClick = (e) => {
+		let id = e.currentTarget.getAttribute('data-id');
+		fetch(`${config.server}/article/comment/${id}/like`, {
+			method: 'GET',
+			credentials: 'include'
+		}).then(res => {
+			if (res.ok) {
+				return res.json();
+			}
+		}).then(json => {
+			if (!json.err) {
+				this.componentDidMount();
+			}
+		});
+	}
 	componentDidMount() {
 		let id = this.props.match.params.id;
-		fetch(`http://localhost:8080/article/${id}`)
-		.then(res => {
+		fetch(`http://localhost:8080/article/${id}`, {
+			method: 'GET',
+			credentials: 'include'
+		}).then(res => {
 			if (res.ok) {
 				return res.json();
 			}
@@ -59,12 +97,13 @@ export default class Article extends Component {
 			if (!json.err) {
 				this.setState({
 					article: json.article,
-					comment: json.comment
+					comment: json.comment,
+					uid: json.uid,
+					collected: json.collected
 				});
 			}
 		});
 	}
-
 	render() {
 		const title = 
 			<div>
@@ -98,7 +137,12 @@ export default class Article extends Component {
 						</span>
 					</li>
 					<li style={{float: 'right'}} className="list-action-item">
-						<a><Icon type="heart-o" /></a>
+						<a href="javascript:;" onClick={this.collectClick}>
+							{
+								this.state.collected?
+								<Icon type="heart" />:<Icon type="heart-o" />
+							}
+						</a>
 					</li>
 				</ul>
 			</div>
@@ -117,7 +161,18 @@ export default class Article extends Component {
 						        itemLayout="horizontal"
 						        dataSource={this.state.comment}
 						        renderItem={item => (
-						          <List.Item actions={[<a><Icon type="like-o"/></a>, <a data-name={item.Author} href="#editor" onClick={this.handleEnter}><Icon type="enter"/></a>]}>
+						          <List.Item actions={[
+						          						<a data-id={item.id} onClick={this.likeClick} href="javascript:;">
+						          							{
+						          								JSON.parse(item.Likes) instanceof Array && JSON.parse(item.Likes).indexOf(this.state.uid) === -1 ?
+						          								<Icon type="like-o" />:<Icon type="like"/>
+						          							}
+						          							{item.LikeCount}
+						          						</a>, 
+						          						<a data-name={item.Author} href="#editor" onClick={this.handleEnter}>
+						          							<Icon type="enter"/>
+						          						</a>
+						          					]}>
 						            <List.Item.Meta
 						              avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
 						              title={

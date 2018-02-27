@@ -11,7 +11,8 @@ export default class Blog extends Component {
 	state = {
 		count: '',
 		current: 1,
-		articles: ''
+		articles: '',
+		uid: ''
 	}
 
 	componentDidMount = () => {
@@ -31,15 +32,18 @@ export default class Blog extends Component {
 	}
 
 	pullData = (page) => {
-		fetch(`${config.server}/articles?page=${page}`)
-		.then(res => {
+		fetch(`${config.server}/articles?page=${page}`, {
+			method: 'GET',
+			credentials: 'include'
+		}).then(res => {
 			if (res.ok) {
 				return res.json();
 			}
 		}).then(json => {
 			if (!json.err) {
 				this.setState({
-					articles: json.articles
+					articles: json.articles,
+					uid: json.uid
 				});
 			}
 		});
@@ -55,7 +59,9 @@ export default class Blog extends Component {
 				return res.json();
 			}
 		}).then(json => {
-			console.log(json);
+			if (!json.err) {
+				this.pullData(this.state.current);
+			}
 		});
 	}
 
@@ -92,10 +98,19 @@ export default class Blog extends Component {
 								renderItem={article => (
 									<List.Item
 										key={article.Title}
-										actions={[<IconText type="eye-o" text={article.VisitCount} />, 
-												<IconText type="message" text={article.CommentCount} />, 
-												<a href="javascript:;" data-id={article.id} onClick={this.handleLikeClick}>
-												<IconText type="like" text={article.LikeCount} /></a>]}
+										actions={[
+													<IconText type="eye-o" text={article.VisitCount} />, 
+													<IconText type="message" text={article.CommentCount} />, 
+													<a href="javascript:;" data-id={article.id} onClick={this.handleLikeClick}>
+														{
+															JSON.parse(article.Likes) instanceof Array && JSON.parse(article.Likes).indexOf(this.state.uid) === -1 ?
+															<IconText type="like-o" text={article.LikeCount} />
+															:
+															<IconText type="like" text={article.LikeCount} />
+
+														}
+													</a>
+												]}	
 										extra={<img width={272} alt="logo" src={article.Poster} />}
 									>
 										<List.Item.Meta
