@@ -1,8 +1,30 @@
 exports.authLogin = async (req, res, next) => {
-	if (!req.session.Username) {
+	if (!req.session.uid) {
 		return res.json({
-			errorcode: 222,
-			msg: '用户还未登录'
+			err: 1,
+			msg: '还未登录'
+		});
+	} else {
+		next();
+	}
+};
+
+exports.authMember = async (req, res, next) => {
+	if (!req.session.member) {
+		return res.json({
+			err: 1,
+			msg: '不是会员，没有权限'
+		});
+	} else {
+		next();
+	}
+};
+
+exports.authAdmin = async (req, res, next) => {
+	if (!req.session.admin) {
+		return res.json({
+			err: 1,
+			msg: '不是管理员，没有权限'
 		});
 	} else {
 		next();

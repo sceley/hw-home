@@ -3,33 +3,33 @@ exports.allowMember = async (req, res) => {
 	let id = req.params.id;
 	let body = req.body;
 	try {
-		let result = await new Promise((resolve, reject) => {
-			let sql = "update Member set Active=? where mid=?";
-			db.query(sql, [body.Active, id], (err, result) => {
+		await new Promise((resolve, reject) => {
+			let sql = "update Member set Active=? where uid=?";
+			db.query(sql, [body.Active, id], (err) => {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(result);
+					resolve();
 				}
 			});
 		});
-		let result2 = await new Promise((resolve, reject) => {
-			let sql = "update User set Member=? where user_id=?";
-			db.query(sql, [body.Active, id], (err, result) => {
+		await new Promise((resolve, reject) => {
+			let sql = "update User set Member=? where uid=?";
+			db.query(sql, [body.Active, id], (err) => {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(result);
+					resolve();
 				}
 			});
 		});
 		res.json({
-			errorcode: 0,
+			err: 0,
 			msg: '成功'
 		});
 	} catch (e) {
 		res.json({
-			errorcode: 555,
+			err: 1,
 			msg: '服务器出错了'
 		});
 	}

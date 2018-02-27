@@ -37,11 +37,11 @@ class App extends Component {
             <div className="App">
                 <Router>
                     <section style={{ overflow: 'hidden' }}>
-                        // <Row className="nav" type="flex" justify="center">
-                        //     <Col xs={24} sm={23} md={22} lg={21} xl={20}>
-                        //         <Nav/>
-                        //     </Col>
-                        // </Row>
+                        <Row className="nav" type="flex" justify="center">
+                            <Col xs={24} sm={23} md={22} lg={21} xl={20}>
+                                <Nav/>
+                            </Col>
+                        </Row>
                         <Row type="flex" justify="center">
                             <Col xs={24} sm={23} md={22} lg={21} xl={20}>
                                 <Switch>

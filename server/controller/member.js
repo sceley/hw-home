@@ -1,36 +1,26 @@
 const db = require('../model/db');
+
 exports.applyMember = async (req, res) => {
 	let body = req.body;
-	let Username = req.session.Username;
+	let uid = req.session.uid;
 	try {
-		let id = await new Promise((resolve, reject) => {
-			let sql = 'select id from User where Username=?';
-			db.query(sql, [Username], (err, result) => {
+		await new Promise((resolve, reject) => {
+			let sql = 'insert into Member(Name, Team, SchoolNumber, Description, uid) values(?, ?, ?, ?, ?)';
+			db.query(sql, [body.Name, body.Team, body.SchoolNumber, body.Description, uid], (err) => {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(result[0].id);
-				}
-			});
-		});
-
-		let result = await new Promise((resolve, reject) => {
-			let sql = 'insert into Member(Name, Team, SchoolNumber, Description, mid) values(?, ?, ?, ?, ?)';
-			db.query(sql, [body.Name, body.Team, body.SchoolNumber, body.Description, id], (err, result) => {
-				if (err) {
-					reject(err);
-				} else {
-					resolve(result);
+					resolve();
 				}
 			});
 		});
 		res.json({
-			errorcode: 0,
+			err: 0,
 			msg: '申请成功'
 		});
 	} catch (e) {
 		res.json({
-			errorcode: 555,
+			err: 555,
 			msg: '服务器出错了'
 		});
 	}
@@ -38,23 +28,23 @@ exports.applyMember = async (req, res) => {
 
 exports.getMembers = async (req, res) => {
 	try {
-		let result = await new Promise((resolve, reject) => {
+		let members = await new Promise((resolve, reject) => {
 			let sql = "select * from Member";
-			db.query(sql, (err, result) => {
+			db.query(sql, (err, members) => {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(result);
+					resolve(members);
 				}
 			});
 		});
 		res.json({
-			errorcode: 0,
-			members: result
+			err: 0,
+			members
 		});
 	} catch (e) {
 		res.json({
-			errorcode: 555,
+			err: 1,
 			msg: '服务器出错了'
 		})
 	}

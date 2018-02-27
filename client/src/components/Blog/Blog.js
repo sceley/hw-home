@@ -12,7 +12,8 @@ export default class Blog extends Component {
 		count: '',
 		current: 1,
 		articles: '',
-		uid: ''
+		uid: '',
+		user: ''
 	}
 
 	componentDidMount = () => {
@@ -25,6 +26,20 @@ export default class Blog extends Component {
 			if (!json.err) {
 				this.setState({
 					count: json.count
+				});
+			}
+		});
+		fetch(`${config.server}/user`, {
+			method: 'GET',
+			credentials: 'include'
+		}).then(res => {
+			if (res.ok) {
+				return res.json();
+			}
+		}).then(json => {
+			if (json.err === 0) {
+				this.setState({
+					user: json.user
 				});
 			}
 		});
@@ -147,7 +162,7 @@ export default class Blog extends Component {
 					</Col>
 					<Col span={6}>
 						<div className="user-basic-info">
-							<Profile />
+							<Profile user={this.state.user}/>
 							<Divider/>
 							<Divider/>
 							<div>

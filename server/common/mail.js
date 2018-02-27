@@ -1,25 +1,23 @@
 const nodemailer = require('nodemailer');
-// const 
-const fs = require('fs');
-let transporter = nodemailer.createTransport({
-    host: 'smtp.126.com',
-    port: 465,
-    secure: true, // true for 465, false for other ports
-    auth: {
-        user: "sceley520@126.com",
-        pass: "16051223hw"
-    }
-});
-exports.sendCaptcha = async (req, res) => {
+const config = require('../config');
+let transporter = nodemailer.createTransport(config.email);
+exports.sendCaptcha = async (Email, num) => {
     let mailOptions = {
-        from: '<sceley520@126.com>', // sender address
-        to: '<292452530@qq.com>', // list of receivers
-        subject: 'HelloWolrdTeam', // Subject line
-        html: fs.readFileSync('./index.html') // html body
+        from: 'HelloWorld社团<sceley520@126.com>', // sender address
+        to: Email, // list of receivers
+        subject: 'HelloWorld社团注册验证码', // Subject line
+        html: `<div><p>Hi，欢迎您光顾HelloWorld社团。
+        我们是HelloWorld社团提供的一个休闲与技术交流并济网站，
+        致力于为对HelloWorld社团感兴趣的小伙伴提供的交流场所。</p>
+        <a href="javascript:;" style="color: red, fontSize: 2em">${num}</a></div>` // html body
     };
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            return console.log(error);
-        }
+    await new Promise((resolve, reject) => {
+        transporter.sendMail(mailOptions, (err, info) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
     });
 };

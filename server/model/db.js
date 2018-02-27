@@ -12,7 +12,7 @@ let table1 = `
 			Email varchar(20),
 			Avatar varchar(100),
 			Member boolean default false,
-			Sex varchar(5) default 'man',
+			Sex varchar(10) default 'man',
 			Website varchar(50),
 			Location varchar(10),
 			Introduction varchar(50) default '这家伙很懒，什么个性签名都没有留下',
@@ -42,9 +42,10 @@ db.query(table2, (err, result) => {
 let table3 = `
 			create table if not exists Fans(
 			uid int unsigned,
-			Follower varchar(10),
+			fuid int unsigned,
 			CreateAt date,
-			foreign key(uid) references User(id))
+			foreign key(uid) references User(id), 
+			foreign key(fuid) references User(id))
 			charset=utf8`;
 db.query(table3, (err, result) => {
 	if (err) return console.log(err);

@@ -47,7 +47,7 @@ export default class Navigation extends Component {
 				return res.json();
 			}
 		}).then(json => {
-			if (json.err === 0) {
+			if (!json.err) {
 				this.handleCancel();
 				this.setState({
 					user: null
@@ -57,7 +57,7 @@ export default class Navigation extends Component {
 
 	}
 
-	componentWillMount() {
+	componentWillMount = () => {
 		fetch('http://localhost:8080/user', {
 			method: 'GET',
 			credentials: 'include'
@@ -66,7 +66,7 @@ export default class Navigation extends Component {
 				return res.json();
 			}
 		}).then(json => {
-			if (json.err === 0) {
+			if (!json.err) {
 				this.setState({
 					user: json.user
 				});
@@ -75,7 +75,6 @@ export default class Navigation extends Component {
 	}
 
 	render() {
-		console.log(this.props);
 		const avatar = 
 			<div>
 				<Badge style={{marginRight: '10px'}} showZero={true} count={0} />

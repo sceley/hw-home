@@ -29,8 +29,13 @@ class Login extends Component {
 			}
 		});
 	}
+
+	remember = () => {
+		this.props.form.validateFields((err, values) => {
+			console.log(values);
+		});
+	}
 	render() {
-		console.log(this.props);
 		const { getFieldDecorator } = this.props.form;
 		return (
 			<div className="Login">

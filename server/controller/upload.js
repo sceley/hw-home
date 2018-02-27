@@ -10,7 +10,7 @@ exports.upload = async (req, res) => {
 		});
 	} catch (e) {
 		res.json({
-			err: 555,
+			err: 1,
 			msg: "服务器错误"
 		});
 	}

@@ -3,32 +3,31 @@ const redis = require('../model/redis');
 
 exports.checkUsername = async (req, res) => {
 	let body = req.body;
-	let sql = 'select Username from User where Username=?';
 	try {
-		let result = await new Promise((resolve, reject) => {
-			db.query(sql, [body.Username], (err, result) => {
+		let users = await new Promise((resolve, reject) => {
+			let sql = 'select Username from User where Username=?';
+			db.query(sql, [body.Username], (err, users) => {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(result);
+					resolve(users);
 				}
 			});
 		});
-		console.log(result);
-		if (result.length === 0 || (req.session.Username && req.session.Username === result[0].Username) ) {
+		if (users.length === 0) {
 			res.json({
-				errorcode: 444,
+				err: 0,
 				msg: '该用户名没被使用'
 			});
 		} else {
 			res.json({
-				errorcode: 111,
+				err: 1,
 				msg: '该用户名已经被使用'
 			});
 		}
 	} catch (e) {
 		res.json({
-			errorcode: 555,
+			err: 1,
 			msg: '服务器错误'
 		});
 	}
@@ -36,31 +35,31 @@ exports.checkUsername = async (req, res) => {
 
 exports.checkMobile = async (req, res) => {
 	let body = req.body;
-	let sql = 'select Mobile from User where Mobile=?';
 	try {
-		let result = await new Promise((resolve, reject) => {
-			db.query(sql, [body.Mobile], (err, result) => {
+		let users = await new Promise((resolve, reject) => {
+			let sql = 'select Mobile from User where Mobile=?';
+			db.query(sql, [body.Mobile], (err, users) => {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(result);
+					resolve(users);
 				}
 			});
 		});
-		if (result.length === 0) {
+		if (users.length === 0) {
 			res.json({
-				errorcode: 0,
+				err: 0,
 				msg: '该手机号还没被注册'
 			});
 		} else {
 			res.json({
-				errorcode: 111,
+				err: 1,
 				msg: '该手机号已经被注册'
 			});
 		}
 	} catch (e) {
 		res.json({
-			errorcode: 555,
+			err: 1,
 			msg: '服务器错误'
 		});
 	}
@@ -69,82 +68,110 @@ exports.checkMobile = async (req, res) => {
 exports.checkCaptcha = async (req, res) => {
 	let body = req.body;
 	try {
-		let result = await new Promise((resolve, reject) => {
-			redis.get(body.Mobile, (err, result) => {
+		let Captcha = await new Promise((resolve, reject) => {
+			redis.get(body.Email, (err, Captcha) => {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(result);
+					resolve(Captcha);
 				}
 			});
 		});
-		if (body.Captcha == result) {
+		if (body.Captcha === Captcha) {
 			res.json({
-				errorcode: 0,
+				err: 0,
 				msg: '验证码正确'
 			});
 		} else {
 			res.json({
-				errorcode: 222,
+				err: 1,
 				msg: '验证码不正确'
 			});
 		}
 	} catch (e) {
 		res.json({
-			errorcode: 555,
+			err: 1,
 			msg: '服务器错误'
 		});
 	}
 };
 
-exports.checkEmail = async (req, res) => {
+exports.checkEditEmail = async (req, res) => {
+	let uid = req.session.uid;
 	let body = req.body;
-	let sql = 'select Email from User where Email=?';
 	try {
-		let _Email = await new Promise((resolve, reject) => {
-			db.query(sql, [body.Email], (err, result) => {
+		let user = await new Promise((resolve, reject) => {
+			let sql = 'select * from User where id=?';
+			db.query(sql, [uid], (err, users) => {
 				if (err) {
 					reject(err);
 				} else {
-					if (result.length) {
-						resolve(result[0].Email);
-					} else {
-						resolve(null);
-					}
+					resolve(users[0]);
 				}
 			});
 		});
-		let Email;
-		if (req.session.Username) {
-			let sql = 'select Email from User where Username=?';
-			Email = await new Promise((resolve, reject) => {
-				db.query(sql, [req.session.Username], (err, result) => {
-					if (err) {
-						reject(err);
-					} else {
-						if (result.length) {
-							resolve(result[0].Email);
-						} else {
-							resolve(null);
-						}
-					}
-				});
+		if (body.Email === user.Email) {
+			res.json({
+				err: 0
 			});
 		}
-		if (_Email && _Email !== Email) {
+		let	users = await new Promise((resolve, reject) => {
+			let sql = 'select * from User where Email=?';
+			db.query(sql, [body.Email], (err, users) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(users);
+				}
+			});
+		});
+		if (users.length) {
 			res.json({
-				errorcode: 111,
+				err: 1,
 				msg: '该Email已经被注册'
 			});
 		} else {
 			res.json({
-				errorcode: 0,
+				err: 0,
 				msg: '该Email还没被注册'
 			});
 		}
 	} catch (e) {
 		res.json({
-			errorcode: 555,
+			err: 1,
+			msg: '服务器错误'
+		});
+	}
+
+};
+
+exports.checkEmail = async (req, res) => {
+	let body = req.body;
+	try {
+		let	users = await new Promise((resolve, reject) => {
+			let sql = 'select * from User where Email=?';
+			db.query(sql, [body.Email], (err, users) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(users);
+				}
+			});
+		});
+		if (users.length) {
+			res.json({
+				err: 1,
+				msg: '该Email已经被注册'
+			});
+		} else {
+			res.json({
+				err: 0,
+				msg: '该Email还没被注册'
+			});
+		}
+	} catch (e) {
+		res.json({
+			err: 1,
 			msg: '服务器错误'
 		});
 	}

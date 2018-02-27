@@ -2,16 +2,26 @@ const db = require('../model/db');
 const moment = require('moment');
 exports.createArticle = async (req, res) => {
 	let body = req.body;
+	let uid = req.session.uid;
+	let CreateAt = moment().format("YYYY-MM-DD");
 	try {
-		let Author = req.session.Username;
-		let CreateAt = moment().format("YYYY-MM-DD");
-		let result = await new Promise((resolve, reject) => {
-			let sql = "insert into Article(Title, Categories, Poster, Body, Author, CreateAt) values(?, ?, ?, ?, ?, ?)";
-			db.query(sql, [body.Title, body.Categories, body.Poster, body.Body, Author, CreateAt], (err, result) => {
+		let user = await new Promise((resolve, reject) => {
+			let sql = 'select * from User where id=?';
+			db.query(sql, [uid], (err, uses) => {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(result);
+					resolve(uses[0]);
+				}
+			});
+		});
+		await new Promise((resolve, reject) => {
+			let sql = "insert into Article(Title, Categories, Poster, Body, Author, CreateAt, uid) values(?, ?, ?, ?, ?, ?, ?)";
+			db.query(sql, [body.Title, body.Categories, body.Poster, body.Body, user.Username, CreateAt, uid], (err) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve();
 				}
 			});
 		});
@@ -21,29 +31,19 @@ exports.createArticle = async (req, res) => {
 		});
 	} catch (e) {
 		res.json({
-			err: 555,
+			err: 1,
 			msg: '服务出错了'
 		});
 	}
 };
 exports.getArticles = async (req, res) => {
 	let page = req.query.page;
-	if (page === undefined)
+	if (!page)
 		page = 1;
 	try {
-		let Username = req.session.Username;
-		let uid = await new Promise((resolve, reject) => {
-			let sql = "select id from User where Username=?";
-			db.query(sql, [Username], (err, result) => {
-				if (err) {
-					reject(err);
-				} else {
-					resolve(result[0].id);
-				}
-			});
-		});
+		let uid = req.session.uid;
 		let articles = await new Promise((resolve, reject) => {
-			let sql = `select * from Article limit ?, ?`;
+			let sql = 'select * from Article limit ?, ?';
 			db.query(sql, [5 * (page - 1), 5], (err, articles) => {
 				if (err) {
 					reject(err);
@@ -54,68 +54,57 @@ exports.getArticles = async (req, res) => {
 		});
 		res.json({
 			err: 0,
-			msg: '成功',
 			articles,
 			uid
 		});
 	} catch (e) {
 		res.json({
-			err: 555,
+			err: 1,
 			msg: '服务器出错了'
 		});
 	}
 };
 exports.getArticle = async (req, res) => {
 	let id = req.params.id;
-	let Username = req.session.Username;
+	let uid = req.session.uid;
 	try {
 		await new Promise((resolve, reject) => {
 			let sql = "update Article set VisitCount=VisitCount+1 where id=?";
-			db.query(sql, [id], (err, result) => {
+			db.query(sql, [id], (err) => {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(result);
-				}
-			});
-		});
-		let uid = await new Promise((resolve, reject) => {
-			let sql = 'select id from User where Username=?';
-			db.query(sql, [Username], (err, users) => {
-				if (err) {
-					reject(err);
-				} else {
-					resolve(users[0].id);
+					resolve();
 				}
 			});
 		});
 		let collected = await new Promise((resolve, reject) => {
 			let sql = 'select * from Article_Collect where uid=? and aid=?';
-			db.query(sql, [uid, id], (err, result) => {
+			db.query(sql, [uid, id], (err, collects) => {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(result.length);
+					resolve(collects.length);
 				}
 			});
 		});
 		let article = await new Promise((resolve, reject) => {
 			let sql = "select * from Article where id=?";
-			db.query(sql, [id], (err, result) => {
+			db.query(sql, [id], (err, articles) => {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(result[0]);
+					resolve(articles[0]);
 				}
 			});
 		});
 		let comment = await new Promise((resolve, reject) => {
 			let sql = 'select * from Article_Comment where aid=?';
-			db.query(sql, [id], (err, result) => {
+			db.query(sql, [id], (err, comment) => {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(result);
+					resolve(comment);
 				}
 			});
 		});
@@ -128,36 +117,35 @@ exports.getArticle = async (req, res) => {
 			collected
 		});
 	} catch (e) {
-		console.log(e);
 		res.json({
-			err: 555,
+			err: 1,
 			msg: '服务器出错了'
 		});
 	}
 };
 exports.articleComment = async (req, res) => {
 	let id = req.params.id;
+	let uid = req.session.uid;
 	let body = req.body;
-	let Author = req.session.Username;
 	let CreateAt = moment().format("YYYY-MM-DD");
 	try {
 		await new Promise((resolve, reject) => {
 			let sql = "insert into Article_Comment(Author, Body, aid, Mentioner, CreateAt) values(?, ?, ?, ?, ?)";
-			db.query(sql, [Author, body.Body, id, body.Mentioner, CreateAt], (err, result) => {
+			db.query(sql, [Author, body.Body, id, body.Mentioner, CreateAt], (err) => {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(result);
+					resolve();
 				}
 			});
 		});
 		await new Promise((resolve, reject) => {
 			let sql = "update Article set CommentCount=CommentCount+1 where id=?";
-			db.query(sql, [id], (err, result) => {
+			db.query(sql, [id], (err) => {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(result);
+					resolve();
 				}
 			});
 		});
@@ -166,21 +154,21 @@ exports.articleComment = async (req, res) => {
 		})
 	} catch (e) {
 		res.json({
-			err: 555,
+			err: 1,
 			msg: '服务器出错了'
 		});
 	}
 };
 
-exports.getArticlesCount = async (req, res) => {
+exports.getArticlesCount = async(req, res) => {
 	try {
 		let count = await new Promise((resolve, reject) => {
 			let sql = "select * from Article";
-			db.query(sql, (err, result) => {
+			db.query(sql, (err, articles) => {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(result.length);
+					resolve(articles.length);
 				}
 			});
 		});
@@ -190,7 +178,7 @@ exports.getArticlesCount = async (req, res) => {
 		});
 	} catch (e) {
 		res.json({
-			err: 555,
+			err: 1,
 			msg: '服务器出错了'
 		});
 	}
@@ -198,30 +186,20 @@ exports.getArticlesCount = async (req, res) => {
 
 exports.articleLike = async (req, res) => {
 	let id = req.params.id;
+	let uid = req.session.uid;
 	try {
-		let Username = req.session.Username;
-		let uid = await new Promise((resolve, reject) => {
-			let sql = "select id from User where Username=?";
-			db.query(sql, [Username], (err, result) => {
-				if (err) {
-					reject(err);
-				} else {
-					resolve(result[0].id);
-				}
-			});
-		});
-		let result = await new Promise((resolve, reject) => {
+		let article = await new Promise((resolve, reject) => {
 			let sql = 'select Likes, LikeCount from Article where id=?';
-			db.query(sql, [id], (err, result) => {
+			db.query(sql, [id], (err, articles) => {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(result[0]);
+					resolve(articles[0]);
 				}
 			});
 		});
-		let Likes = JSON.parse(result.Likes);
-		let LikeCount = result.LikeCount;
+		let Likes = JSON.parse(article.Likes);
+		let LikeCount = article.LikeCount;
 		if (Likes instanceof Array === false) {
 			Likes = [];
 		}
@@ -247,7 +225,7 @@ exports.articleLike = async (req, res) => {
 		});
 	} catch (e) {
 		res.json({
-			err: 555,
+			err: 1,
 			msg: '服务器出错了'
 		});
 	}
@@ -255,18 +233,8 @@ exports.articleLike = async (req, res) => {
 
 exports.articleCommentLike = async (req, res) => {
 	let id = req.params.id;
+	let uid = req.session.uid;
 	try {
-		let Username = req.session.Username;
-		let uid = await new Promise((resolve, reject) => {
-			let sql = "select id from User where Username=?";
-			db.query(sql, [Username], (err, result) => {
-				if (err) {
-					reject(err);
-				} else {
-					resolve(result[0].id);
-				}
-			});
-		});
 		let result = await new Promise((resolve, reject) => {
 			let sql = 'select Likes, LikeCount from Article_Comment where id=?';
 			db.query(sql, [id], (err, result) => {
@@ -304,7 +272,7 @@ exports.articleCommentLike = async (req, res) => {
 		});
 	} catch (e) {
 		res.json({
-			err: 555,
+			err: 1,
 			msg: '服务器出错了'
 		});
 	}
@@ -312,25 +280,15 @@ exports.articleCommentLike = async (req, res) => {
 
 exports.articleCollect = async(req, res) => {
 	let id = req.params.id;
-	let Username = req.session.Username;
+	let uid = req.session.uid;
 	try {
-		let uid = await new Promise((resolve, reject) => {
-			let sql = 'select id from User where Username=?';
-			db.query(sql, [Username], (err, users) => {
-				if (err) {
-					reject(err);
-				} else {
-					resolve(users[0].id);
-				}
-			});
-		});
 		let collected = await new Promise((resolve, reject) => {
 			let sql = 'select * from Article_Collect where uid=? and aid=?';
-			db.query(sql, [uid, id], (err, result) => {
+			db.query(sql, [uid, id], (err, articlecollects) => {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(result.length);
+					resolve(articlecollects.length);
 				}
 			});
 		});
@@ -345,7 +303,7 @@ exports.articleCollect = async(req, res) => {
 					}
 				});
 			});
-			return res.json({
+			res.json({
 				err: 0
 			});
 		} else {
@@ -364,9 +322,8 @@ exports.articleCollect = async(req, res) => {
 			});
 		}
 	} catch (e) {
-		console.log(e);
 		res.json({
-			err:555,
+			err:　1,
 			msg: '服务器出错了'
 		});
 	}

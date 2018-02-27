@@ -3,7 +3,8 @@ import { Row, Col, Icon, List, Avatar, Button, Divider, Card, Anchor } from 'ant
 import md from '../../common/Markdown';
 import Editor from '../../common/Editor/Editor';
 import moment from 'moment';
-import Profile from '../../common/Profile1/Profile';
+import Profile1 from '../../common/Profile1/Profile';
+import Profile2 from '../../common/Profile2/Profile';
 import ParseDate from '../../common/ParseDate';
 import config from '../../config';
 import './Article.css';
@@ -15,7 +16,8 @@ export default class Article extends Component {
 		article: '',
 		comment: '',
 		uid: '',
-		collected: ''
+		collected: '',
+		user: ''
 	}
 	handleSubmit = () => {
 		let Body = this.refs.editor.getValue();
@@ -84,6 +86,24 @@ export default class Article extends Component {
 			}
 		});
 	}
+
+	getUserById = (id) => {
+		fetch(`${config.server}/user/${id}`, {
+			method: 'GET',
+			credentials: 'include'
+		}).then(res => {
+			if (res.ok) {
+				return res.json();
+			}
+		}).then(json => {
+			if (!json.err) {
+				this.setState({
+					user: json.user
+				});
+			}
+		});
+	}
+
 	componentDidMount() {
 		let id = this.props.match.params.id;
 		fetch(`http://localhost:8080/article/${id}`, {
@@ -101,6 +121,7 @@ export default class Article extends Component {
 					uid: json.uid,
 					collected: json.collected
 				});
+				this.getUserById(json.article.uid);
 			}
 		});
 	}
@@ -208,7 +229,12 @@ export default class Article extends Component {
 					</Col>
 					<Col style={{background: 'white'}} span={6}>
 						<div className="user-basic-info">
-							<Profile/>
+							{
+								this.state.user.id == this.state.uid?
+								<Profile2 uid={this.state.uid} user={this.state.user}/>
+								:
+								<Profile1 uid={this.state.uid} user={this.state.user}/>
+							}
 						</div>
 					</Col>
 				</Row>

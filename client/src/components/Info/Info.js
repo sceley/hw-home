@@ -158,7 +158,7 @@ class EditInfoForm extends Component {
 									<Select style={{ width: 120 }} onChange={this.handleChange}>
 										<Option value="none">未选择</Option>
 										<Option value="man">男</Option>
-										<Option value="women">女</Option>
+										<Option value="woman">女</Option>
 									</Select>
 									)}
 							</FormItem>

@@ -98,8 +98,6 @@ class CreateArticleForm extends Component {
 						this.props.history.push('/blog');
 					}
 				});
-			} else {
-				console.log(err);
 			}
 	    });
 	}

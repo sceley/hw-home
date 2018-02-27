@@ -10,6 +10,25 @@ import './Club.css';
 const TabPane = Tabs.TabPane;
 
 export default class Club extends Component {
+	state = {
+		user: ''
+	}
+	componentDidMount = () => {
+		fetch(`${config.server}/user`, {
+			method: 'GET',
+			credentials: 'include'
+		}).then(res => {
+			if (res.ok) {
+				return res.json();
+			}
+		}).then(json => {
+			if (!json.err) {
+				this.setState({
+					user: json.user
+				});
+			}
+		});
+	}
 	render() {
 		return (
 			<div className="Club">
@@ -27,7 +46,7 @@ export default class Club extends Component {
 					</Col>
 					<Col span={6}>
 						<div className="user-basic-info">
-							<Profile />
+							<Profile user={this.state.user} />
 							<Divider/>
 							<Divider/>
 							<div>

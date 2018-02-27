@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-
-import "./Logup.css";
 import { Form, Input, Row, Col, Button, Icon } from 'antd';
 import BreadCrumb from '../../common/BreadCrumb/BreadCrumb';
+import config from '../../config';
+import "./Logup.css";
 // import 'whatwg-fetch';
 const FormItem = Form.Item;
 
 class Logup extends Component {
-
     state = {
         confirmDirty: false,
         btnDisabled: true
@@ -17,7 +16,7 @@ class Logup extends Component {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                fetch('http://localhost:8080/logup', {
+                fetch(`${config.server}/logup`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -81,7 +80,7 @@ class Logup extends Component {
                     return res.json();
                 }
             }).then(json => {
-                if (json.errorcode == 111) {
+                if (json.err) {
                     callback(json.msg);
                 } else {
                     callback();
@@ -90,14 +89,41 @@ class Logup extends Component {
         }
     }
 
-    checkMobile = (rule, value, callback) => {
-        if (value && value.length !== 11) {
-            this.setState({
-                btnDisabled: true
-            });
-            callback("请输人11位的手机号");
-        } else {
-            fetch('http://localhost:8080/checkmobile', {
+    // checkMobile = (rule, value, callback) => {
+    //     if (value && value.length !== 11) {
+    //         this.setState({
+    //             btnDisabled: true
+    //         });
+    //         callback("请输人11位的手机号");
+    //     } else {
+    //         fetch('http://localhost:8080/checkmobile', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify({
+    //                 Mobile: value
+    //             })
+    //         }).then(res => {
+    //             if (res.ok) {
+    //                 return res.json();
+    //             }
+    //         }).then(json => {
+    //             if (json.errorcode === 111) {
+    //                 callback(json.msg);
+    //             } else if (json.errorcode === 0) {
+    //                 this.setState({
+    //                     btnDisabled: false
+    //                 });
+    //                 callback();
+    //             }
+    //         });
+    //     }
+    // }
+
+    checkEamil = (rule, value, callback) => {
+        if (value) {
+            fetch('http://localhost:8080/checkemail', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -110,9 +136,9 @@ class Logup extends Component {
                     return res.json();
                 }
             }).then(json => {
-                if (json.errorcode === 111) {
+                if (json.err) {
                     callback(json.msg);
-                } else if (json.errorcode === 0) {
+                } else if (json.err === 0) {
                     this.setState({
                         btnDisabled: false
                     });
@@ -123,32 +149,37 @@ class Logup extends Component {
     }
 
 
-
     getCaptcha = () => {
         const form = this.props.form;
-        let Mobile = form.getFieldValue('Mobile');
+        let Email = form.getFieldValue('Email');
         let body = {
-            Mobile
+            Email
         };
-        fetch('http://localhost:8080/getcaptcha', {
+        fetch(`${config.server}/getcaptcha`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(body)
+        }).then(res => {
+            if (res.ok) {
+                return res.json();
+            }
+        }).then(json => {
+
         });
     }
 
     checkCaptcha = (rule, value, callback) => {
         if (value && value.length === 6) {
             const form = this.props.form;
-            let Mobile = form.getFieldValue('Mobile');
+            let Email = form.getFieldValue('Email');
             let Captcha = form.getFieldValue('Captcha');
             let body = {
-                Mobile,
+                Email,
                 Captcha
             };
-            fetch('http://localhost:8080/checkcaptcha', {
+            fetch(`${config.server}/checkcaptcha`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -157,7 +188,7 @@ class Logup extends Component {
             }).then(res => {
                 return res.json();
             }).then(json => {
-                if (json.errorcode) {
+                if (json.err) {
                     callback(json.msg);
                 } else {
                     callback();
@@ -222,16 +253,18 @@ class Logup extends Component {
                                         )}
                                 </FormItem>
                                 <FormItem
-                                    label="手机号"
+                                    label="邮箱"
                                 >
-                                    {getFieldDecorator('Mobile', {
+                                    {getFieldDecorator('Email', {
                                         rules: [{
-                                            required: true, message: '请输入你的手机号!'
+                                            type: 'email', message: '邮箱格式不正确!',
                                         }, {
-                                            validator: this.checkMobile
+                                            required: true, message: '请输入你的邮箱!'
+                                        }, {
+                                            validator: this.checkEamil
                                         }],
                                     })(
-                                        <Input prefix={<Icon type="mobile" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="11位手机号" />
+                                        <Input prefix={<Icon type="mobile" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="邮箱" />
                                         )}
                                 </FormItem>
                                 <FormItem

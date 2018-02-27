@@ -5,6 +5,8 @@ const multer = require('multer');
 
 //middleware
 const authLogin = require('./middleware/auth').authLogin;
+const authMember = require('./middleware/auth').authMember;
+const authAdmin = require('./middleware/auth').authAdmin;
 
 //controller
 const login = require('./controller/log').login;
@@ -15,9 +17,11 @@ const checkMobile = require('./controller/checkout').checkMobile;
 const checkUsername = require('./controller/checkout').checkUsername;
 const checkCaptcha = require('./controller/checkout').checkCaptcha;
 const checkEmail = require('./controller/checkout').checkEmail;
-const getUser = require('./controller/user').getUser;
+const getUserByLogin = require('./controller/user').getUserByLogin;
+const getUserById = require('./controller/user').getUserById;
 const editUser = require('./controller/user').editUser;
 const uploadAvatar = require('./controller/user').uploadAvatar;
+const careUser = require('./controller/user').careUser;
 const upload = require('./controller/upload').upload;
 const createArticle = require('./controller/article').createArticle;
 const getArticles = require('./controller/article').getArticles;
@@ -39,12 +43,14 @@ const allowMember = require('./controller/admin').allowMember;
 let router = Router();
 
 router.get('/logout', logout);
-router.get('/user', authLogin, getUser);
+router.get('/user', authLogin, getUserByLogin);
+router.get('/user/:id', getUserById);
+router.get('/user/care/:id', careUser);
 router.get('/articles', getArticles);
 router.get('/article/:id', getArticle);
-router.get('/article/:id/like', articleLike);
 router.get('/articles/count', getArticlesCount);
-router.get('/article/comment/:id/like', articleCommentLike);
+// router.get('/article/:id/like', articleLike);
+// router.get('/article/comment/:id/like', articleCommentLike);
 router.get('/article/:id/collect', articleCollect);
 router.get('/members', getMembers);
 router.get('/topics', getTopics);
@@ -53,6 +59,7 @@ router.get('/topics/count', getTopicsCount);
 
 router.use(bodyparser.json());
 
+//noAuth
 router.post('/login', login);
 router.post('/logup', logup);
 router.post('/getcaptcha', getCaptcha);
@@ -60,14 +67,19 @@ router.post('/checkusername', checkUsername);
 router.post('/checkmobile', checkMobile);
 router.post('/checkcaptcha', checkCaptcha);
 router.post('/checkemail', checkEmail);
-router.post('/user/edit', editUser);
+//authLogin
 router.post('/user/uploadavatar', multer().single('avatar'), authLogin, uploadAvatar);
 router.post('/user/upload', multer().single('image'), authLogin, upload);
-router.post('/article/create', createArticle);
-router.post('/article/:id/comment', articleComment);
-router.post('/member/apply', authLogin, applyMember);
-router.post('/topic/create', authLogin, createTopic);
+router.post('/user/edit', authLogin, editUser);
+router.post('/article/:id/comment', authLogin, articleComment);
 router.post('/topic/:id/comment', authLogin, topicComment);
-router.post('/member/:id/allow', allowMember);
+router.post('/member/apply', authLogin, applyMember);
+//authMember
+// router.post('/article/create', authMember, createArticle);
+router.post('/article/create', createArticle);
+
+router.post('/topic/create', authLogin, authMember, createTopic);
+//authAdmin
+router.post('/member/:id/allow', authAdmin, allowMember);
 
 module.exports = router;
