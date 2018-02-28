@@ -3,7 +3,7 @@ const path = require('path');
 const express = require('express');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
-const port = require('./config').port;
+const config = require('./config');
 const router = require('./router');
 const redis = require('./model/redis');
 
@@ -34,6 +34,6 @@ app.use((req, res, next) => {
 
 app.use(router);
 
-server.listen(port, () => {
-	console.log(`server run at http://localhost:${port}`);
+server.listen(config.server.port, () => {
+	console.log(`server run at http://localhost:${config.server.port}`);
 });

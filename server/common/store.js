@@ -26,7 +26,7 @@ exports.localStore = async (buf) => {
 				reject(err);
 			} else {
 				resolve({
-					url: `${config.server}/img/${time}.png`
+					url: `${config.server.host}/img/${time}.png`
 				});
 			}
 		});

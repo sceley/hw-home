@@ -37,8 +37,19 @@ exports.getUserByLogin = async (req, res) => {
 				}
 			});
 		});
+		let fansCount = await new Promise((resolve, reject) => {
+			let sql = 'select count(*) as fansCount from Fans where uid=?';
+			db.query(sql, [uid], (err, fans) =>{
+				if (err) {
+					reject(err);
+				} else {
+					resolve(fans[0].fansCount);
+				}
+			});
+		});
 		user.topicCount = topicCount;
 		user.articleCount = articleCount;
+		user.fansCount = fansCount;
 		res.json({
 			err: 0,
 			user
@@ -64,6 +75,39 @@ exports.getUserById = async (req, res) => {
 				}
 			});
 		});
+		let topicCount = await new Promise((resolve, reject) => {
+			let sql = 'select * from Topic where uid=?';
+			db.query(sql, [id], (err, topics) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(topics.length);
+				}
+			});
+		});
+		let articleCount = await new Promise((resolve, reject) => {
+			let sql = 'select * from Article where uid=?';
+			db.query(sql, [id], (err, articles) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(articles.length);
+				}
+			});
+		});
+		let fansCount = await new Promise((resolve, reject) => {
+			let sql = 'select count(*) as fansCount from Fans where uid=?';
+			db.query(sql, [id], (err, fans) =>{
+				if (err) {
+					reject(err);
+				} else {
+					resolve(fans[0].fansCount);
+				}
+			});
+		});
+		user.topicCount = topicCount;
+		user.articleCount = articleCount;
+		user.fansCount = fansCount;
 		res.json({
 			user,
 			err: 0

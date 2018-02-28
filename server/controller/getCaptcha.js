@@ -3,10 +3,7 @@ const redis = require('../model/redis');
 const sendCaptcha = require('../common/mail').sendCaptcha;
 module.exports = async (req, res) => {
 	let body = req.body;
-	let num = Math.ceil(Math.random() * 1000000);
-	if (num.length !== 6) {
-		num += '000000'.slice(0, 6 - num.length);
-	}
+	let num = String(Math.random()).slice(-6);
 	try {
 		await sendCaptcha(body.Email, num);
 		await new Promise((resolve, reject) => {

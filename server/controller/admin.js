@@ -2,11 +2,10 @@ const db = require('../model/db');
 const config = require('../config');
 exports.allowMember = async (req, res) => {
 	let id = req.params.id;
-	let body = req.body;
 	try {
 		await new Promise((resolve, reject) => {
-			let sql = "update Member set Active=? where uid=?";
-			db.query(sql, [body.Active, id], (err) => {
+			let sql = "update Member set Active=!Active where uid=?";
+			db.query(sql, [id], (err) => {
 				if (err) {
 					reject(err);
 				} else {
@@ -15,8 +14,8 @@ exports.allowMember = async (req, res) => {
 			});
 		});
 		await new Promise((resolve, reject) => {
-			let sql = "update User set Member=? where uid=?";
-			db.query(sql, [body.Active, id], (err) => {
+			let sql = "update User set Member=!Member where uid=?";
+			db.query(sql, [id], (err) => {
 				if (err) {
 					reject(err);
 				} else {

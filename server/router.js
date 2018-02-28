@@ -62,6 +62,9 @@ router.get('/topics/count', getTopicsCount);
 router.get('/topic/comment/:tid/:tcid/like', topicCommentLike);
 router.get('/topic/:id/collect', topicCollect);
 
+//authAdmin
+router.get('/member/:id/allow', authAdmin, allowMember);
+
 router.use(bodyparser.json());
 
 //noAuth
@@ -81,12 +84,10 @@ router.post('/article/:id/comment', authLogin, articleComment);
 router.post('/topic/:id/comment', authLogin, topicComment);
 router.post('/member/apply', authLogin, applyMember);
 //authMember
-// router.post('/article/create', authMember, createArticle);
-router.post('/article/create', createArticle);
+router.post('/article/create', authLogin, authMember, createArticle);
+// router.post('/article/create', createArticle);
 
-// router.post('/topic/create', authMember, createTopic);
-router.post('/topic/create', authLogin, createTopic);
-//authAdmin
-router.post('/member/:id/allow', authAdmin, allowMember);
+router.post('/topic/create', authLogin, authMember, createTopic);
+// router.post('/topic/create', authLogin, createTopic);
 
 module.exports = router;

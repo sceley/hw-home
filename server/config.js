@@ -1,5 +1,8 @@
 module.exports = {
-	port: 8080,
+	server: {
+		host: 'http://localhost:8080',
+		port: 8080
+	},
 	db: {
 		host     : 'localhost',
 		user     : 'root',
@@ -24,6 +27,5 @@ module.exports = {
 	admin: {
 		user: 'sceley520',
 		pass: '16051223'
-	},
-	server: 'http://localhost:8080'
+	}
 };
