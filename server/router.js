@@ -36,9 +36,12 @@ const getMembers = require('./controller/member').getMembers
 const createTopic = require('./controller/topic').createTopic;
 const getTopics = require('./controller/topic').getTopics;
 const getTopic = require('./controller/topic').getTopic;
+const topicCommentLike = require('./controller/topic').topicCommentLike;
 const getTopicsCount = require('./controller/topic').getTopicsCount;
 const topicComment = require('./controller/topic').topicComment;
+const topicCollect = require('./controller/topic').topicCollect;
 const allowMember = require('./controller/admin').allowMember;
+const adminLogin = require('./controller/admin').adminLogin;
 
 let router = Router();
 
@@ -49,13 +52,15 @@ router.get('/user/care/:id', careUser);
 router.get('/articles', getArticles);
 router.get('/article/:id', getArticle);
 router.get('/articles/count', getArticlesCount);
-// router.get('/article/:id/like', articleLike);
-// router.get('/article/comment/:id/like', articleCommentLike);
+router.get('/article/:id/like', articleLike);
+router.get('/article/comment/:aid/:acid/like', articleCommentLike);
 router.get('/article/:id/collect', articleCollect);
 router.get('/members', getMembers);
 router.get('/topics', getTopics);
 router.get('/topic/:id', getTopic);
 router.get('/topics/count', getTopicsCount);
+router.get('/topic/comment/:tid/:tcid/like', topicCommentLike);
+router.get('/topic/:id/collect', topicCollect);
 
 router.use(bodyparser.json());
 
@@ -67,6 +72,7 @@ router.post('/checkusername', checkUsername);
 router.post('/checkmobile', checkMobile);
 router.post('/checkcaptcha', checkCaptcha);
 router.post('/checkemail', checkEmail);
+router.post('/admin/login', adminLogin);
 //authLogin
 router.post('/user/uploadavatar', multer().single('avatar'), authLogin, uploadAvatar);
 router.post('/user/upload', multer().single('image'), authLogin, upload);
@@ -78,7 +84,8 @@ router.post('/member/apply', authLogin, applyMember);
 // router.post('/article/create', authMember, createArticle);
 router.post('/article/create', createArticle);
 
-router.post('/topic/create', authLogin, authMember, createTopic);
+// router.post('/topic/create', authMember, createTopic);
+router.post('/topic/create', authLogin, createTopic);
 //authAdmin
 router.post('/member/:id/allow', authAdmin, allowMember);
 

@@ -21,5 +21,9 @@ module.exports = {
 		bucket: 'sceley-store',
 		origin: 'http://ozkbfywab.bkt.clouddn.com'
 	},
+	admin: {
+		user: 'sceley520',
+		pass: '16051223'
+	},
 	server: 'http://localhost:8080'
 };

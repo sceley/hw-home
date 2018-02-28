@@ -63,7 +63,6 @@ let table4 = `
 			VisitCount int default 0,
 			CommentCount int default 0,
 			LikeCount int default 0,
-			Likes json,
 			CreateAt date,
 			primary key(id),
 			foreign key(uid) references User(id))
@@ -78,7 +77,6 @@ let table5 = `
 			aid int unsigned, 
 			Author varchar(10), 
 			Mentioner varchar(10),
-			Likes json,
 			LikeCount int default 0,
 			Body longtext,
 			CreateAt date, 
@@ -128,7 +126,6 @@ let table8 = `
 			Body longtext,
 			CreateAt date,
 			LikeCount int default 0,
-			Likes json,
 			primary key(id),
 			foreign key(tid) references Topic(id))
 			charset=utf8`;
@@ -147,5 +144,44 @@ let table9 =`
 db.query(table9, (err, result) => {
 	if (err) return console.log(err);
 });
+
+
+let table10 = `
+			create table if not exists Article_Like(
+			luid int unsigned,
+			laid int unsigned,
+			foreign key(luid) references User(id),
+			foreign key(luid) references Article(id))
+			charset=utf8`;
+db.query(table10, (err, result) => {
+	if (err) return console.log(err);
+});
+
+let table11 = `
+			create table if not exists Article_Comment_Like(
+			laid int unsigned,
+			luid int unsigned,
+			lacid int unsigned,
+			foreign key(luid) references User(id),
+			foreign key(lacid) references Article_Comment(id), 
+			foreign key(laid) references Article(id))
+			charset=utf8`;
+db.query(table11, (err, result) => {
+	if (err) return console.log(err);
+});
+
+let table12 = `
+			create table if not exists Topic_Comment_Like(
+			ltid int unsigned,
+			luid int unsigned,
+			ltcid int unsigned,
+			foreign key(luid) references User(id),
+			foreign key(ltcid) references Topic_Comment(id), 
+			foreign key(ltid) references Topic(id))
+			charset=utf8`;
+db.query(table12, (err, result) => {
+	if (err) return console.log(err);
+});
+
 
 module.exports = db;

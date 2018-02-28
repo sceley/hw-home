@@ -168,15 +168,16 @@ exports.editUser = async (req, res) => {
 };
 
 exports.uploadAvatar = async (req, res) => {
+	let uid = req.session.uid;
 	try {
 		let store = await localStore(req.file.buffer);
-		let sql = 'update User set Avatar=? where Username=?';
-		let result = await new Promise((resolve, reject) => {
-			db.query(sql, [store.url, req.session.Username], (err, result) => {
+		let sql = 'update User set Avatar=? where id=?';
+		await new Promise((resolve, reject) => {
+			db.query(sql, [store.url, uid], (err) => {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(result);
+					resolve();
 				}
 			});
 		});

@@ -29,8 +29,8 @@ export default class TopicCreate extends Component {
 				return res.json();
 			}
 		}).then(json => {
-			if (json.errorcode === 0) {
-				console.log(json);
+			if (!json.err) {
+				this.props.history.push('/club');
 			}
 		});
 	}

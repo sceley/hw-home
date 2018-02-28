@@ -1,4 +1,5 @@
 const db = require('../model/db');
+const config = require('../config');
 exports.allowMember = async (req, res) => {
 	let id = req.params.id;
 	let body = req.body;
@@ -31,6 +32,20 @@ exports.allowMember = async (req, res) => {
 		res.json({
 			err: 1,
 			msg: '服务器出错了'
+		});
+	}
+};
+exports.adminLogin = async (req, res) => {
+	let body = req.body;
+	if (body.Account == config.admin.user && body.Password === config.admin.pass) {
+		req.session.admin = true;
+		res.json({
+			err: 0
+		});
+	} else {
+		res.json({
+			err: 1,
+			msg: '用户不存或密码错误'
 		});
 	}
 };

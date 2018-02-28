@@ -74,6 +74,7 @@ export default class Blog extends Component {
 				return res.json();
 			}
 		}).then(json => {
+			console.log(json);
 			if (!json.err) {
 				this.pullData(this.state.current);
 			}
@@ -118,11 +119,10 @@ export default class Blog extends Component {
 													<IconText type="message" text={article.CommentCount} />, 
 													<a href="javascript:;" data-id={article.id} onClick={this.handleLikeClick}>
 														{
-															JSON.parse(article.Likes) instanceof Array && JSON.parse(article.Likes).indexOf(this.state.uid) === -1 ?
-															<IconText type="like-o" text={article.LikeCount} />
-															:
+															article.luids && article.luids.split(',').indexOf(String(this.state.uid)) !== -1?
 															<IconText type="like" text={article.LikeCount} />
-
+															:
+															<IconText type="like-o" text={article.LikeCount} />
 														}
 													</a>
 												]}	

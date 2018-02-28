@@ -16,8 +16,8 @@ exports.createTopic = async (req, res) => {
 			})
 		});
 		await new Promise((resolve, reject) => {
-			let sql = "insert into Topic(Title, Body, Author, CreateAt) values(?, ?, ?, ?)";
-			db.query(sql, [body.Title, body.Body, Author, CreateAt], (err) => {
+			let sql = "insert into Topic(Title, Body, Author, CreateAt, uid) values(?, ?, ?, ?, ?)";
+			db.query(sql, [body.Title, body.Body, Author, CreateAt, uid], (err) => {
 				if (err) {
 					reject(err);
 				} else {
@@ -26,12 +26,12 @@ exports.createTopic = async (req, res) => {
 			});
 		});
 		res.json({
-			errorcode: 0,
+			err: 0,
 			msg: '发表成功'
 		});
 	} catch (e) {
 		res.json({
-			errorcode: 0,
+			err: 0,
 			msg: '服务出错了'
 		});
 	}
@@ -39,6 +39,7 @@ exports.createTopic = async (req, res) => {
 
 exports.getTopic = async (req, res) => {
 	let id = req.params.id;
+	let uid = req.session.uid;
 	try {
 		let topic = await new Promise((resolve, reject) => {
 			let sql = "select * from Topic where id=?";
@@ -50,8 +51,18 @@ exports.getTopic = async (req, res) => {
 				}
 			});
 		});
+		let collected = await new Promise((resolve, reject) => {
+			let sql = 'select * from Topic_Collect where uid=? and tid=?';
+			db.query(sql, [uid, id], (err, topiccollects) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(topiccollects.length);
+				}
+			});
+		});
 		let comments = await new Promise((resolve, reject) => {
-			let sql = 'select * from Topic_Comment where tid=?';
+			let sql = 'select id, LikeCount, CreateAt, Body, Author, group_concat(luid) as luids from Topic_Comment left join Topic_Comment_Like on Topic_Comment.id=Topic_Comment_Like.ltcid and Topic_Comment.tid=Topic_Comment_Like.ltid where Topic_Comment.tid=? group by id';
 			db.query(sql, [id], (err, comments) => {
 				if (err) {
 					reject(err);
@@ -63,7 +74,9 @@ exports.getTopic = async (req, res) => {
 		res.json({
 			err: 0,
 			topic,
-			comments
+			comments,
+			uid: uid,
+			collected
 		});
 	} catch (e) {
 		res.json({
@@ -89,7 +102,7 @@ exports.topicComment = async (req, res) => {
 			})
 		});
 		await new Promise((resolve, reject) => {
-			let sql = "insert into Topic_Comment(Author, Body, pid, Mentioner, CreateAt) values(?, ?, ?, ?, ?)";
+			let sql = "insert into Topic_Comment(Author, Body, tid, Mentioner, CreateAt) values(?, ?, ?, ?, ?)";
 			db.query(sql, [Author, body.Body, id, body.Mentioner, CreateAt], (err) => {
 				if (err) {
 					reject(err);
@@ -162,6 +175,110 @@ exports.getTopicsCount = async (req, res) => {
 	} catch (e) {
 		res.json({
 			err: 555,
+			msg: '服务器出错了'
+		});
+	}
+};
+
+exports.topicCommentLike = async (req, res) => {
+	let tid = req.params.tid;
+	let tcid = req.params.tcid;
+	let uid = req.session.uid;
+	try {
+		let isLiked = await new Promise((resolve, reject) => {
+			let sql = 'select * from Topic_Comment_Like where ltcid=? and luid=? and ltid';
+			db.query(sql, [tcid, uid, tid], (err, topicLikes) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(topicLikes.length);
+				}
+			});
+		});
+		let sql1;
+		let sql2;
+		if (isLiked) {
+			sql1 = 'update Topic_Comment set LikeCount=LikeCount-1 where id=? and tid=?';
+			sql2 = 'delete from Topic_Comment_Like where ltcid=? and luid=? and ltid=?';
+		} else {
+			sql1 = 'update Topic_Comment set LikeCount=LikeCount+1 where id=? and tid=?';
+			sql2 = 'insert into Topic_Comment_Like(ltcid, luid, ltid) values(?, ?, ?)';
+		}
+		await new Promise((resolve, reject) => {
+			db.query(sql1, [tcid, tid], (err) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve();
+				}
+			});
+		});
+		await new Promise((resolve, reject) => {
+			db.query(sql2, [tcid, uid, tid], (err) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve();
+				}
+			});
+		});
+		res.json({
+			err: 0
+		});
+	} catch (e) {
+		res.json({
+			err: 1,
+			msg: '服务器出错了'
+		});
+	}
+};
+
+exports.topicCollect = async(req, res) => {
+	let id = req.params.id;
+	let uid = req.session.uid;
+	try {
+		let collected = await new Promise((resolve, reject) => {
+			let sql = 'select * from Topic_Collect where uid=? and tid=?';
+			db.query(sql, [uid, id], (err, topiccollects) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(topiccollects.length);
+				}
+			});
+		});
+		if (collected) {
+			await new Promise((resolve, reject) => {
+				let sql = 'delete from Topic_Collect where uid and tid';
+				db.query(sql, [uid, id], (err) => {
+					if (err) {
+						reject(err);
+					} else {
+						resolve();
+					}
+				});
+			});
+			res.json({
+				err: 0
+			});
+		} else {
+			await new Promise((resolve, reject) => {
+				let sql = 'insert into Topic_Collect(uid, tid) values(?, ?)';
+				db.query(sql, [uid, id], (err) => {
+					if (err) {
+						reject(err);
+					} else {
+						resolve();
+					}
+				});
+			});
+			res.json({
+				err: 0
+			});
+		}
+	} catch (e) {
+		res.json({
+			err:　1,
 			msg: '服务器出错了'
 		});
 	}

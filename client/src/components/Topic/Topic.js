@@ -14,23 +14,46 @@ const { TextArea } = Input;
 export default class Topic extends Component {
 	state = {
 		topic: '',
-		comment: ''
+		comments: '',
+		user: '',
+		uid: '',
+		collected: ''
 	}
 	componentDidMount = () => {
 		let id = this.props.match.params.id;
-		fetch(`${config.server}/topic/${id}`)
-		.then(res => {
+		fetch(`${config.server}/topic/${id}`, {
+			method: 'GET',
+			credentials: 'include'
+		}).then(res => {
 			if (res.ok) {
 				return res.json();
 			}
 		}).then(json => {
-			if (!json.errorcode) {
-				json.topic.Body = md(json.topic.Body
-					);
+			if (!json.err) {
+				json.topic.Body = md(json.topic.Body);
 				this.setState({
 					topic: json.topic,
-					comment: json.comment
-				})
+					comments: json.comments,
+					uid: json.uid,
+					collected: json.collected
+				});
+				this.getUserById(json.topic.uid);
+			}
+		});
+	}
+	getUserById = (id) => {
+		fetch(`${config.server}/user/${id}`, {
+			method: 'GET',
+			credentials: 'include'
+		}).then(res => {
+			if (res.ok) {
+				return res.json();
+			}
+		}).then(json => {
+			if (!json.err) {
+				this.setState({
+					user: json.user
+				});
 			}
 		});
 	}
@@ -59,8 +82,8 @@ export default class Topic extends Component {
 				return res.json();
 			}
 		}).then(json => {
-			if (!json.errorcode) {
-				console.log(json);
+			if (!json.err) {
+				this.componentDidMount();
 			}
 		});
 	}
@@ -69,10 +92,40 @@ export default class Topic extends Component {
 		this.refs.editor.setValue(`@${name} `);
 	}
 
+	likeClick = (e) => {
+		let tid = this.props.match.params.id;
+		let tcid = e.currentTarget.getAttribute('data-id');
+		fetch(`${config.server}/topic/comment/${tid}/${tcid}/like`, {
+			method: 'GET',
+			credentials: 'include'
+		}).then(res => {
+			if (res.ok) {
+				return res.json();
+			}
+		}).then(json => {
+			if (!json.err) {
+				this.componentDidMount();
+			}
+		});
+	}
+
+	collectClick = () => {
+		let id = this.props.match.params.id;
+		fetch(`${config.server}/topic/${id}/collect`, {
+			credentials: 'include',
+			method: 'GET'
+		}).then(res => {
+			if (res.ok) {
+				return res.json();
+			} 
+		}).then(json => {
+			if (!json.err) {
+				this.componentDidMount();
+			}
+		});
+	}
+
 	render() {
-		const data = [
-			
-		];
 		return (
 			<div className="Topic" style={{ marginTop: '20px' }}>
 				<Row gutter={16}>
@@ -82,16 +135,24 @@ export default class Topic extends Component {
 								<h2>{this.state.topic.Title}</h2>
 								<ul className="list"> 
 									<li className="list-item">
-										<em>时间: {ParseDate(this.state.topic.Date)}</em>
+										<em>时间: {ParseDate(this.state.topic.CreateAt)}</em>
 									</li>
 									<li className="list-item">
 										<em>作者: {<a>{this.state.topic.Author}</a>}</em>
 									</li>
 									<li className="list-item">
-										<em>浏览: {this.state.topic.View}</em>
+										<em>浏览: {this.state.topic.visitCount}</em>
 									</li>
 									<li className="list-item">
-										<a><Icon type="heart" /></a>
+										<a onClick={this.collectClick} href="javascript:;">
+											{
+												this.state.collected?
+												<Icon type="heart" />
+												:
+												<Icon type="heart-o"/>
+
+											}
+										</a>
 									</li>
 								</ul>
 							</div>
@@ -103,20 +164,33 @@ export default class Topic extends Component {
 						</Card>
 						<Card
 							style={{marginTop: '20px'}}
-							title={<span>{`${data.length} 回复`}</span>}
+							title={<span>{`${this.state.comments.length} 回复`}</span>}
 						>
 							<List
 						        className="comment-list"
 						        itemLayout="horizontal"
-						        dataSource={this.state.comment}
+						        dataSource={this.state.comments}
 						        renderItem={item => (
-						          <List.Item actions={[<a><Icon type="like-o"/></a>, <a data-name={item.Author} href="#editor" onClick={this.handleEnter}><Icon type="enter"/></a>]}>
+						          <List.Item actions={[
+						          						<a data-id={item.id} href="javascript:;" onClick={this.likeClick}>
+						          							{
+						          								item.luids && item.luids.split(',').indexOf(String(this.state.uid)) !== -1?
+						          								<Icon type="like"/>
+						          								:
+						          								<Icon type="like-o" />
+						          							}
+						          							{item.LikeCount}
+						          						</a>, 
+						          						<a data-name={item.Author} href="#editor" onClick={this.handleEnter}>
+						          							<Icon type="enter"/>
+						          						</a>
+						          					]}>
 						            <List.Item.Meta
 						              avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
 						              title={
 					              		<em className="date">
 					              			<a style={{marginRight: '5px'}} href="https://ant.design">sceley</a>
-					              			{ParseDate(item.Date)}
+					              			{ParseDate(item.CreateAt)}
 					              		</em>
 						              }
 						              description={
@@ -144,7 +218,7 @@ export default class Topic extends Component {
 					</Col>
 					<Col span={6}>
 						<div className="user-basic-info">
-							<Profile/>
+							<Profile user={this.state.user}/>
 						</div>
 					</Col>
 				</Row>

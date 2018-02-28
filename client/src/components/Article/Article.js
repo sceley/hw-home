@@ -72,8 +72,9 @@ export default class Article extends Component {
 		this.refs.editor.setValue(`@${name} `);
 	}
 	likeClick = (e) => {
-		let id = e.currentTarget.getAttribute('data-id');
-		fetch(`${config.server}/article/comment/${id}/like`, {
+		let aid = this.props.match.params.id;
+		let acid = e.currentTarget.getAttribute('data-id');
+		fetch(`${config.server}/article/comment/${aid}/${acid}/like`, {
 			method: 'GET',
 			credentials: 'include'
 		}).then(res => {
@@ -185,9 +186,10 @@ export default class Article extends Component {
 						          <List.Item actions={[
 						          						<a data-id={item.id} onClick={this.likeClick} href="javascript:;">
 						          							{
-						          								JSON.parse(item.Likes) instanceof Array && JSON.parse(item.Likes).indexOf(this.state.uid) === -1 ?
-						          								<Icon type="like-o" />:<Icon type="like"/>
+						          								item.luids && item.luids.split(',').indexOf(String(this.state.uid)) !== -1?
+						          								<Icon type="like"/>:<Icon type="like-o" />
 						          							}
+						          					
 						          							{item.LikeCount}
 						          						</a>, 
 						          						<a data-name={item.Author} href="#editor" onClick={this.handleEnter}>

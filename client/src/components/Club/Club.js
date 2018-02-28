@@ -37,7 +37,7 @@ export default class Club extends Component {
 					<Col span={18}>
 						<Tabs defaultActiveKey="all">
 						    <TabPane tab="全部" key="all">
-						    	<Topics tab="all"/>
+						    	<Topics/>
 						    </TabPane>
 						    <TabPane tab="精品" key="good">
 						    	<Topics tab="good"/>

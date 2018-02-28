@@ -11,7 +11,15 @@ export default class Topics extends Component {
 	}
 	componentDidMount = () => {
 		let tab = this.props.tab;
-		fetch(`${config.server}/topics?tab=${tab}`)
+		let url1, url2;
+		if (tab) {
+			url1 = `${config.server}/topics?tab=${tab}`
+			url2 = `${config.server}/topics/count?tab=${tab}`
+		} else {
+			url1 = `${config.server}/topics`;
+			url2 = `${config.server}/topics/count`;
+		}
+		fetch(url1)
 		.then(res => {
 			if (res.ok) {
 				return res.json();
@@ -24,7 +32,7 @@ export default class Topics extends Component {
 			}
 		});
 
-		fetch(`${config.server}/topics/count?tab=${tab}`)
+		fetch(url2)
 		.then(res => {
 			if (res.ok) {
 				return res.json();
@@ -74,11 +82,11 @@ export default class Topics extends Component {
 						itemLayout="horizontal"
 						dataSource={this.state.topics}
 						renderItem={item => (
-							<List.Item actions={[<span>{ParseDate(item.Date)}</span>]}>
+							<List.Item actions={[<span>{ParseDate(item.CreateAt)}</span>]}>
 								<List.Item.Meta
 									avatar={<a href=""><Avatar src={item.Avatar} /></a>}
 									title={<a href="https://ant.design">{item.Author}</a>}
-									description={<h3><a href={`/topic/${item.topic_id}`}>{item.Title}</a></h3>}
+									description={<h3><a href={`/topic/${item.id}`}>{item.Title}</a></h3>}
 								/>
 							</List.Item>
 						)}

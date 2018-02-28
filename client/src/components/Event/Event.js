@@ -10,7 +10,7 @@ export default class Event extends Component {
 			<div className="Event">
 				<BreadCrumb name="近期事件" />
 				<div style={{ marginTop: '20px', textAlign: 'center' }}>
-					<h3><Icon type="tags" /></h3>
+					<Icon style={{fontSize: '2em'}} type="tags" />
 					<h2>近期事件</h2>
 				</div>
 				<div style={{ marginTop: '20px' }}>
