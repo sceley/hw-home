@@ -17,7 +17,7 @@ export default class Profile extends Component {
 					</a>
 					<h1>{ this.props.user && this.props.user.Username }</h1>
 						{
-							this.props.user && this.props.user.Sex == "woman" ?
+							this.props.user && this.props.user.Sex === "woman" ?
 							<Icon type="woman" />
 							:
 							<Icon type="man" />

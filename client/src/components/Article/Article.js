@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Icon, List, Avatar, Button, Divider, Card, Anchor } from 'antd';
+import { Row, Col, Icon, List, Avatar, Button, Divider, Card } from 'antd';
 import { Link } from 'react-router-dom';
 import md from '../../common/Markdown';
 import Editor from '../../common/Editor/Editor';
@@ -8,8 +8,6 @@ import Profile from '../../common/Profile/Profile';
 import ParseDate from '../../common/ParseDate';
 import config from '../../config';
 import './Article.css';
-
-// const { Link } = Anchor;
 
 export default class Article extends Component {
 	state = {
@@ -107,7 +105,6 @@ export default class Article extends Component {
 	}
 
 	careClick = () => {
-		let uid = this.state.uid;
 		fetch(`${config.server}/user/care/${this.state.article.uid}`, {
 			method: 'GET',
 			credentials: 'include'
@@ -178,7 +175,7 @@ export default class Article extends Component {
 						</span>
 					</li>
 					<li style={{float: 'right'}} className="list-action-item">
-						<a href="javascript:;" onClick={this.collectClick}>
+						<a onClick={this.collectClick}>
 							{
 								this.state.collected?
 								<Icon type="heart" />:<Icon type="heart-o" />
@@ -203,12 +200,11 @@ export default class Article extends Component {
 						        dataSource={this.state.comment}
 						        renderItem={item => (
 						          <List.Item actions={[
-						          						<a data-id={item.id} onClick={this.likeClick} href="javascript:;">
+						          						<a data-id={item.id} onClick={this.likeClick}>
 						          							{
 						          								item.luids && item.luids.split(',').indexOf(String(this.state.uid)) !== -1?
 						          								<Icon type="like"/>:<Icon type="like-o" />
 						          							}
-						          					
 						          							{item.LikeCount}
 						          						</a>, 
 						          						<a data-name={item.Author} href="#editor" onClick={this.handleEnter}>
@@ -219,7 +215,7 @@ export default class Article extends Component {
 						              avatar={<Avatar src={item.Avatar} />}
 						              title={
 						              	<em className="date">
-						              		<a style={{marginRight: '5px'}} href="#">{item.Author}</a>
+						              		<a style={{marginRight: '5px'}}>{item.Author}</a>
 						              		{ParseDate(item.CreateAt)}
 						              	</em>
 						              }

@@ -124,7 +124,7 @@ export default class Blog extends Component {
 									actions={[
 										<IconText type="eye-o" text={article.VisitCount} />,
 										<IconText type="message" text={article.CommentCount} />,
-										<a href="javascript:;" data-id={article.id} onClick={this.handleLikeClick}>
+										<a data-id={article.id} onClick={this.handleLikeClick}>
 											{
 												article.luids && article.luids.split(',').indexOf(String(this.state.uid)) !== -1?
 													<IconText type="like" text={article.LikeCount} />

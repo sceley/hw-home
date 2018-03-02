@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Col, Row, List, Avatar, Icon, Input, Button, Divider } from 'antd';
+import { Card, Col, Row, List, Avatar, Icon, Button, Divider } from 'antd';
 import Editor from '../../common/Editor/Editor';
 import Profile from '../../common/Profile/Profile';
 import config from '../../config';
@@ -7,8 +7,6 @@ import ParseDate from '../../common/ParseDate';
 import md from '../../common/Markdown';
 import './Topic.css';
 import 'highlightjs/styles/atom-one-light.css';
-
-const { TextArea } = Input;
 
 export default class Topic extends Component {
 	state = {
@@ -143,7 +141,7 @@ export default class Topic extends Component {
 										<em>浏览: {this.state.topic.visitCount}</em>
 									</li>
 									<li className="list-item">
-										<a onClick={this.collectClick} href="javascript:;">
+										<a onClick={this.collectClick}>
 											{
 												this.state.collected?
 												<Icon type="heart" />
@@ -171,7 +169,7 @@ export default class Topic extends Component {
 						        dataSource={this.state.comments}
 						        renderItem={item => (
 						          <List.Item actions={[
-						          						<a data-id={item.id} href="javascript:;" onClick={this.likeClick}>
+						          						<a data-id={item.id} onClick={this.likeClick}>
 						          							{
 						          								item.luids && item.luids.split(',').indexOf(String(this.state.uid)) !== -1?
 						          								<Icon type="like"/>

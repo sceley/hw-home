@@ -160,7 +160,7 @@ export default class Navigation extends Component {
 								</Link>
 							</Menu.Item>
 							<Menu.Item>
-								<a onClick={this.showModal} href="javascript:;">
+								<a onClick={this.showModal}>
 									退出
 								</a>
 							</Menu.Item>

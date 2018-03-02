@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Col, Row, Button, Input, Icon, Card, Select } from 'antd';
+import { Form, Button, Input, Icon, Card, Select } from 'antd';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -55,10 +55,10 @@ class EditInfoForm extends Component {
 					return res.json();
 				}
 			}).then(json => {
-				if (json.errorcode == 111) {
-					callback(json.msg);
-				} else {
+				if (!json.err) {
 					callback();
+				} else {
+					callback(json.msg);
 				}
 			});
 		}
@@ -80,10 +80,10 @@ class EditInfoForm extends Component {
 					return res.json();
 				}
 			}).then(json => {
-				if (json.errorcode == 111) {
-					callback(json.msg);
-				} else {
+				if (!json.err) {
 					callback();
+				} else {
+					callback(json.msg);
 				}
 			});
 		} else {
@@ -153,8 +153,7 @@ class EditInfoForm extends Component {
 							>
 								{getFieldDecorator('Sex', {
 									initialValue: [this.state.user && this.state.user.Sex]
-								})
-									(
+								})(
 									<Select style={{ width: 120 }} onChange={this.handleChange}>
 										<Option value="none">未选择</Option>
 										<Option value="man">男</Option>
@@ -167,8 +166,7 @@ class EditInfoForm extends Component {
 							>
 								{getFieldDecorator('Website', {
 									initialValue: this.state.user && this.state.user.Website
-								})
-									(
+								})(
 									<Input prefix={<Icon type="global" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="如：example.com" />
 									)}
 							</FormItem>
@@ -177,8 +175,7 @@ class EditInfoForm extends Component {
 							>
 								{getFieldDecorator('Github', {
 									initialValue: this.state.user && this.state.user.Github
-								})
-									(
+								})(
 									<Input prefix={<Icon type="github" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请跟 GitHub 上保持一致" />
 									)}
 							</FormItem>
@@ -187,8 +184,7 @@ class EditInfoForm extends Component {
 							>
 								{getFieldDecorator('Location', {
 									initialValue: this.state.user && this.state.user.Location
-								})
-									(
+								})(
 									<Input prefix={<Icon type="environment" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="如：北京、广州" />
 									)}
 							</FormItem>
@@ -197,8 +193,7 @@ class EditInfoForm extends Component {
 							>
 								{getFieldDecorator('Introduction', {
 									initialValue: this.state.user && this.state.user.Introduction
-								})
-									(
+								})(
 									<TextArea rows={4} />
 									)}
 							</FormItem>
