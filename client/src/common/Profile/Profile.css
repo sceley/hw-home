@@ -18,16 +18,16 @@
 	margin-top: 15px;
 }
 
-.Profile .follow-user a {
+.Profile .follow-user span {
 	display: block;
 }
 
-.Profile .follow-user a.count {
+.Profile .follow-user span.count {
 	color: #f4645f;
-	font-size: 25px;
+	font-size: 30px;
 }
 
-.Profile .follow-user a.text {
+.Profile .follow-user span.text {
 	color: #999;
 }
 
@@ -35,19 +35,13 @@
 	text-align: center;
 }
 
-/*.user-basic-info li {
-}*/
-
 .icon-list {
 	padding-left: 0;
     list-style: none;
-    /*margin-left: -5px;*/
-    /*margin-bottom: 10px;*/
 }
 
 .icon-list li {
 	display: inline-block;
-	/*padding: 0 5px;*/
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 2px 6px;

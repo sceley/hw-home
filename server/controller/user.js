@@ -283,4 +283,40 @@ exports.careUser = async (req, res) => {
 			msg: '服务器出错了'
 		});
 	}
-}
+};
+
+exports.getUserPublic = async (req, res) => {
+	let id = req.params.id;
+	try {
+		let topics = await new Promise((resolve, reject) => {
+			let sql = 'select Title, id, CreateAt from Topic where uid=? limit 5';
+			db.query(sql, [id], (err, topics) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(topics);
+				}
+			});
+		});
+		let articles = await new Promise((resolve, reject) => {
+			let sql = 'select Title, id, CreateAt from Article where uid=? limit 5';
+			db.query(sql, [id], (err, articles) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(articles);
+				}
+			});
+		});
+		res.json({
+			err: 0,
+			topics,
+			articles	
+		});
+	} catch (e) {
+		res.json({
+			err: 1,
+			msg: "服务器出错了"
+		});
+	}
+};

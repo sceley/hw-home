@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Link, Route } from 'react-router-dom';
-import { Menu, Col, Row, Icon, Card } from 'antd';
+import { Menu, Col, Row, Icon } from 'antd';
 import ManageMember from './ManageMember';
+import ManageEvent from './ManageEvent';
+import ManageTopic from './ManageTopic';
+import ManageHome from './ManageHome';
 
 export default class Admin extends Component {
 	state = {
@@ -24,18 +27,8 @@ export default class Admin extends Component {
 							theme="dark"
 						>
 							<Menu.Item key="home">
-								<Link to="/user/edit">
-									<Icon type="home" />首页编辑
-								</Link>
-							</Menu.Item>
-							<Menu.Item key="community">
-								<Link to="/user/edit/password">
-									<Icon type="lock" />社团编辑
-								</Link>
-							</Menu.Item>
-							<Menu.Item key="department">
-								<Link to="/user/edit/password">
-									<Icon type="lock" />部门编辑
+								<Link to={`${this.props.match.url}`}>
+									<Icon type="home" />首页管理
 								</Link>
 							</Menu.Item>
 							<Menu.Item key="member">
@@ -43,15 +36,23 @@ export default class Admin extends Component {
 									<Icon type="picture" />会员管理
 								</Link>
 							</Menu.Item>
+							<Menu.Item key="topic">
+								<Link to={`${this.props.match.url}/topic`}>
+									<Icon type="picture" />话题编辑
+								</Link>
+							</Menu.Item>
 							<Menu.Item key="event">
-								<Link to="/user/edit/notify">
-									<Icon type="notification" />事件编辑
+								<Link to={`${this.props.match.url}/event`}>
+									<Icon type="notification" />事件发布
 								</Link>
 							</Menu.Item>
 						</Menu>
 					</Col>
 					<Col span={19}>
+						<Route exact path={`${this.props.match.url}`} component={ManageHome}/>
 						<Route path={`${this.props.match.url}/member`} component={ManageMember}/>
+						<Route path={`${this.props.match.url}/event`} component={ManageEvent}/>
+						<Route path={`${this.props.match.url}/topic`} component={ManageTopic}/>
 					</Col>
 				</Row>
 			</div>

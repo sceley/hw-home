@@ -1,42 +1,39 @@
 import React, { Component } from 'react';
 import { Card, Col, Row } from 'antd';
-
+import introduce from '../../common/introduction';
 import BreadCrumb from '../../common/BreadCrumb/BreadCrumb';
-
-const { Meta } = Card;
-
 export default class Departments extends Component {
 	render() {
 		let intro_de = [
 			{
 				img: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
 				department: '主席团',
-				description: '主席团负责...'
+				description: introduce.department.main,
 			},
 			{
 				img: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
 				department: 'Web组',
-				description: 'Web组负责...'
+				description: introduce.department.web,
 			},
 			{
 				img: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
 				department: 'Android组',
-				description: 'Android组负责...'
+				description: introduce.department.android,
 			},
 			{
 				img: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
 				department: 'IOS组',
-				description: 'IOS组负责...'
+				description: introduce.department.ios,
 			},
 			{
 				img: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
 				department: '行政组',
-				description: '行政组负责...'
+				description: introduce.department.action,
 			},
 			{
 				img: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
-				department: '运营组',
-				description: '运营组负责...'
+				department: '产品组',
+				description: introduce.department.product,
 			}
 		];
 
@@ -44,13 +41,10 @@ export default class Departments extends Component {
 			return (
 				<Col key={item.department} xs={24} md={12} xl={8}>
 					<Card
-						cover={<img alt="example" src={item.img} />}
 						style={{ marginTop: "20px", width: "300px" }}
+						title={<h2>{item.department}</h2>}
 					>
-						<Meta
-							title={<h3>{item.department}</h3>}
-							description={item.description}
-						/>
+						<p>{item.description}</p>
 					</Card>
 				</Col>
 			);

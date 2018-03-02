@@ -3,7 +3,6 @@ import { Input, Button } from 'antd';
 import BreadCrumb from '../../common/BreadCrumb/BreadCrumb';
 import Editor from '../../common/Editor/Editor';
 import config from '../../config';
-import moment from 'moment';
 import './CreateTopic.css';
 
 export default class TopicCreate extends Component {

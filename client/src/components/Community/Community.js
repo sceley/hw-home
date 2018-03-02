@@ -1,10 +1,7 @@
 import React, { Component } from "react";
-import { Layout, Menu, Card, Row, Col, Timeline, Icon, Avatar } from 'antd';
+import { Card, Row, Col, Timeline } from 'antd';
 import BreadCrumb from '../../common/BreadCrumb/BreadCrumb';
-
 const { Meta } = Card;
-const { Sider, Content } = Layout;
-
 export default class Introduce extends Component {
 	state = {
 		current: ''

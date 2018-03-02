@@ -183,5 +183,42 @@ db.query(table12, (err, result) => {
 	if (err) return console.log(err);
 });
 
+let table13 = `
+			create table if not exists Message(
+			id int unsigned auto_increment,
+			fid int unsigned,
+			tid int unsigned,
+			Message longtext,
+			CreateAt date,
+			primary key(id),
+			foreign key(fid) references User(id),
+			foreign key(tid) references User(id))
+			charset=utf8`;
+db.query(table13, (err) => {
+	if (err) return console.log(err);
+});
 
+let table14 = `
+			create table if not exists Event(
+			id int unsigned auto_increment,
+			Body longtext,
+			Title varchar(100),
+			CreateAt date,
+			Poster varchar(100),
+			primary key(id))
+			charset=utf8`;
+db.query(table14, err => {
+	if (err) return console.log(err);
+});
+
+let table15 = `
+			create table if not exists Home_Poster(
+			id int unsigned auto_increment,
+			Poster varchar(100),
+			CreateAt date,
+			primary key(id))
+			charset=utf8`;
+db.query(table15, (err) => {
+	if (err) return console.log(err);
+});
 module.exports = db;

@@ -99,12 +99,22 @@ exports.getArticle = async (req, res) => {
 			});
 		});
 		let comment = await new Promise((resolve, reject) => {
-			let sql = 'select id, LikeCount, CreateAt, Body, Author, group_concat(luid) as luids from Article_Comment left join Article_Comment_Like on Article_Comment.id=Article_Comment_Like.lacid and Article_Comment.aid=Article_Comment_Like.laid where Article_Comment.aid=? group by id';
+			let sql = 'select Article_Comment.id, max(Avatar) as Avatar, max(User.id) as uid ,LikeCount, Article_Comment.CreateAt, Body, Author, group_concat(luid) as luids from Article_Comment left join User on User.Username=Article_Comment.Author left join Article_Comment_Like on Article_Comment.id=Article_Comment_Like.lacid and Article_Comment.aid=Article_Comment_Like.laid where Article_Comment.aid=? group by Article_Comment.id';
 			db.query(sql, [id], (err, comment) => {
 				if (err) {
 					reject(err);
 				} else {
 					resolve(comment);
+				}
+			});
+		});
+		let cared = await new Promise((resolve, reject) => {
+			let sql = 'select * from Fans where uid=? and fuid=?';
+			db.query(sql, [article.uid, uid], (err, fans) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(fans.length);
 				}
 			});
 		});
@@ -114,7 +124,8 @@ exports.getArticle = async (req, res) => {
 			article,
 			comment,
 			uid,
-			collected
+			collected,
+			cared
 		});
 	} catch (e) {
 		res.json({

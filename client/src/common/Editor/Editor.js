@@ -92,13 +92,13 @@ export default class Editor extends Component {
 			<div className="Editor">
 				<ul className="editor-tool-bar">
 					<li className="item">
-						<a onClick={this.showImgModal} href="javascript:;">
+						<a onClick={this.showImgModal}>
 							<Icon type="picture"/>
 						</a>
 						<em className="action-split"/>
 					</li>
 					<li className="item">
-						<a onClick={this.showLinkModal} href="javascript:;">
+						<a onClick={this.showLinkModal}>
 							<Icon type="link" />
 						</a>
 					</li>

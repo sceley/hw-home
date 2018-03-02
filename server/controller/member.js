@@ -15,8 +15,7 @@ exports.applyMember = async (req, res) => {
 			});
 		});
 		res.json({
-			err: 0,
-			msg: '申请成功'
+			err: 0
 		});
 	} catch (e) {
 		res.json({
@@ -29,7 +28,7 @@ exports.applyMember = async (req, res) => {
 exports.getMembers = async (req, res) => {
 	try {
 		let members = await new Promise((resolve, reject) => {
-			let sql = "select * from Member";
+			let sql = "select uid, Name, Team, Active, SchoolNumber, Description, Username from Member left join User on User.id=Member.uid";
 			db.query(sql, (err, members) => {
 				if (err) {
 					reject(err);
@@ -43,6 +42,7 @@ exports.getMembers = async (req, res) => {
 			members
 		});
 	} catch (e) {
+		console.log(e);
 		res.json({
 			err: 1,
 			msg: '服务器出错了'

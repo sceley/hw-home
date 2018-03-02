@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Card, Col, Row, List, Avatar, Icon, Input, Button } from 'antd';
+import { Card, Col, Row, List, Avatar, Icon, Input, Button, Divider } from 'antd';
 import Editor from '../../common/Editor/Editor';
-import Profile from '../../common/Profile1/Profile';
+import Profile from '../../common/Profile/Profile';
 import config from '../../config';
 import ParseDate from '../../common/ParseDate';
-import moment from 'moment';
 import md from '../../common/Markdown';
 import './Topic.css';
 import 'highlightjs/styles/atom-one-light.css';
@@ -186,7 +185,7 @@ export default class Topic extends Component {
 						          						</a>
 						          					]}>
 						            <List.Item.Meta
-						              avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+						              avatar={<Avatar src={item.Avatar} />}
 						              title={
 					              		<em className="date">
 					              			<a style={{marginRight: '5px'}} href="https://ant.design">sceley</a>
@@ -217,8 +216,31 @@ export default class Topic extends Component {
 						</div>
 					</Col>
 					<Col span={6}>
-						<div className="user-basic-info">
+						<div  style={{background: 'white'}}>
 							<Profile user={this.state.user}/>
+							<Divider/>
+							<Divider/>
+							<ul className="button-list">
+								{
+									true?
+									<li className="button-list-item">
+										<Button onClick={this.careClick} type="primary" className="button">
+											<Icon type="plus" />关注 Ta
+										</Button>
+									</li>
+									:
+									<li className="button-list-item">
+										<Button type="primary" className="button">
+											<Icon type="minus" />已关注
+										</Button>
+									</li>
+								}
+								<li className="button-list-item">
+									<Button className="button">
+										<Icon type="mail" />发私信
+									</Button>
+								</li>
+							</ul>
 						</div>
 					</Col>
 				</Row>

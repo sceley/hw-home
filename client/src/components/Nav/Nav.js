@@ -30,7 +30,7 @@ export default class Navigation extends Component {
 	}
 
 	handleClick = (e) => {
-		if (e.key === 'logo' || e.key === 'search') {
+		if (e.key === 'logo' || e.key === 'search' || e.key === 'message') {
 			return;
 		}
 		this.setState({
@@ -77,7 +77,6 @@ export default class Navigation extends Component {
 	render() {
 		const avatar = 
 			<div>
-				<Badge style={{marginRight: '10px'}} showZero={true} count={0} />
 				{
 					this.state.user && this.state.user.Avatar ?
 					<Avatar src={this.state.user.Avatar}/>
@@ -113,8 +112,8 @@ export default class Navigation extends Component {
 							部门简介
 						</Link>
 					</Menu.Item>
-					<Menu.Item key="event">
-						<Link to="/event">
+					<Menu.Item key="events">
+						<Link to="/events">
 							近期事件
 						</Link>
 					</Menu.Item>
@@ -143,10 +142,15 @@ export default class Navigation extends Component {
 							style={{ width: 200 }}
 						/>
 					</Menu.Item>
-					{this.state.user ?
-						<SubMenu title={avatar}>
+					<Menu.Item key="message" style={{paddingRight: '0px'}}>
+						<Link to="/message">
+							<Badge style={{marginRight: '10px'}} showZero={true} count={0} />
+						</Link>
+					</Menu.Item>
+					{	this.state.user ?
+						<SubMenu style={{paddingLeft: '0px'}} title={avatar}>
 							<Menu.Item key="user">
-								<Link to="/user">
+								<Link to={`/user/${this.state.user.id}`}>
 									个人信息
 								</Link>
 							</Menu.Item>

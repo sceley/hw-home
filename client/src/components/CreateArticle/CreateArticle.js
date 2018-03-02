@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Button, Input, Upload, Icon, Select, Modal, Form } from 'antd';
-import moment from 'moment';
 import BreadCrumb from '../../common/BreadCrumb/BreadCrumb';
 import Editor from '../../common/Editor/Editor';
 import Cropper from '../../common/Cropper/Cropper';

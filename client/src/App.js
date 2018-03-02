@@ -11,6 +11,7 @@ import Community from './components/Community/Community';
 import Department from './components/Department/Department';
 import Club from './components/Club/Club';
 import Resource from './components/Resource/Resource';
+import Events from './components/Event/Events';
 import Event from './components/Event/Event';
 import CreateArticle from './components/CreateArticle/CreateArticle';
 import User from './components/User/User';
@@ -19,6 +20,7 @@ import Topic from './components/Topic/Topic';
 import Article from './components/Article/Article';
 import Admin from './components/Admin/Admin';
 import AdminLogin from './components/Admin/AdminLogin';
+import Message from './components/Message/Message';
 import NotFound from './components/NotFound/NotFound';
 import { Row, Col } from 'antd';
 import './App.css';
@@ -54,15 +56,17 @@ class App extends Component {
                                     <Route exact path="/department" component={Department} />
                                     <Route exact path="/resource" component={Resource} />
                                     <Route exact path="/club" component={Club} />
-                                    <Route exact path="/event" component={Event} />
+                                    <Route exact path="/events" component={Events} />
                                     <Route exact path="/create/topic" component={CreateTopic} />
-                                    <Route exact path="/user" component={User} />
                                     <Route exact path="/topic/:id" component={Topic} />
                                     <Route exact path="/article/:id" component={Article} />
                                     <Route exact path="/create/article" component={CreateArticle} />
                                     <Route exact path="/admin/login" component={AdminLogin}/>
+                                    <Route exact path="/event/:id" component={Event}/>
                                     <Route path="/user/edit" component={EditNav} />
                                     <Route path="/admin/manage" component={Admin}/>
+                                    <Route path="/message" component={Message}/>
+                                    <Route path="/user/:id" component={User} />
                                     <Redirect from="/admin" to="/admin/manage"/>
                                     <Route path="*" component={NotFound} />
                                 </Switch>

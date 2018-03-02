@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { List, Avatar, Button, Tabs, Col, Row, Divider, Card } from 'antd';
+import { Button, Tabs, Col, Row, Divider } from 'antd';
 import BreadCrumb from '../../common/BreadCrumb/BreadCrumb';
-import Profile from '../../common/Profile2/Profile';
+import Profile from '../../common/Profile/Profile';
 import config from '../../config';
 import Topics from './Topics';
 import './Club.css';
@@ -45,18 +45,21 @@ export default class Club extends Component {
 						</Tabs>
 					</Col>
 					<Col span={6}>
-						<div className="user-basic-info">
-							<Profile user={this.state.user} />
-							<Divider/>
-							<Divider/>
-							<div>
-								<Link to="/create/topic">
-									<Button type="primary">
-										发布话题
-									</Button>
-								</Link>
-							</div>
-						</div>
+						{
+							this.state.user?
+							<div style={{background: 'white', textAlign: 'center', marginBottom: '10px'}}>
+								<Profile user={this.state.user} />
+								<Divider/>
+								<Divider/>
+								<div>
+									<Link to="/create/topic">
+										<Button type="primary">
+											发布话题
+										</Button>
+									</Link>
+								</div>
+							</div>:null
+						}
 					</Col>
 				</Row>
 			</div>

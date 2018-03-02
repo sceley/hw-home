@@ -23,23 +23,18 @@ export default class ManageMember extends Component {
 		})
 	}
 	handleClick = (e) => {
-		let id = this.mid.getAttribute("data-mid");
-		let body = {
-			Active: e
-		};
+		let id = e.currentTarget.getAttribute('data-id');
 		fetch(`${config.server}/member/${id}/allow`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
+			method: 'GET',
 			credentials: 'include',
-			body: JSON.stringify(body)
 		}).then(res => {
 			if (res.ok) {
 				return res.json();
 			}
 		}).then(json => {
-			console.log(json);
+			if (!json.err) {
+				
+			}
 		});
 	}
 	
@@ -53,30 +48,34 @@ export default class ManageMember extends Component {
 						renderItem={item => (
 							<List.Item
 								actions={[
-									<span data-mid={item.mid} ref={e => {
-										this.mid = e;
-									}}>
+									<span>
 										<span style={{marginRight: '5px'}}>会员</span>
-										<Switch onClick={this.handleClick} checkedChildren="否" unCheckedChildren="是" defaultChecked={Boolean(item.Active)} />
+										<a onClick={this.handleClick} data-id={item.uid}>
+											<Switch checkedChildren="否" unCheckedChildren="是" defaultChecked={Boolean(item.Active)} />
+										</a>
 									</span>
 								]}
 							>
 								<ul className="list">
 									<li className="list-item">
+										用户名:
+										<span>{item.Username}</span>
+									</li>
+									<li className="list-item">
 										姓名:
-										<span>覃永利</span>
+										<span>{item.Name}</span>
 									</li>
 									<li className="list-item">
 										部门:
-										<span>webTeam</span>
+										<span>{item.Team}</span>
 									</li>
 									<li className="list-item">
 										学号:
-										<span>16051223</span>
+										<span>{item.SchoolNumber}</span>
 									</li>
 									<li className="list-item">
 										描述:
-										<span>我是HelloWorld社团Web组的组员，你可以向社长求证</span>
+										<span>{item.Description}</span>
 									</li>
 								</ul>
 							</List.Item>

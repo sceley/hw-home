@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { List, Avatar, Icon, Button, Col, Row, Divider } from 'antd';
-import Profile from '../../common/Profile2/Profile';
+import Profile from '../../common/Profile/Profile';
 import BreadCrumb from '../../common/BreadCrumb/BreadCrumb';
 import config from '../../config';
 import md from '../../common/Markdown';
@@ -18,17 +18,18 @@ export default class Blog extends Component {
 
 	componentDidMount = () => {
 		fetch(`${config.server}/articles/count`)
-		.then(res => {
-			if (res.ok) {
-				return res.json();
-			}
-		}).then(json => {
-			if (!json.err) {
-				this.setState({
-					count: json.count
-				});
-			}
-		});
+			.then(res => {
+				if (res.ok) {
+					return res.json();
+				}
+			}).then(json => {
+				if (!json.err) {
+					this.setState({
+						count: json.count
+					});
+				}
+			});
+
 		fetch(`${config.server}/user`, {
 			method: 'GET',
 			credentials: 'include'
@@ -37,9 +38,10 @@ export default class Blog extends Component {
 				return res.json();
 			}
 		}).then(json => {
-			if (json.err === 0) {
+			if (!json.err) {
 				this.setState({
-					user: json.user
+					user: json.user,
+					uid: json.user.uid
 				});
 			}
 		});
@@ -47,7 +49,12 @@ export default class Blog extends Component {
 	}
 
 	pullData = (page) => {
-		fetch(`${config.server}/articles?page=${page}`, {
+		let url;
+		if (page)
+			url = `${config.server}/articles?page=${page}`;
+		else
+			url = `${config.server}/articles`;
+		fetch(url, {
 			method: 'GET',
 			credentials: 'include'
 		}).then(res => {
@@ -57,14 +64,15 @@ export default class Blog extends Component {
 		}).then(json => {
 			if (!json.err) {
 				this.setState({
-					articles: json.articles,
-					uid: json.uid
+					articles: json.articles
 				});
 			}
 		});
 	}
 
 	handleLikeClick = (e) => {
+		if (!this.state.user)
+			return;
 		let id = e.currentTarget.getAttribute('data-id');
 		fetch(`${config.server}/article/${id}/like`, {
 			method: 'GET',
@@ -74,7 +82,6 @@ export default class Blog extends Component {
 				return res.json();
 			}
 		}).then(json => {
-			console.log(json);
 			if (!json.err) {
 				this.pullData(this.state.current);
 			}
@@ -104,75 +111,79 @@ export default class Blog extends Component {
 				<BreadCrumb name="技术博客" />
 				<Row gutter={16} style={{ marginTop: '20px' }}>
 					<Col span={18}>
-							<List
-								pagination={pagination}
-								size="large"
-								dataSource={this.state.articles}
-								itemLayout="vertical"
-								bordered
-								style={{ background: 'white' }}
-								renderItem={article => (
-									<List.Item
-										key={article.Title}
-										actions={[
-													<IconText type="eye-o" text={article.VisitCount} />, 
-													<IconText type="message" text={article.CommentCount} />, 
-													<a href="javascript:;" data-id={article.id} onClick={this.handleLikeClick}>
-														{
-															article.luids && article.luids.split(',').indexOf(String(this.state.uid)) !== -1?
-															<IconText type="like" text={article.LikeCount} />
-															:
-															<IconText type="like-o" text={article.LikeCount} />
-														}
-													</a>
-												]}	
-										extra={<img width={272} alt="logo" src={article.Poster} />}
-									>
-										<List.Item.Meta
-											avatar={<Avatar src={article.Poster} />}
-											title={article.Title}
-											description={
-												<ul className="ant-list-item-action">
-													<li>
-														<IconText type="calendar" text={moment(article.CreateAt).format('YYYY-MM-DD')} />
-														<em className="ant-list-item-action-split" />
-													</li>
-													<li>
-														<IconText type="folder" text={article.Categories} />
-														<em className="ant-list-item-action-split" />
-													</li>
-													<li>
-														<IconText type="user" text={article.Author} />
-													</li>
-												</ul>
+						<List
+							pagination={pagination}
+							size="large"
+							dataSource={this.state.articles}
+							itemLayout="vertical"
+							bordered
+							style={{background: 'white'}}
+							renderItem={article => (
+								<List.Item
+									key={article.Title}
+									actions={[
+										<IconText type="eye-o" text={article.VisitCount} />,
+										<IconText type="message" text={article.CommentCount} />,
+										<a href="javascript:;" data-id={article.id} onClick={this.handleLikeClick}>
+											{
+												article.luids && article.luids.split(',').indexOf(String(this.state.uid)) !== -1?
+													<IconText type="like" text={article.LikeCount} />
+													:
+													<IconText type="like-o" text={article.LikeCount} />
 											}
-										/>
-										<div dangerouslySetInnerHTML={{
-											__html: md(article.Body)
-										}}>
-										</div>
-										<div style={{ marginTop: '20px', textAlign: 'center' }}>
-											<Link to={`/article/${article.id}`}>
-												<Button>README MORE</Button>
-											</Link>
-										</div>
-									</List.Item>
-								)}
-							/>
+										</a>
+									]}
+									extra={<img width={272} alt="logo" src={article.Poster} />}
+								>
+									<List.Item.Meta
+										avatar={<Avatar src={article.Poster} />}
+										title={article.Title}
+										description={
+											<ul className="ant-list-item-action">
+												<li>
+													<IconText type="calendar" text={moment(article.CreateAt).format('YYYY-MM-DD')} />
+													<em className="ant-list-item-action-split" />
+												</li>
+												<li>
+													<IconText type="folder" text={article.Categories} />
+													<em className="ant-list-item-action-split" />
+												</li>
+												<li>
+													<IconText type="user" text={article.Author} />
+												</li>
+											</ul>
+										}
+									/>
+									<div dangerouslySetInnerHTML={{
+										__html: md(article.Body)
+									}}>
+									</div>
+									<div style={{ marginTop: '20px', textAlign: 'center' }}>
+										<Link to={`/article/${article.id}`}>
+											<Button>README MORE</Button>
+										</Link>
+									</div>
+								</List.Item>
+							)}
+						/>
 					</Col>
 					<Col span={6}>
-						<div className="user-basic-info">
-							<Profile user={this.state.user}/>
-							<Divider/>
-							<Divider/>
-							<div>
-								<Link to="/create/article">
-									<Button type="primary">
-										发布文章
-									</Button>
-								</Link>
+						{
+							this.state.user?
+							<div className="user-basic-info">
+								<Profile user={this.state.user} />
+								<Divider />
+								<Divider />
+								<div>
+									<Link to="/create/article">
+										<Button type="primary">
+											发布文章
+										</Button>
+									</Link>
+								</div>
 							</div>
-						</div>
+							:null
+						}
 					</Col>
 				</Row>
 			</div>

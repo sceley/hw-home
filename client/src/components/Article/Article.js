@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { Row, Col, Icon, List, Avatar, Button, Divider, Card, Anchor } from 'antd';
+import { Link } from 'react-router-dom';
 import md from '../../common/Markdown';
 import Editor from '../../common/Editor/Editor';
 import moment from 'moment';
-import Profile1 from '../../common/Profile1/Profile';
-import Profile2 from '../../common/Profile2/Profile';
+import Profile from '../../common/Profile/Profile';
 import ParseDate from '../../common/ParseDate';
 import config from '../../config';
 import './Article.css';
 
-const { Link } = Anchor;
+// const { Link } = Anchor;
 
 export default class Article extends Component {
 	state = {
@@ -17,7 +17,8 @@ export default class Article extends Component {
 		comment: '',
 		uid: '',
 		collected: '',
-		user: ''
+		user: '',
+		cared: ''
 	}
 	handleSubmit = () => {
 		let Body = this.refs.editor.getValue();
@@ -105,6 +106,23 @@ export default class Article extends Component {
 		});
 	}
 
+	careClick = () => {
+		let uid = this.state.uid;
+		fetch(`${config.server}/user/care/${this.state.article.uid}`, {
+			method: 'GET',
+			credentials: 'include'
+		}).then(res => {
+			if (res.ok) {
+				return res.json()
+			}
+		}).then(json => {
+			if (!json.err) {
+				this.setState({
+					cared: !this.state.cared
+				});
+			}
+		});
+	}
 	componentDidMount() {
 		let id = this.props.match.params.id;
 		fetch(`http://localhost:8080/article/${id}`, {
@@ -120,7 +138,8 @@ export default class Article extends Component {
 					article: json.article,
 					comment: json.comment,
 					uid: json.uid,
-					collected: json.collected
+					collected: json.collected,
+					cared: json.cared
 				});
 				this.getUserById(json.article.uid);
 			}
@@ -197,11 +216,11 @@ export default class Article extends Component {
 						          						</a>
 						          					]}>
 						            <List.Item.Meta
-						              avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+						              avatar={<Avatar src={item.Avatar} />}
 						              title={
 						              	<em className="date">
-						              		<a style={{marginRight: '5px'}} href="https://ant.design">sceley</a>
-						              		{ParseDate(item.Date)}
+						              		<a style={{marginRight: '5px'}} href="#">{item.Author}</a>
+						              		{ParseDate(item.CreateAt)}
 						              	</em>
 						              }
 						              description={
@@ -230,14 +249,32 @@ export default class Article extends Component {
 						</div>
 					</Col>
 					<Col style={{background: 'white'}} span={6}>
-						<div className="user-basic-info">
+						<Profile user={this.state.user}/>
+						<Divider/>
+						<Divider/>
+						<ul className="button-list" style={{marginBottom: '10px'}}>
 							{
-								this.state.user.id == this.state.uid?
-								<Profile2 uid={this.state.uid} user={this.state.user}/>
+								this.state.cared?
+								<li className="button-list-item">
+									<Button onClick={this.careClick} className="button">
+										<Icon type="minus" />已关注
+									</Button>
+								</li>
 								:
-								<Profile1 uid={this.state.uid} user={this.state.user}/>
+								<li className="button-list-item">
+									<Button onClick={this.careClick} type="primary" className="button">
+										<Icon type="plus" />关注 Ta
+									</Button>
+								</li>
 							}
-						</div>
+							<li className="button-list-item">
+								<Link to={`/message/to/${this.state.user.id}`}>
+									<Button className="button">
+											<Icon type="mail" />发私信
+									</Button>
+								</Link>
+							</li>
+						</ul>
 					</Col>
 				</Row>
 			</div>

@@ -11,7 +11,7 @@ class AdminLoginForm extends Component {
 		e.preventDefault();
 		this.props.form.validateFields((err, values) => {
 			if (!err) {
-				fetch(`${config.server}admin/login`, {
+				fetch(`${config.server}/admin/login`, {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json'

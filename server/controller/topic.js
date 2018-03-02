@@ -62,7 +62,7 @@ exports.getTopic = async (req, res) => {
 			});
 		});
 		let comments = await new Promise((resolve, reject) => {
-			let sql = 'select id, LikeCount, CreateAt, Body, Author, group_concat(luid) as luids from Topic_Comment left join Topic_Comment_Like on Topic_Comment.id=Topic_Comment_Like.ltcid and Topic_Comment.tid=Topic_Comment_Like.ltid where Topic_Comment.tid=? group by id';
+			let sql = 'select Topic_Comment.id, LikeCount, max(User.id) as uid, max(Avatar) as Avatar, Topic_Comment.CreateAt, Body, Author, group_concat(luid) as luids from Topic_Comment left join Topic_Comment_Like on Topic_Comment.id=Topic_Comment_Like.ltcid and Topic_Comment.tid=Topic_Comment_Like.ltid left join User on Topic_Comment.Author=User.Username where Topic_Comment.tid=? group by Topic_Comment.id';
 			db.query(sql, [id], (err, comments) => {
 				if (err) {
 					reject(err);
@@ -71,14 +71,26 @@ exports.getTopic = async (req, res) => {
 				}
 			});
 		});
+		let cared = await new Promise((resolve, reject) => {
+			let sql = 'select * from Fans where uid=? and fuid=?';
+			db.query(sql, [topic.uid, uid], (err, fans) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(fans.length);
+				}
+			});
+		});
 		res.json({
 			err: 0,
 			topic,
 			comments,
 			uid: uid,
-			collected
+			collected,
+			cared
 		});
 	} catch (e) {
+		console.log(e);
 		res.json({
 			err: 1,
 			msg: '服务器出错了'
@@ -127,9 +139,9 @@ exports.getTopics = async (req, res) => {
 	if (!page)
 		page = 1;
 	if (!tab)
-		sql= 'select * from Topic limit ?, ?';
+		sql= 'select Title, good, top, Topic.id, User.id as uid, Avatar, Topic.CreateAt, Author from Topic left join User on Topic.Author=User.Username  limit ?, ?';
 	else 
-		sql= 'select * from Topic where good=true limit ?, ?';
+		sql= 'select Title, good, top, Topic.id, User.id as uid, Avatar, Topic.CreateAt, Author from Topic left join User on Topic.Author=User.Username where good=true limit ?, ?';
 	try {
 		let topics = await new Promise((resolve, reject) => {
 			db.query(sql, [5 * (page - 1), 5], (err, topics) => {

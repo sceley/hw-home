@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Card, Icon, Upload, Modal, Button } from 'antd';
+import { Card, Icon, Upload, Modal, Button } from 'antd';
 import Cropper from '../../common/Cropper/Cropper';
 import ParseImage from '../../common/ParseImage';
 
