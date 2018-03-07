@@ -10,7 +10,7 @@ export default class Event extends Component {
 	state = {
 		events: []
 	}
-	componentDidMount = () => {
+	componentWillMount = () => {
 		fetch(`${config.server}/event`)
 		.then(res => {
 			if (res.ok) {
@@ -29,7 +29,6 @@ export default class Event extends Component {
 			return <Col key={event.Title} span={8}>
 						<Link to={`/event/${event.id}`}>
 							<Card
-								style={{ width: 300 }}
 								cover={<img alt="example" src={event.Poster} />}
 							>
 								<Meta

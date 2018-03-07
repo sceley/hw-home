@@ -4,44 +4,37 @@ import introduce from '../../common/introduction';
 import BreadCrumb from '../../common/BreadCrumb/BreadCrumb';
 export default class Departments extends Component {
 	render() {
-		let intro_de = [
+		let data = [
 			{
-				img: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
 				department: '主席团',
 				description: introduce.department.main,
 			},
 			{
-				img: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
 				department: 'Web组',
 				description: introduce.department.web,
 			},
 			{
-				img: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
 				department: 'Android组',
 				description: introduce.department.android,
 			},
 			{
-				img: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
 				department: 'IOS组',
 				description: introduce.department.ios,
 			},
 			{
-				img: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
 				department: '行政组',
 				description: introduce.department.action,
 			},
 			{
-				img: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
 				department: '产品组',
 				description: introduce.department.product,
 			}
 		];
-
-		let elements = intro_de.map(item => {
+		let elements = data.map(item => {
 			return (
-				<Col key={item.department} xs={24} md={12} xl={8}>
+				<Col key={item.department} span={8}>
 					<Card
-						style={{ marginTop: "20px", width: "300px" }}
+						style={{ marginTop: "20px" }}
 						title={<h2>{item.department}</h2>}
 					>
 						<p>{item.description}</p>
@@ -49,11 +42,9 @@ export default class Departments extends Component {
 				</Col>
 			);
 		});
-
 		return (
 			<div className="Departments">
 				<BreadCrumb name="部门介绍" />
-
 				<div style={{ marginTop: '20px' }}>
 					<div style={{ textAlign: 'center' }}>
 						<h1>各部门介绍</h1>
@@ -65,4 +56,4 @@ export default class Departments extends Component {
 			</div>
 		);
 	}
-}
+};
