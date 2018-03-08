@@ -12,7 +12,7 @@ export default class Blog extends Component {
 		count: '',
 		current: 1,
 		articles: '',
-		uid: '',
+		uid: 1,
 		user: ''
 	}
 
@@ -41,7 +41,7 @@ export default class Blog extends Component {
 			if (!json.err) {
 				this.setState({
 					user: json.user,
-					uid: json.user.uid
+					uid: json.user.id
 				});
 			}
 		});
@@ -83,7 +83,21 @@ export default class Blog extends Component {
 			}
 		}).then(json => {
 			if (!json.err) {
-				this.pullData(this.state.current);
+				let articles = this.state.articles;
+				for (let i = 0; i < articles.length; i++) {
+					if (articles[i].id === Number(id)) {
+						articles[i].lid = !articles[i].lid;
+						if (articles[i].lid) {
+							articles[i].LikeCount += 1;
+						} else {
+							articles[i].LikeCount -= 1;
+						}
+						break;
+					}
+				}
+				this.setState({
+					articles: articles
+				});
 			}
 		});
 	}
@@ -126,10 +140,10 @@ export default class Blog extends Component {
 										<IconText type="message" text={article.CommentCount} />,
 										<a data-id={article.id} onClick={this.handleLikeClick}>
 											{
-												article.luids && article.luids.split(',').indexOf(String(this.state.uid)) !== -1?
-													<IconText type="like" text={article.LikeCount} />
-													:
-													<IconText type="like-o" text={article.LikeCount} />
+												article.lid?
+												<IconText type="like" text={article.LikeCount} />
+												:
+												<IconText type="like-o" text={article.LikeCount} />
 											}
 										</a>
 									]}
@@ -149,7 +163,9 @@ export default class Blog extends Component {
 													<em className="ant-list-item-action-split" />
 												</li>
 												<li>
-													<IconText type="user" text={article.Author} />
+													<Link to={`/user/${article.uid}`}>
+														<IconText type="user" text={article.Author} />
+													</Link>
 												</li>
 											</ul>
 										}
@@ -170,17 +186,14 @@ export default class Blog extends Component {
 					<Col span={6}>
 						{
 							this.state.user?
-							<div className="user-basic-info">
-								<Profile user={this.state.user} />
+							<div className="profile-wrap">
+								<Profile uid={this.state.uid} />
 								<Divider />
-								<Divider />
-								<div>
-									<Link to="/create/article">
-										<Button type="primary">
-											发布文章
-										</Button>
-									</Link>
-								</div>
+								<Link to="/create/article">
+									<Button type="primary">
+										发布文章
+									</Button>
+								</Link>
 							</div>
 							:null
 						}

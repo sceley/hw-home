@@ -28,5 +28,45 @@ module.exports = {
 	},
 	community: {
 		introduce: `HelloWorld社团是计算机学院领导下的一个技术服务类社团，服务于全校师生和所有校友，负责杭电校友服务平台开发、学院网站建设与维护等。`
-	}
+	},
+	history: [{
+		date: '2014.04.26',
+		description: '与杭州Google开发者社区（GDG）共同举办“Google I/O 直播之夜'
+	}, {
+		date: '2015.01.05',
+		description: '成立浙江省高校微联盟，包含全省60家高校的72个微信公众号'
+	}, {
+		date: '2015.05.23',
+		description: '协办百事可乐“把乐带回家”活动'
+	}, {
+		date: '2015.04.18',
+		description: '成立杭州首家跨境电商O2O体验中心'
+	}, {
+		date: '2015.05.23',
+		description: '举办2015浙江省-安控杯Hackathon大赛'
+	}, {
+		date: '2015.06.06',
+		description: '出席2015中国创客西湖峰会'
+	}, {
+		date: '2016.04.16',
+		description: '举办2016浙江省-龙驰杯Hackathon大赛'
+	}, {
+		date: '2016.09.20',
+		description: '社会实践团获校级“百优团队”'
+	}, {
+		date: '2016.12.03',
+		description: '与iOS club共同举办APP火花思维体验赛'
+	}, {
+		date: '2016.12.14',
+		description: '与浙江工业大学精弘网络合作交流'
+	}, {
+		date: '2017.03.21',
+		description: '与腾讯TGP社举办《金刚：骷髅岛》观影'
+	}, {
+		date: '2017.04.02',
+		description: '成立浙江省高校技术类社团联盟'
+	}, {
+		date: '2017.04.13',
+		description: '举办首届高校技术沙龙'
+	}]
 };

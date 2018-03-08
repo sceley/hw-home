@@ -42,17 +42,14 @@ export default class User extends Component {
 			<div style={{ marginTop: '20px' }} className="User">
 				<Row gutter={16}>
 					<Col span={6}>
-						<div className="user-basic-info">
-							<Profile user={this.state.user}/>
+						<div className="profile-wrap">
+							<Profile uid={this.props.match.params.id}/>
 							<Divider/>
-							<Divider/>
-							<div className="edit-info">
-								<Link to="/user/edit">
-									<Button type="primary">
-										编辑个人资料
-									</Button>
-								</Link>
-							</div>
+							<Link to="/user/edit">
+								<Button type="primary">
+									编辑个人资料
+								</Button>
+							</Link>
 						</div>
 						<div style={{marginTop: '20px'}}>
 						<Menu

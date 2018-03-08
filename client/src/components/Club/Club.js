@@ -47,17 +47,14 @@ export default class Club extends Component {
 					<Col span={6}>
 						{
 							this.state.user?
-							<div style={{background: 'white', textAlign: 'center', marginBottom: '10px'}}>
-								<Profile user={this.state.user} />
+							<div className="profile-wrap">
+								<Profile uid={this.state.user.id} />
 								<Divider/>
-								<Divider/>
-								<div>
-									<Link to="/create/topic">
-										<Button type="primary">
-											发布话题
-										</Button>
-									</Link>
-								</div>
+								<Link to="/create/topic">
+									<Button type="primary">
+										发布话题
+									</Button>
+								</Link>
 							</div>:null
 						}
 					</Col>

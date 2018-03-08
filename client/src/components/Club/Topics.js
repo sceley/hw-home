@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { List, Avatar } from 'antd';
+import { List, Avatar, Tag } from 'antd';
 import ParseDate from '../../common/ParseDate';
 import config from '../../config';
 
@@ -85,7 +85,14 @@ export default class Topics extends Component {
 							<List.Item actions={[<span>{ParseDate(item.CreateAt)}</span>]}>
 								<List.Item.Meta
 									avatar={<a href=""><Avatar src={item.Avatar} /></a>}
-									title={<a href="https://ant.design">{item.Author}</a>}
+									title={<div>
+											<a href="https://ant.design">{item.Author}</a>
+											{
+												item.top?
+												<Tag style={{marginLeft: '10px'}} color="#87d068">置顶</Tag>
+												:null
+											}
+										</div>}
 									description={<h3><a href={`/topic/${item.id}`}>{item.Title}</a></h3>}
 								/>
 							</List.Item>

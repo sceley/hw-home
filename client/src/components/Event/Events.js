@@ -8,7 +8,7 @@ const { Meta } = Card;
 
 export default class Event extends Component {
 	state = {
-		events: ''
+		events: []
 	}
 	componentWillMount = () => {
 		fetch(`${config.server}/event`)

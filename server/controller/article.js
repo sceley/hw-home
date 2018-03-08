@@ -16,7 +16,10 @@ exports.createArticle = async (req, res) => {
 			});
 		});
 		await new Promise((resolve, reject) => {
-			let sql = "insert into Article(Title, Categories, Poster, Body, Author, CreateAt, uid) values(?, ?, ?, ?, ?, ?, ?)";
+			let sql = `insert into Article
+						(Title, Categories, Poster, Body, 
+						Author, CreateAt, uid)
+						values(?, ?, ?, ?, ?, ?, ?)`;
 			db.query(sql, [body.Title, body.Categories, body.Poster, body.Body, user.Username, CreateAt, uid], (err) => {
 				if (err) {
 					reject(err);
@@ -27,7 +30,6 @@ exports.createArticle = async (req, res) => {
 		});
 		res.json({
 			err: 0,
-			msg: '创作成功'
 		});
 	} catch (e) {
 		res.json({
@@ -43,8 +45,14 @@ exports.getArticles = async (req, res) => {
 	try {
 		let uid = req.session.uid;
 		let articles = await new Promise((resolve, reject) => {
-			let sql = 'select id, Poster, Author, Body, CreateAt, Categories, LikeCount, CommentCount, VisitCount, group_concat(luid) as luids from Article left join Article_Like on Article.id=Article_Like.laid group by(id) limit ?, ?';
-			db.query(sql, [5 * (page - 1), 5], (err, articles) => {
+			let sql = `select Article.id as id, Article_Like.id as lid,
+						User.id as uid, Poster, Author, Body, User.CreateAt, 
+						Categories, LikeCount, CommentCount, VisitCount
+						from Article left join Article_Like on
+						Article_Like.aid=Article.id and Article_Like.uid=? 
+						left join User on User.Username=Article.Author
+						order by Article.CreateAt desc limit ?, ?`;
+			db.query(sql, [uid, 5 * (page - 1), 5], (err, articles) => {
 				if (err) {
 					reject(err);
 				} else {
@@ -58,6 +66,7 @@ exports.getArticles = async (req, res) => {
 			uid
 		});
 	} catch (e) {
+		console.log(e);
 		res.json({
 			err: 1,
 			msg: '服务器出错了'
@@ -99,8 +108,16 @@ exports.getArticle = async (req, res) => {
 			});
 		});
 		let comment = await new Promise((resolve, reject) => {
-			let sql = 'select Article_Comment.id, max(Avatar) as Avatar, max(User.id) as uid ,LikeCount, Article_Comment.CreateAt, Body, Author, group_concat(luid) as luids from Article_Comment left join User on User.Username=Article_Comment.Author left join Article_Comment_Like on Article_Comment.id=Article_Comment_Like.lacid and Article_Comment.aid=Article_Comment_Like.laid where Article_Comment.aid=? group by Article_Comment.id';
-			db.query(sql, [id], (err, comment) => {
+			let sql = `select Article_Comment.id, Article_Comment_Like.id as lid, 
+						Avatar, LikeCount, Article_Comment.CreateAt,
+						Body, Author from Article_Comment 
+						left join User on User.Username=Article_Comment.Author
+						left join Article_Comment_Like 
+						on Article_Comment_Like.aid=Article_Comment.aid 
+						and Article_Comment_Like.acid=Article_Comment.id 
+						and Article_Comment_Like.uid=? 
+						where Article_Comment.aid=?`;
+			db.query(sql, [uid, id], (err, comment) => {
 				if (err) {
 					reject(err);
 				} else {
@@ -211,7 +228,7 @@ exports.articleLike = async (req, res) => {
 	let uid = req.session.uid;
 	try {
 		let isLiked = await new Promise((resolve, reject) => {
-			let sql = 'select * from Article_Like where laid=? and luid=?';
+			let sql = 'select * from Article_Like where aid=? and uid=?';
 			db.query(sql, [id, uid], (err, articleLikes) => {
 				if (err) {
 					reject(err);
@@ -224,10 +241,10 @@ exports.articleLike = async (req, res) => {
 		let sql2;
 		if (isLiked) {
 			sql1 = 'update Article set LikeCount=LikeCount-1 where id=?';
-			sql2 = 'delete from Article_Like where laid=? and luid=?';
+			sql2 = 'delete from Article_Like where aid=? and uid=?';
 		} else {
 			sql1 = 'update Article set LikeCount=LikeCount+1 where id=?';
-			sql2 = 'insert into Article_Like(laid, luid) values(?, ?)';
+			sql2 = 'insert into Article_Like(aid, uid) values(?, ?)';
 		}
 		await new Promise((resolve, reject) => {
 			db.query(sql1, [id], (err) => {
@@ -264,7 +281,7 @@ exports.articleCommentLike = async (req, res) => {
 	let uid = req.session.uid;
 	try {
 		let isLiked = await new Promise((resolve, reject) => {
-			let sql = 'select * from Article_Comment_Like where lacid=? and luid=? and laid';
+			let sql = 'select * from Article_Comment_Like where acid=? and uid=? and aid';
 			db.query(sql, [acid, uid, aid], (err, articleLikes) => {
 				if (err) {
 					reject(err);
@@ -277,10 +294,10 @@ exports.articleCommentLike = async (req, res) => {
 		let sql2;
 		if (isLiked) {
 			sql1 = 'update Article_Comment set LikeCount=LikeCount-1 where id=? and aid=?';
-			sql2 = 'delete from Article_Comment_Like where lacid=? and luid=? and laid=?';
+			sql2 = 'delete from Article_Comment_Like where acid=? and uid=? and aid=?';
 		} else {
 			sql1 = 'update Article_Comment set LikeCount=LikeCount+1 where id=? and aid=?';
-			sql2 = 'insert into Article_Comment_Like(lacid, luid, laid) values(?, ?, ?)';
+			sql2 = 'insert into Article_Comment_Like(acid, uid, aid) values(?, ?, ?)';
 		}
 		await new Promise((resolve, reject) => {
 			db.query(sql1, [acid, aid], (err) => {

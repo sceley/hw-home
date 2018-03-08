@@ -109,7 +109,7 @@ let table7 = `
 			good boolean default false,
 			top boolean default false, 
 			Tab varchar(10),
-			CreateAt date,
+			CreateAt datetime,
 			primary key(id),
 			foreign key(uid) references User(id))
 			charset=utf8`;
@@ -126,8 +126,7 @@ let table8 = `
 			Body longtext,
 			CreateAt date,
 			LikeCount int default 0,
-			primary key(id),
-			foreign key(tid) references Topic(id))
+			primary key(id))
 			charset=utf8`;
 db.query(table8, (err, result) => {
 	if (err) return console.log(err);
@@ -148,10 +147,10 @@ db.query(table9, (err, result) => {
 
 let table10 = `
 			create table if not exists Article_Like(
-			luid int unsigned,
-			laid int unsigned,
-			foreign key(luid) references User(id),
-			foreign key(luid) references Article(id))
+			id int unsigned auto_increment,
+			uid int unsigned,
+			aid int unsigned,
+			primary key(id))
 			charset=utf8`;
 db.query(table10, (err, result) => {
 	if (err) return console.log(err);
@@ -159,12 +158,11 @@ db.query(table10, (err, result) => {
 
 let table11 = `
 			create table if not exists Article_Comment_Like(
-			laid int unsigned,
-			luid int unsigned,
-			lacid int unsigned,
-			foreign key(luid) references User(id),
-			foreign key(lacid) references Article_Comment(id), 
-			foreign key(laid) references Article(id))
+			id int unsigned auto_increment,
+			aid int unsigned,
+			uid int unsigned,
+			acid int unsigned,
+			primary key(id))
 			charset=utf8`;
 db.query(table11, (err, result) => {
 	if (err) return console.log(err);
@@ -172,12 +170,11 @@ db.query(table11, (err, result) => {
 
 let table12 = `
 			create table if not exists Topic_Comment_Like(
-			ltid int unsigned,
-			luid int unsigned,
-			ltcid int unsigned,
-			foreign key(luid) references User(id),
-			foreign key(ltcid) references Topic_Comment(id), 
-			foreign key(ltid) references Topic(id))
+			id int unsigned auto_increment,
+			tid int unsigned,
+			uid int unsigned,
+			tcid int unsigned,
+			primary key(id))
 			charset=utf8`;
 db.query(table12, (err, result) => {
 	if (err) return console.log(err);

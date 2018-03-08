@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Card, Row, Col, Timeline } from 'antd';
 import BreadCrumb from '../../common/BreadCrumb/BreadCrumb';
+import introduction from '../../common/introduction';
 const { Meta } = Card;
 export default class Introduce extends Component {
 	state = {
@@ -13,6 +14,16 @@ export default class Introduce extends Component {
 	}
 
 	render() {
+		let elements = introduction.history.map(item => {
+			return (
+				<Timeline.Item key={item.description}>
+					{item.date}
+					<Card
+						title={item.description}
+					/>
+				</Timeline.Item>
+			);
+		});
 		return (
 			<div className="Community">
 				<BreadCrumb name="社团介绍" />
@@ -25,22 +36,7 @@ export default class Introduce extends Component {
 				</div>
 				<div style={{ marginTop: '20px', padding: '10px' }}>
 					<Timeline>
-						<Timeline.Item>
-							2014年
-								<Card
-								style={{ width: 300 }}
-								cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
-							>
-								<Meta
-									title="社团创建"
-									description="在这一年HelloWorld社团创建了"
-								/>
-							</Card>
-						</Timeline.Item>
-						<Timeline.Item>2015年</Timeline.Item>
-						<Timeline.Item>2016年</Timeline.Item>
-						<Timeline.Item>2017年</Timeline.Item>
-						<Timeline.Item color="red">2018年</Timeline.Item>
+						{elements}
 					</Timeline>
 				</div>
 
@@ -89,3 +85,15 @@ export default class Introduce extends Component {
 		);
 	}
 }
+						{/*<Timeline.Item>
+							2014年
+								<Card
+								style={{ width: 300 }}
+								cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
+							>
+								<Meta
+									title="社团创建"
+									description="在这一年HelloWorld社团创建了"
+								/>
+							</Card>
+						</Timeline.Item>*/}

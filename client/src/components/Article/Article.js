@@ -6,6 +6,7 @@ import Editor from '../../common/Editor/Editor';
 import moment from 'moment';
 import Profile from '../../common/Profile/Profile';
 import ParseDate from '../../common/ParseDate';
+import HisProfile from '../../common/Profile/HisProfile';
 import config from '../../config';
 import './Article.css';
 
@@ -44,7 +45,7 @@ export default class Article extends Component {
 			}
 		}).then(json => {
 			if (!json.err) {
-				this.componentDidMount();
+				// this.componentDidMount();
 				this.refs.editor.setValue('');
 			}
 		});
@@ -82,7 +83,21 @@ export default class Article extends Component {
 			}
 		}).then(json => {
 			if (!json.err) {
-				this.componentDidMount();
+				let comment = this.state.comment;
+				for (let i = 0; i < comment.length; i++) {
+					if (comment[i].id === Number(acid)) {
+						comment[i].lid = !comment[i].lid;
+						if (comment[i].lid) {
+							comment[i].LikeCount += 1;
+						} else {
+							comment[i].LikeCount -= 1;
+						}
+						break;
+					}
+				}
+				this.setState({
+					comment: comment
+				});
 			}
 		});
 	}
@@ -104,22 +119,7 @@ export default class Article extends Component {
 		});
 	}
 
-	careClick = () => {
-		fetch(`${config.server}/user/care/${this.state.article.uid}`, {
-			method: 'GET',
-			credentials: 'include'
-		}).then(res => {
-			if (res.ok) {
-				return res.json()
-			}
-		}).then(json => {
-			if (!json.err) {
-				this.setState({
-					cared: !this.state.cared
-				});
-			}
-		});
-	}
+	
 	componentDidMount() {
 		let id = this.props.match.params.id;
 		fetch(`http://localhost:8080/article/${id}`, {
@@ -202,7 +202,7 @@ export default class Article extends Component {
 						          <List.Item actions={[
 						          						<a data-id={item.id} onClick={this.likeClick}>
 						          							{
-						          								item.luids && item.luids.split(',').indexOf(String(this.state.uid)) !== -1?
+						          								item.lid?
 						          								<Icon type="like"/>:<Icon type="like-o" />
 						          							}
 						          							{item.LikeCount}
@@ -244,33 +244,10 @@ export default class Article extends Component {
 							</div>
 						</div>
 					</Col>
-					<Col style={{background: 'white'}} span={6}>
-						<Profile user={this.state.user}/>
-						<Divider/>
-						<Divider/>
-						<ul className="button-list" style={{marginBottom: '10px'}}>
-							{
-								this.state.cared?
-								<li className="button-list-item">
-									<Button onClick={this.careClick} className="button">
-										<Icon type="minus" />已关注
-									</Button>
-								</li>
-								:
-								<li className="button-list-item">
-									<Button onClick={this.careClick} type="primary" className="button">
-										<Icon type="plus" />关注 Ta
-									</Button>
-								</li>
-							}
-							<li className="button-list-item">
-								<Link to={`/message/to/${this.state.user.id}`}>
-									<Button className="button">
-											<Icon type="mail" />发私信
-									</Button>
-								</Link>
-							</li>
-						</ul>
+					<Col span={6}>
+						<div className="profile-wrap">
+							<HisProfile uid={this.state.uid}/>
+						</div>
 					</Col>
 				</Row>
 			</div>

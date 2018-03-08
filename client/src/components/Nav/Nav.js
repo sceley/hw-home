@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, Input, Avatar, Modal, Button, Badge } from 'antd';
+import Login from '../Login/Login';
+import Member from '../Member/Member';
 import logo from './logo.svg';
 import './Nav.css';
 
@@ -12,9 +14,23 @@ export default class Navigation extends Component {
 		current: 'home',
 		visible: false,
 		user: null,
+		logModalVisible: false,
+		memberModalVisible: false
 	}
 
 	handleSearch = (e) => {
+	}
+
+	showLoginModal = () => {
+		this.setState({
+			logModalVisible: true
+		});
+	}
+
+	showMemberModal = () => {
+		this.setState({
+			memberModalVisible: true
+		});
 	}
 
 	showModal = () => {
@@ -29,7 +45,30 @@ export default class Navigation extends Component {
 		});
 	}
 
+	hiddenModalCancel = () => {
+		this.setState({
+			logModalVisible: false
+		});
+	}
+
+	hiddenMemberModal = () => {
+		this.setState({
+			memberModalVisible: false
+		});
+	}
+
+	setUserInfo = (user) => {
+		this.setState({
+			user: user
+		});
+	}
+
 	handleClick = (e) => {
+		if (!e.key) {
+			this.setState({
+				current: 'home'
+			});
+		}
 		if (e.key === 'logo' || e.key === 'search' || e.key === 'message') {
 			return;
 		}
@@ -155,9 +194,9 @@ export default class Navigation extends Component {
 								</Link>
 							</Menu.Item>
 							<Menu.Item key="member">
-								<Link to="/member">
+								<a onClick={this.showMemberModal}>
 									申请会员
-								</Link>
+								</a>
 							</Menu.Item>
 							<Menu.Item>
 								<a onClick={this.showModal}>
@@ -172,20 +211,20 @@ export default class Navigation extends Component {
 									注册
 								</Link>
 							</Menu.Item>
-							<Menu.Item key="login">
-								<Link to="/login">
+							<Menu.Item>
+								<a onClick={this.showLoginModal}>
 									登录
-								</Link>
+								</a>
 							</Menu.Item>
 						</SubMenu>
 					}
 				</Menu>
 				<Modal
 					visible={this.state.visible}
-					closable={false}
 					footer={null}
 					bodyStyle={{ textAlign: 'center' }}
-					maskClosable={true}
+					closable={false}
+					onCancel={this.handleCancel}
 				>
 					<div className="pulse-warning">!</div>
 					<h3>你确定要退出吗？</h3>
@@ -193,6 +232,29 @@ export default class Navigation extends Component {
 						<Button onClick={this.handleLogout} type="primary">退出</Button>
 						<Button onClick={this.handleCancel} type="default" style={{ marginLeft: '10px' }}>取消</Button>
 					</div>
+				</Modal>
+				<Modal
+					visible={this.state.logModalVisible}
+					footer={null}
+					onCancel={this.hiddenModalCancel}
+					closable={false}
+					bodyStyle={{padding: 0}}
+					width={350}
+				>
+					<Login
+						hiddenModalCancel={this.hiddenModalCancel}
+						setUserInfo={this.setUserInfo}
+					 />
+				</Modal>
+				<Modal
+					visible={this.state.memberModalVisible}
+					footer={null}
+					onCancel={this.hiddenMemberModal}
+					closable={false}
+					bodyStyle={{padding: 0}}
+					width={350}
+				>
+					<Member/>
 				</Modal>
 			</nav>
 		);

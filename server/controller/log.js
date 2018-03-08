@@ -179,7 +179,8 @@ exports.login = async(req, res) => {
 			req.session.member = users[0].Member;
 			req.session.uid = users[0].id;
 			return res.json({
-				err: 0
+				err: 0,
+				user: users[0]
 			});
 		} else {
 			return res.json({

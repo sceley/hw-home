@@ -4,7 +4,6 @@ import Home from './components/Home/Home';
 import Login from './components/Login/Login';
 import Logup from './components/Logup/Logup';
 import Nav from './components/Nav/Nav';
-import Member from './components/Member/Member';
 import Blog from './components/Blog/Blog';
 import CreateTopic from './components/CreateTopic/CreateTopic';
 import Community from './components/Community/Community';
@@ -50,7 +49,6 @@ class App extends Component {
                                     <Route exact path="/" component={Home} />
                                     <Route deliver={this.deliver} exact path="/login" component={Login} />
                                     <Route exact path="/logup" component={Logup} />
-                                    <Route exact path="/member" component={Member} />
                                     <Route exact path="/blog" component={Blog} />
                                     <Route exact path="/community" component={Community} />
                                     <Route exact path="/department" component={Department} />
@@ -61,7 +59,6 @@ class App extends Component {
                                     <Route exact path="/topic/:id" component={Topic} />
                                     <Route exact path="/article/:id" component={Article} />
                                     <Route exact path="/create/article" component={CreateArticle} />
-                                    <Route exact path="/admin/login" component={AdminLogin}/>
                                     <Route exact path="/event/:id" component={Event}/>
                                     <Route path="/user/edit" component={EditNav} />
                                     <Route path="/admin/manage" component={Admin}/>

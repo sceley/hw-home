@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Col, Row, List, Avatar, Icon, Button, Divider } from 'antd';
 import Editor from '../../common/Editor/Editor';
-import Profile from '../../common/Profile/Profile';
+import HisProfile from '../../common/Profile/HisProfile';
 import config from '../../config';
 import ParseDate from '../../common/ParseDate';
 import md from '../../common/Markdown';
@@ -101,7 +101,21 @@ export default class Topic extends Component {
 			}
 		}).then(json => {
 			if (!json.err) {
-				this.componentDidMount();
+				let comments = this.state.comments;
+				for (let i = 0; i < comments.length; i++) {
+					if (comments[i].id === Number(tcid)) {
+						comments[i].lid = !comments[i].lid;
+						if (comments[i].lid) {
+							comments[i].LikeCount += 1;
+						} else {
+							comments[i].LikeCount -= 1;
+						}
+						break;
+					}
+				}
+				this.setState({
+					comments: comments
+				});
 			}
 		});
 	}
@@ -171,7 +185,7 @@ export default class Topic extends Component {
 						          <List.Item actions={[
 						          						<a data-id={item.id} onClick={this.likeClick}>
 						          							{
-						          								item.luids && item.luids.split(',').indexOf(String(this.state.uid)) !== -1?
+						          								item.lid?
 						          								<Icon type="like"/>
 						          								:
 						          								<Icon type="like-o" />
@@ -214,35 +228,12 @@ export default class Topic extends Component {
 						</div>
 					</Col>
 					<Col span={6}>
-						<div  style={{background: 'white'}}>
-							<Profile user={this.state.user}/>
-							<Divider/>
-							<Divider/>
-							<ul className="button-list">
-								{
-									true?
-									<li className="button-list-item">
-										<Button onClick={this.careClick} type="primary" className="button">
-											<Icon type="plus" />关注 Ta
-										</Button>
-									</li>
-									:
-									<li className="button-list-item">
-										<Button type="primary" className="button">
-											<Icon type="minus" />已关注
-										</Button>
-									</li>
-								}
-								<li className="button-list-item">
-									<Button className="button">
-										<Icon type="mail" />发私信
-									</Button>
-								</li>
-							</ul>
+						<div className="profile-wrap">
+							<HisProfile uid={this.state.topic.uid}/>
 						</div>
 					</Col>
 				</Row>
 			</div>
 		);
 	}
-}
+};

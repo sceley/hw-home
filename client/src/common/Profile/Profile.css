@@ -1,46 +1,39 @@
-.avatar {
+.Profile .avatar {
 	width: 112px;
 	height: 112px;
 	border-radius: 50%;
 	padding: 3px;
 }
 
-.img-thumbnail {
+.Profile .img-thumbnail {
 	border: 1px solid #ddd;
 }
 
-.media-heading {
-	line-height: 112px;
-}
 
-.follow-user {
+.Profile .media-body {
 	text-align: center;
 	margin-top: 15px;
 }
 
-.Profile .follow-user span {
+.Profile .media-body span {
 	display: block;
 }
 
-.Profile .follow-user span.count {
+.Profile .media-body span.count {
 	color: #f4645f;
 	font-size: 30px;
 }
 
-.Profile .follow-user span.text {
+.Profile .media-body span.text {
 	color: #999;
 }
 
-.Profile .edit-info {
-	text-align: center;
-}
-
-.icon-list {
+.Profile .icon-list {
 	padding-left: 0;
     list-style: none;
 }
 
-.icon-list li {
+.Profile .icon-list li {
 	display: inline-block;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -50,12 +43,17 @@
     color: #606060;
 }
 
-
-.button-list-item {
+.HisProfile .media-footer ul {
+	padding: 0;
+	margin: 0;
+}
+.HisProfile .media-footer ul li {
 	list-style: none;
-	margin-top: 10px;
 }
 
-.button-list-item .button {
+.HisProfile .media-footer .list-item {
+	margin-top: 10px;
+}
+.HisProfile .media-footer .list-item button {
 	width: 100%;
 }
