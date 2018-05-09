@@ -2,11 +2,11 @@ const db = require('../model/db');
 const moment = require('moment');
 exports.createEvent = async (req, res) => {
 	let body = req.body;
-	let CreateAt = moment().format('YYYY-MM-DD');
+	let CreateAt = moment().format('YYYY-MM-DD HH:MM');
 	try {
 		await new Promise((resolve, reject) => {
-			let sql = 'insert into Event(Body, Poster, Title, CreateAt)values(?, ?, ?, ?)';
-			db.query(sql, [body.Body, body.Poster, body.Title, CreateAt], err => {
+			let sql = 'insert into Event(Text, Poster, Link, CreateAt)values(?, ?, ?, ?)';
+			db.query(sql, [body.Text, body.Poster, body.Link, CreateAt], err => {
 				if (err) {
 					reject(err);
 				} else {
@@ -18,6 +18,7 @@ exports.createEvent = async (req, res) => {
 			err: 0
 		});
 	} catch (e) {
+		console.log(e);
 		res.json({
 			err: 1,
 			msg: '服务器出错了'
@@ -48,27 +49,3 @@ exports.getEvents = async (req, res) => {
 		});
 	}
 };
-exports.getEvent = async (req, res) => {
-	let id = req.params.id;
-	try {
-		let event = await new Promise((resolve, reject) => {
-			let sql = 'select * from Event where id=?';
-			db.query(sql, [id], (err, event) => {
-				if (err) {
-					reject(err);
-				} else {
-					resolve(event[0]);
-				}
-			});
-		});
-		res.json({
-			err: 0,
-			event
-		});
-	} catch (e) {
-		res.json({
-			err: 1,
-			msg: '服务器出错了'
-		});
-	}
-}

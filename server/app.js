@@ -6,13 +6,14 @@ const RedisStore = require('connect-redis')(session);
 const config = require('./config');
 const router = require('./router');
 const redis = require('./model/redis');
+const initial = require('./initial').initial;
 
-let app = express();
-let server = http.createServer(app);
+const app = express();
+const server = http.createServer(app);
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
-    secret: 'hw-club',
+    secret: 'helloworld',
     key: 'community',
     cookie: {
     	maxAge: 1000 * 60 * 20 * 100
@@ -25,10 +26,10 @@ app.use(session({
 }));
 
 app.use((req, res, next) => {
-	res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+	res.header('Access-Control-Allow-Origin', '*');
 	res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length');
 	res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE');
-	res.header('Access-Control-Allow-Credentials', true);
+	// res.header('Access-Control-Allow-Credentials', true);
 	next();
 });
 
@@ -37,3 +38,4 @@ app.use(router);
 server.listen(config.server.port, () => {
 	console.log(`server run at http://localhost:${config.server.port}`);
 });
+initial();

@@ -2,17 +2,20 @@ version: '2'
 services:
     mysql:
         image: mysql
-        volumes:
-            - '$PWD/mysql/data:/var/lib/mysql'
-            - '$PWD/mysql/conf/my.cnf:/etc/mysql/my.cnf'
-            - '$PWD/mysql/logs:/logs'
+        container_name: mysql_hw
         ports: 
             - '3306:3306'
         environment:
-            MYSQL_ROOT_PASSWORD : 16051223
-    # redis: 
-    #     image: redis
-    #     volumes:
-    #         - '$PWD/redis/data:/data'
-    #     ports:
-    #         - '6379:6379'
+            - MYSQL_ROOT_PASSWORD=16051223
+            - MYSQL_DATABASE=hw
+        command: [
+            "--character-set-server=utf8mb4",
+            "--collation-server=utf8mb4_unicode_ci"
+        ]
+    redis: 
+        image: redis
+        container_name: redis_hw
+        ports: 
+            - '6379:6379'
+        restart: always
+        command: redis-server --appendonly yes

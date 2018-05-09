@@ -1,25 +1,24 @@
-.nav {
-	border-top: 4px solid #f46660;
-	background: #001529;
+.logo {
+	display: block;
+	height: 64px;
+	padding-left: 24px;
 }
-
-.extra {
-	text-align: center;
-	padding: 24px 50px;
-	color: rgba(0, 0, 0, 0.65);
-	font-size: 14px;
+.shadow {
+  box-shadow: 2px 0 6px rgba(0,21,41,.35);
 }
-
-.log-title {
-	text-align: center;
-	background: #31708f;
-	color: white;
-	border-radius: 4px;
-	padding: 5px 0;
+.Container {
+	margin: 24px 24px 0 24px;
 }
-
-.log-wrap {
-	background: #f1f1f1;
-	padding: 15px;
-	border-radius: 10px;
+.logout-wrap {
+	padding: 0 24px;
+	position: absolute;
+	right: 0;
+	color: rgba(0,0,0,.65);
+	float: right;
+}
+.logout-wrap:hover {
+	background: #e6f7ff;
+}
+.logout-wrap span {
+	margin-left: 5px;
 }

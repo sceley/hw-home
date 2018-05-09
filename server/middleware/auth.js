@@ -1,36 +1,12 @@
-const db = require('../model/db');
-exports.authLogin = async (req, res, next) => {
-	if (!req.session.uid) {
-		return res.json({
-			err: 1,
-			msg: '还未登录'
-		});
-	} else {
-		next();
-	}
-};
-
-exports.authMember = async (req, res, next) => {
-	let uid = req.session.uid;
-	console.log(uid);
+exports.authUserLogin = async (req, res, next) => {
 	try {
-		let member = await new Promise((resolve, reject) => {
-			let sql = 'select Active from Member where uid=? limit 1';
-			db.query(sql, [uid], (err, members) => {
-				if (err) {
-					reject(err);
-				} else {
-					resolve(members[0]);
-				}
-			});
-		});
-		if (member && member.Active) {
-			next();
-		} else {
-			res.json({
+		if (!req.session.user_id) {
+			return res.json({
 				err: 1,
-				msg: '不是会员，没有权限'
+				msg: '还用户还未登录'
 			});
+		} else {
+			next();
 		}
 	} catch (e) {
 		res.json({
@@ -39,14 +15,20 @@ exports.authMember = async (req, res, next) => {
 		});
 	}
 };
-
-exports.authAdmin = async (req, res, next) => {
-	if (!req.session.admin) {
-		return res.json({
+exports.authAdminLogin = async (req, res, next) => {
+	try {
+		if (!req.session.admin_id) {
+			return res.json({
+				err: 1,
+				msg: '管理员还未登录'
+			});
+		} else {
+			next();
+		}
+	} catch (e) {
+		res.json({
 			err: 1,
-			msg: '不是管理员，没有权限'
+			msg: '服务器出错了'
 		});
-	} else {
-		next();
 	}
 };

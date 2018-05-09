@@ -1,3 +1,5 @@
 /node_modules
-config.js
 /public
+/mysql
+.DS_Store
+config.js

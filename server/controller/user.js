@@ -1,15 +1,175 @@
-const db = require('../model/db');
+const bcrypt = require('bcrypt');
 const fs =require('fs');
-const moment = require('moment');
-// const cdnStore = require('../common/store').cdnStore;
-const localStore = require('../common/store').localStore;
+const db = require('../model/db');
+const saltRounds = 10;
 
-exports.getUserByLogin = async (req, res) => {
-	let uid = req.session.uid;
+exports.logup = async (req, res) => {
 	try {
-		let user = await new Promise((resolve, reject) => {
-			let sql = 'select * from User where id=?';
-			db.query(sql, [uid], (err, uses) => {
+		const body = req.body;
+		const pattern = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+		if (!body.username) {
+			return res.json({
+				err: 1,
+				msg: '用户名不能为空'
+			});
+		}
+		if (!(body.password && body.password.length <= 16 && body.password.length >= 6)) {
+			return res.json({
+				err: 1,
+				msg: '密码必须为6-16位字符'
+			});
+		}
+		if (!(body.email && pattern.test(body.email))) {
+			return res.json({
+				err: 1,
+				msg: '邮箱格式不正确'
+			});
+		}
+		const users_count = await new Promise((resolve, reject) => {
+			const sql = 'select count(id) as count from User where username=?';
+			db.query(sql, [body.username], (err, users) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(users[0].count);
+				}
+			});
+		});
+
+		if (users_count > 0) {
+			return res.json({
+				err: 1,
+				msg: '该用户名已经被使用'
+			});
+		}
+		const email_count = await new Promise((resolve, reject) => {
+			const sql = 'select count(id) as count from User where email=?';
+			db.query(sql, [body.email], (err, users) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(users[0].count);
+				}
+			})
+		});
+		if (email_count > 0) {
+			return res.json({
+				err: 1,
+				msg: '该邮箱已经被注册'
+			});
+		}
+		const hash = await new Promise((resolve, reject) => {
+			bcrypt.hash(body.password, saltRounds, function(err, hash) {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(hash);
+				}
+			});
+		});
+		body.password = hash;
+		await new Promise((resolve, reject) => {
+			let sql = 'insert into User (username, password, email) values (?, ?, ?)';
+			db.query(sql, [body.username, body.password, body.email], (err) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve();
+				}
+			});
+		});
+		res.json({
+			err: 0,
+			msg: '注册成功'
+		});
+	} catch (e) {
+		res.json({
+			err: 1,
+			msg: '服务器错误'
+		});
+	}
+};
+
+exports.login = async(req, res) => {
+	try {
+		const body = req.body;
+		if (!body.account) {
+			return res.json({
+				err: 1,
+				msg: '帐号不能为空'
+			});
+		}
+		if (!(body.password && body.password.length <= 16 && body.password.length >= 6)) {
+			return res.json({
+				err: 1,
+				msg: '密码必须为6-16个字符'
+			});
+		}
+		const user = await new Promise((resolve, reject) => {
+			const sql = 'select * from User where username=? or email=? or mobile=?';
+			db.query(sql, [body.account, body.account, body.account], (err, users) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(users[0]);
+				}
+			});
+		});
+		if (!user) {
+			return res.json({
+				err: 1,
+				msg: '该户名不存在或密码错误'
+			});
+		} 
+		const corrected = await new Promise((resolve, reject) => {
+			bcrypt.compare(body.password, user.password, function(err, corrected) {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(corrected);
+				} 
+			});
+		});
+		if (corrected) {
+			req.session.user_id = user.id;
+			res.json({
+				err: 0,
+				msg: '登陆成功'
+			});
+		} else {
+			res.json({
+				err: 1,
+				msg: '该户名不存在或密码错误'
+			});
+		}
+	} catch (e) {
+		res.json({
+			err: 1,
+			msg: '服务器错误'
+		});
+	}
+};
+
+exports.logout = async (req, res) => {
+	try {
+		req.session.user_id = null;
+		res.json({
+			err: 0,
+			msg: '退出登陆成功'
+		});
+	} catch (e) {
+		res.json({
+			err: 1,
+			msg: '服务器出错了'
+		});
+	}
+};
+exports.getUserInfo = async (req, res) => {
+	try {
+		const user_id = req.session.user_id;
+		const user = await new Promise((resolve, reject) => {
+			const sql = 'select * from User where id=?';
+			db.query(sql, [user_id], (err, uses) => {
 				if (err) {
 					reject(err);
 				} else {
@@ -17,39 +177,7 @@ exports.getUserByLogin = async (req, res) => {
 				}
 			});
 		});
-		let topicCount = await new Promise((resolve, reject) => {
-			let sql = 'select * from Topic where uid=?';
-			db.query(sql, [uid], (err, topics) => {
-				if (err) {
-					reject(err);
-				} else {
-					resolve(topics.length);
-				}
-			});
-		});
-		let articleCount = await new Promise((resolve, reject) => {
-			let sql = 'select * from Article where uid=?';
-			db.query(sql, [uid], (err, articles) => {
-				if (err) {
-					reject(err);
-				} else {
-					resolve(articles.length);
-				}
-			});
-		});
-		let fansCount = await new Promise((resolve, reject) => {
-			let sql = 'select count(*) as fansCount from Fans where uid=?';
-			db.query(sql, [uid], (err, fans) =>{
-				if (err) {
-					reject(err);
-				} else {
-					resolve(fans[0].fansCount);
-				}
-			});
-		});
-		user.topicCount = topicCount;
-		user.articleCount = articleCount;
-		user.fansCount = fansCount;
+		delete user.password;
 		res.json({
 			err: 0,
 			user
@@ -62,136 +190,97 @@ exports.getUserByLogin = async (req, res) => {
 	}
 };
 
-exports.getUserById = async (req, res) => {
-	let id = req.params.id;
+exports.editUserInfo = async (req, res) => {
 	try {
-		let user = await new Promise((resolve, reject) => {
-			let sql = 'select * from User where id=?';
-			db.query(sql, [id], (err, uses) => {
-				if (err) {
+		const body = req.body;
+		const user_id = req.session.user_id;
+		const pattern = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+		if (!(body.email && pattern.test(body.email))) {
+			return res.json({
+				err: 1,
+				msg: '邮箱格式不正确'
+			});
+		}
+		if (body.website && body.website.length > 50) {
+			return res.json({
+				err: 1,
+				msg: "网站过长"
+			});
+		}
+		if (body.mobile && body.mobile.length !== 11) {
+			return res.json({
+				err: 1,
+				msg: '手机号码必须为11位'
+			});
+		}
+		if (body.password && (body.password.length > 16 || body.password.length < 6)) {
+			return res.json({
+				err: 1,
+				msg: '密码必须为6-16个字符'
+			});
+		}
+		const user = await new Promise((resolve, reject) => {
+			const sql = 'select mobile, email from User where id=?';
+			db.query(sql, [user_id], (err, users) => {
+				if (err)
 					reject(err);
-				} else {
-					resolve(uses[0]);
-				}
+				else
+					resolve(users[0]);
 			});
 		});
-		let topicCount = await new Promise((resolve, reject) => {
-			let sql = 'select * from Topic where uid=?';
-			db.query(sql, [id], (err, topics) => {
-				if (err) {
-					reject(err);
-				} else {
-					resolve(topics.length);
-				}
-			});
-		});
-		let articleCount = await new Promise((resolve, reject) => {
-			let sql = 'select * from Article where uid=?';
-			db.query(sql, [id], (err, articles) => {
-				if (err) {
-					reject(err);
-				} else {
-					resolve(articles.length);
-				}
-			});
-		});
-		let fansCount = await new Promise((resolve, reject) => {
-			let sql = 'select count(*) as fansCount from Fans where uid=?';
-			db.query(sql, [id], (err, fans) =>{
-				if (err) {
-					reject(err);
-				} else {
-					resolve(fans[0].fansCount);
-				}
-			});
-		});
-		user.topicCount = topicCount;
-		user.articleCount = articleCount;
-		user.fansCount = fansCount;
-		res.json({
-			user,
-			err: 0
-		});
-	} catch (e) {
-		res.json({
-			err: 1,
-			msg: '服务器出错了'
-		});
-	}
-};
-
-exports.editUser = async (req, res) => {
-	let body = req.body;
-	let uid = req.session.uid;
-	if ((!body.Username) || (body.Username && (body.Username.length > 10 || body.Username.length < 4))) {
-		return res.json({
-			err: 1,
-			msg: '用户名必须为4-6位字符'
-		});
-	}
-	let pattern = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
-	if (body.Email && !pattern.test(body.Email)) {
-		return res.json({
-			err: 1,
-			msg: '邮箱格式不正确'
-		});
-	}
-	if (body.Website && body.Website.length > 50) {
-		return res.json({
-			err: 1,
-			msg: "网站过长"
-		});
-	}
-	if (body.Location && body.Location.length > 10) {
-		return res.json({
-			err: 1,
-			msg: "城市过长"
-		});
-	}
-	if (body.Github && body.Github.length > 10) {
-		return res.json({
-			err: 1,
-			msg: "Github过长"
-		});
-	}
-	if (body.Introduction && body.Introduction.length > 50) {
-		return res.json({
-			err: 1,
-			msg: "个人简介过长"
-		});
-	}
-	try {
-		let user = await new Promise((resolve, reject) => {
-			let sql = 'select * from User where id=?';
-			db.query(sql, [uid], (err, uses) => {
-				if (err) {
-					reject(err);
-				} else {
-					resolve(uses[0]);
-				}
-			});
-		});
-		if (user.Username !== body.Username) {
-			let users = await new Promise((resolve, reject) => {
-				let sql = "select * from User where Username=?";
-				db.query(sql, [body.Username], (err, users) => {
+		if (user.email != body.email) {
+			const users_count = await new Promise((resolve, reject) => {
+				const sql = 'select count(id) as count from User where Email=?';
+				db.query(sql, [body.email], (err, uses) => {
 					if (err) {
 						reject(err);
 					} else {
-						resolve(users);
+						resolve(uses[0].count);
 					}
 				});
 			});
-			if (users.length > 0) {
+			if (users_count > 0) {
 				return res.json({
 					err: 1,
-					msg: '用户名已经被使用'
+					msg: '邮箱已经被注册'
 				});
 			}
 		}
+		if (user.mobile != body.mobile) {
+			const mobiles_count = await new Promise((resolve, reject) => {
+				const sql = 'select count(id) as count from User where mobile=?';
+				db.query(sql, [body.mobile], (err, uses) => {
+					if (err) {
+						reject(err);
+					} else {
+						resolve(uses[0].count);
+					}
+				});
+			});
+			if (mobiles_count > 0) {
+				return res.json({
+					err: 1,
+					msg: '手机号已经被注册'
+				});
+			}
+		}
+		if (body.password) {
+			const hash = await new Promise((resolve, reject) => {
+				bcrypt.hash(body.password, saltRounds, function(err, hash) {
+					if (err) {
+						reject(err);
+					} else {
+						resolve(hash);
+					}
+				});
+			});
+			body.password = hash;
+		} else {
+			body.password = user.password;
+		}
 		await new Promise((resolve, reject) => {
-			let sql = "update User set Email=?, Username=?, Sex=?, Website=?, Github=?, Location=?, Introduction=? where Username=?";
-			db.query(sql, [body.Email, body.Username, body.Sex, body.Website, body.Github, body.Location, body.Introduction, user.Username], (err) => {
+			const sql = "update User set password=?, email=?, mobile=?, website=?, introduction=? where id=?";
+			db.query(sql, [body.password, body.email, body.mobile, body.website, body.introduction, user_id], (err) => {
 				if (err) {
 					reject(err);
 				} else {
@@ -207,116 +296,6 @@ exports.editUser = async (req, res) => {
 		res.json({
 			err: 1,
 			msg: '服务器错误'
-		});
-	}
-};
-
-exports.uploadAvatar = async (req, res) => {
-	let uid = req.session.uid;
-	try {
-		let store = await localStore(req.file.buffer);
-		let sql = 'update User set Avatar=? where id=?';
-		await new Promise((resolve, reject) => {
-			db.query(sql, [store.url, uid], (err) => {
-				if (err) {
-					reject(err);
-				} else {
-					resolve();
-				}
-			});
-		});
-		res.json({
-			err: 0,
-			msg: '上传成功'
-		});
-	} catch (e) {
-		res.json({
-			err: 1,
-			msg: '服务器出错了'
-		});
-	}
-};
-
-exports.careUser = async (req, res) => {
-	let id = req.params.id;
-	let fuid = req.session.uid;
-	let CreateAt = moment().format('YYYY-MM-DD');
-	try {
-		let fansCount = await new Promise((resolve, reject) => {
-			let sql = 'select * from Fans where uid=? and fuid=?';
-			db.query(sql, [id, fuid], (err, fans) => {
-				if (err) {
-					reject(err);
-				} else {
-					resolve(fans.length);
-				}
-			});
-		}); 
-		if (fansCount > 0)
-			await new Promise((resolve, reject) => {
-				let sql = 'delete from Fans where uid=? and fuid=?';
-				db.query(sql, [id, fuid], (err) => {
-					if (err) {
-						reject(err);
-					} else {
-						resolve();
-					}
-				});
-			}); 
-		else 
-			await new Promise((resolve, reject) => {
-				let sql = 'insert into Fans(uid, fuid, CreateAt) values(?, ?, ?)';
-				db.query(sql, [id, fuid, CreateAt], (err) => {
-					if (err) {
-						reject(err);
-					} else {
-						resolve();
-					}
-				});
-			});
-		res.json({
-			err: 0
-		});
-	} catch (e) {
-		res.json({
-			err: 1,
-			msg: '服务器出错了'
-		});
-	}
-};
-
-exports.getUserPublic = async (req, res) => {
-	let id = req.params.id;
-	try {
-		let topics = await new Promise((resolve, reject) => {
-			let sql = 'select Title, id, CreateAt from Topic where uid=? limit 5';
-			db.query(sql, [id], (err, topics) => {
-				if (err) {
-					reject(err);
-				} else {
-					resolve(topics);
-				}
-			});
-		});
-		let articles = await new Promise((resolve, reject) => {
-			let sql = 'select Title, id, CreateAt from Article where uid=? limit 5';
-			db.query(sql, [id], (err, articles) => {
-				if (err) {
-					reject(err);
-				} else {
-					resolve(articles);
-				}
-			});
-		});
-		res.json({
-			err: 0,
-			topics,
-			articles	
-		});
-	} catch (e) {
-		res.json({
-			err: 1,
-			msg: "服务器出错了"
 		});
 	}
 };
