@@ -20,7 +20,8 @@ class AdminLoginForm extends Component {
 						return res.json();
 					}
 				}).then(json => {
-					if (!json.err) {
+					if (json && !json.err) {
+						localStorage.admin_login = true;
 						this.props.history.push('/admin');
 					}
 				});

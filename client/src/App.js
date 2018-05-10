@@ -13,7 +13,7 @@ class App extends Component {
                     <Switch>
                         <Route path="/login" component={Login}/>
                         <Route path="/manage" component={Manage} />
-                        <Redirect from="/" to="/manage/home" />
+                        <Redirect from="/" to="/manage" />
                     </Switch>
                 </Router>
             </div>

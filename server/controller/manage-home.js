@@ -29,6 +29,29 @@ exports.addBanner = async (req, res) => {
         });
     }
 };
+exports.getBanners = async (req, res) => {
+    try {
+        const banners = await new Promise((resolve, reject) => {
+            const sql = 'select * from Banner';
+            db.query(sql, (err, banners) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(banners);
+                }
+            });
+        });
+        res.json({
+            err: 0,
+            banners
+        });
+    } catch (e) {
+        res.json({
+            err: 1,
+            msg: '服务器发生错误'
+        });
+    }
+}
 exports.delBanner = async (req, res) => {
     try {
         const id = req.params.id;
@@ -51,6 +74,29 @@ exports.delBanner = async (req, res) => {
         res.json({
             err: 0,
             msg: '删除成功'
+        });
+    } catch (e) {
+        res.json({
+            err: 1,
+            msg: '服务器发生错误'
+        });
+    }
+};
+exports.getRecEve = async (req, res) => {
+    try {
+        const recentevents = await new Promise((resolve, reject) => {
+            const sql = "select * from RecentEvent";
+            db.query(sql, (err, recentevents) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(recentevents);
+                }
+            });
+        });
+        res.json({
+            err: 0,
+            recentevents
         });
     } catch (e) {
         res.json({
@@ -92,7 +138,7 @@ exports.addRecEve = async (req, res) => {
         });
         res.json({
             err: 0,
-            msg: '删除成功'
+            msg: '添加成功'
         });
     } catch (e) {
         res.json({
@@ -171,7 +217,7 @@ exports.updateRecEve = async (req, res) => {
         });
         res.json({
             err: 0,
-            msg: '删除成功'
+            msg: '更新成功'
         });
     } catch (e) {
         res.json({

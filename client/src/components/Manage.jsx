@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Route, Switch, Link } from 'react-router-dom';
+import { Route, Switch, Link, Redirect } from 'react-router-dom';
 import { Layout, Menu, Icon } from 'antd';
 import logo from '../logo.png';
 import Home from './Home';
 import Clubintr from './Clubintr';
 import Departmentintr from './Departmentintr';
-import { SSL_OP_PKCS1_CHECK_1 } from 'constants';
+import Event from '../components/Event';
 const { Sider, Content, Header } = Layout;
 
 class Manage extends Component {
@@ -22,8 +22,14 @@ class Manage extends Component {
 			current: 'home'
 		});
 	}
+	handleLogout = () => {
+		delete localStorage.admin_login;
+		this.props.history.push("/login");
+	}
 	componentDidMount = () => {
-		
+		if (!localStorage.admin_login) {
+			this.props.history.push("/login");
+		}
 	}
 	render() {
 		return (
@@ -59,12 +65,7 @@ class Manage extends Component {
 							</Menu.Item>
 							<Menu.Item key="event">
 								<Link to={`/manage/event`}>
-									<Icon type="notification" />事件编辑
-								</Link>
-							</Menu.Item>
-							<Menu.Item key="starman">
-								<Link to={`/manage/departmentintr`}>
-									<Icon type="home" />名人堂编辑
+									<Icon type="home" />事件编辑
 								</Link>
 							</Menu.Item>
 						</Menu>
@@ -72,7 +73,7 @@ class Manage extends Component {
 					<Content>
 						<Layout>
 							<Header style={{ background: '#fff', padding: 0 }} className="shadow">
-								<a href="/" className="logout-wrap">
+								<a onClick={this.handleLogout} href="javascript:;" className="logout-wrap">
 									<Icon type="logout" />
 									<span>退出登陆</span>
 								</a>
@@ -83,6 +84,8 @@ class Manage extends Component {
 									<Route path={`${this.props.match.url}/home`} component={Home} />
 									<Route path={`${this.props.match.url}/clubintr`} component={Clubintr} />
 									<Route path={`${this.props.match.url}/departmentintr`} component={Departmentintr}/>
+									<Route path={`${this.props.match.url}/event`} component={Event} />
+									<Redirect from={`${this.props.match.url}`} to={`${this.props.match.url}/home`}/>
 								</Switch>
 							</Content>
 						</Layout>

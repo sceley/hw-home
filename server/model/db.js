@@ -64,7 +64,7 @@ db.query(table5, err => {
 const table6 = `
 			create table if not exists History(
 			id int unsigned auto_increment,
-			date datetime,
+			date date,
 			title varchar(50),
 			primary key(id))
 			charset=utf8`;
