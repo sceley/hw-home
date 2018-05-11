@@ -32,7 +32,7 @@ exports.addBanner = async (req, res) => {
 exports.getBanners = async (req, res) => {
     try {
         const banners = await new Promise((resolve, reject) => {
-            const sql = 'select * from Banner';
+            const sql = 'select id as uid, poster as url from Banner';
             db.query(sql, (err, banners) => {
                 if (err) {
                     reject(err);

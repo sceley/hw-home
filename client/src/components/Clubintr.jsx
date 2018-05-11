@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, DatePicker, Input, Button, Icon, Modal, List, Row, Col, Upload } from "antd";
+import { Card, DatePicker, Input, Button, Icon, Modal, List, Upload } from "antd";
 import config from '../config';
 import moment from 'moment';
 const { MonthPicker } = DatePicker;
@@ -111,7 +111,7 @@ export default class Clubintr extends Component {
             }
         }).then(json => {
             if (json && !json.err) {
-                const historys = this.state.historys.filter(history => history.id != id);
+                const historys = this.state.historys.filter(history => history.id !== id);
                 this.setState({
                     historys: historys
                 });
@@ -131,7 +131,7 @@ export default class Clubintr extends Component {
             }
         }).then(json => {
             if (json && !json.err) {
-                const achievements = this.state.achievements.filter(achievement => achievement.id != id);
+                const achievements = this.state.achievements.filter(achievement => achievement.id !== id);
                 this.setState({
                     achievements: achievements
                 });
@@ -170,7 +170,7 @@ export default class Clubintr extends Component {
             action: `${config.server}/api/upload/img`,
             withCredentials: true,
             onChange: (info) => {
-                if (info.file.status == 'done') {
+                if (info.file.status === 'done') {
                     const res = info.file.response;
                     this.setState({
                         poster: res.url

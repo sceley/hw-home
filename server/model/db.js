@@ -17,7 +17,6 @@ const table1 = `
 db.query(table1, err => {
 	if (err) return console.log(err);
 });
-
 const table2 = `
 			create table if not exists Admin(
 			id int unsigned auto_increment,
@@ -28,7 +27,6 @@ const table2 = `
 db.query(table2, err => {
 	if (err) return console.log(err);
 });
-
 const table3 = `
 			create table if not exists Comment(
 			id int unsigned auto_increment,
@@ -90,6 +88,37 @@ const table8 = `
 			primary key(id))
 			charset=utf8`
 db.query(table8, err => {
+	if (err) return console.log(err);
+});
+const table9 = `
+			create table if not exists Diary (
+			id int unsigned auto_increment,
+			poster varchar(100),
+			title varchar(20),
+			text longtext,
+			primary key(id))
+			charset=utf8`;
+db.query(table9, err => {
+	if (err) return console.log(err);
+});
+const table10 = `
+			create table if not exists Event (
+			id int unsigned auto_increment,
+			title varchar(50),
+			text longtext,
+			primary key(id))
+			charset=utf8`;
+db.query(table10, err => {
+	if (err) return console.log(err);
+});
+const table11 = `
+			create table if not exists Photo (
+			id int unsigned auto_increment,
+			event_id int unsigned,
+			url varchar(100),
+			primary key(id))
+			charset=utf8`;
+db.query(table11, err => {
 	if (err) return console.log(err);
 });
 module.exports = db;

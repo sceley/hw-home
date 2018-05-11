@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { Card, Upload, Icon, Button, Row, Col, Carousel, Modal, Input } from 'antd';
+import { Card, Upload, Icon, Button, Row, Col, Modal, Input } from 'antd';
 import config from '../config';
-const { Meta } = Card;
 const { TextArea } = Input;
 
 export default class ManageHome extends Component {
 	state = {
 		visible: false,
-		banners: [],
+		fileList: [],
 		recentevents: [],
 		poster: '',
 		link: '',
@@ -16,17 +15,17 @@ export default class ManageHome extends Component {
 	}
 	componentDidMount = () => {
 		fetch(`${config.server}/banners`)
-		.then(res => {
-			if (res.ok) {
-				return res.json();
-			}
-		}).then(json => {
-			if (json && !json.err) {
-				this.setState({
-					banners: [...this.state.banners, ...json.banners]
-				});
-			}
-		});
+			.then(res => {
+				if (res.ok) {
+					return res.json();
+				}
+			}).then(json => {
+				if (json && !json.err) {
+					this.setState({
+						fileList: [...this.state.fileList, ...json.banners]
+					});
+				}
+			});
 		fetch(`${config.server}/recentevents`)
 			.then(res => {
 				if (res.ok) {
@@ -44,9 +43,9 @@ export default class ManageHome extends Component {
 		this.setState({
 			visible: true
 		});
-		if (id) { 
+		if (id) {
 			this.state.recentevents.forEach(event => {
-				if (event.id == id) {
+				if (event.id === id) {
 					this.setState({
 						current_id: id,
 						link: event.link,
@@ -62,26 +61,6 @@ export default class ManageHome extends Component {
 			visible: false
 		});
 	}
-	deleteBanner = (id) => {
-		fetch(`${config.server}/manage/banner/${id}`, {
-			method: 'DELETE',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			credentials: 'include'
-		}).then(res => {
-			if (res.ok) {
-				return res.json();
-			}
-		}).then(json => {
-			if (json && !json.err) {
-				const banners = this.state.banners.filter(banner => banner.id != id);
-				this.setState({
-					banners: banners
-				});
-			}
-		});
-	}
 	deleteEvent = (id) => {
 		fetch(`${config.server}/manage/recentevent/${id}`, {
 			method: 'DELETE',
@@ -95,7 +74,7 @@ export default class ManageHome extends Component {
 			}
 		}).then(json => {
 			if (json && !json.err) {
-				const recentevents = this.state.recentevents.filter(recentevent => recentevent.id != id);
+				const recentevents = this.state.recentevents.filter(recentevent => recentevent.id !== id);
 				this.setState({
 					recentevents: recentevents
 				});
@@ -110,6 +89,43 @@ export default class ManageHome extends Component {
 	handleTextChange = (e) => {
 		this.setState({
 			text: e.target.value
+		});
+	}
+	handleAddBanner = (url) => {
+		fetch(`${config.server}/manage/banner`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			credentials: 'include',
+			body: JSON.stringify({
+				poster: url
+			})
+		}).then(res => {
+			if (res.ok) {
+				return res.json();
+			}
+		}).then(json => {
+			if (json && !json.err) {
+				
+			}
+		});
+	}
+	handleDelBanner = (banner) => {
+		fetch(`${config.server}/manage/banner/${banner.uid}`, {
+			method: 'DELETE',
+			credentials: 'include'
+		}).then(res => {
+			if (res.ok) {
+				return res.json();
+			}
+		}).then(json => {
+			if (json && !json.err) {
+				const fileList = this.state.fileList.filter(file => file.id !== banner.uid)
+				this.setState({
+					fileList: fileList
+				});
+			}
 		});
 	}
 	handleSubmit = () => {
@@ -150,7 +166,7 @@ export default class ManageHome extends Component {
 					});
 				} else {
 					const recentevents = this.state.recentevents.map(recentevent => {
-						if (recentevent.id == id) {
+						if (recentevent.id === id) {
 							recentevent.link = this.state.link;
 							recentevent.poster = this.state.poster;
 							recentevent.text = this.state.text;
@@ -165,74 +181,58 @@ export default class ManageHome extends Component {
 			}
 		});
 	}
-	render () {
+	render() {
 		const props = {
 			name: 'image',
-			action: `${config.server}/api/upload/img`,
-			withCredentials: true,
-			fileList: null,
-			onChange: (info) => {
-				if (info.file.status == 'done') {
-					const res = info.file.response;
-					if (res && !res.err) {
-						fetch(`${config.server}/manage/banner`, {
-							method: 'POST',
-							headers: {
-								'Content-Type': 'application/json'
-							},
-							credentials: 'include',
-							body: JSON.stringify({
-								poster: res.url
-							})
-						}).then(res => {
-							if (res.ok) {
-								return res.json();
-							}
-						}).then(json => {
-							if (json && !json.err) {
-								this.setState({
-									banners: [...this.state.banners, {poster: res.url, id: Math.random()}]
-								});
-							}
+			listType: 'picture-card',
+			fileList: this.state.fileList,
+			customRequest: ({ file }) => {
+				const body = new FormData();
+				body.append('image', file);
+				fetch(`${config.server}/api/upload/img`, {
+					method: 'POST',
+					credentials: 'include',
+					body: body
+				}).then(res => {
+					if (res.ok) {
+						return res.json();
+					}
+				}).then(json => {
+					if (json && !json.err) {
+						const fileList = this.state.fileList;
+						fileList.push({
+							uid: Math.random(),
+							url: json.url
+						});
+						this.handleAddBanner(json.url);
+						this.setState({
+							fileList: fileList
 						});
 					}
-				}
+				});
 			},
-		};
-		const fileList = [];
-		if (this.state.current_id) {
-			this.state.recentevents.forEach(recentevent => {
-				if (recentevent.id == this.state.current_id) {
-					fileList.push({
-						uid: recentevent.id,
-						url: recentevent.poster,
-						name: recentevent.poster
+			onChange: ({ file, fileList }) => {
+				if (file.status === 'removed') {
+					this.setState({
+						fileList: fileList
 					});
+					this.handleDelBanner(file);
 				}
-			})
-		}
+			}
+		};
 		const _props = {
 			name: 'image',
 			action: `${config.server}/api/upload/img`,
 			withCredentials: true,
-			fileList: fileList,
-			onChange: (info) => {
-				if (info.file.status == 'done') {
-					const res = info.file.response;
+			onChange: ({ file }) => {
+				if (file.status === 'done') {
+					const res = file.response;
 					this.setState({
 						poster: res.url
 					});
 				}
 			},
 		};
-		const banners = this.state.banners.map(banner => (
-			<div key={banner.id}>
-				<div style={{ textAlign: 'center' }}>
-					<a onClick={() => this.deleteBanner(banner.id)} href="javascript:;"><Icon type="delete" /></a>
-				</div>
-				<img src={banner.poster} alt="" />
-			</div>
-		));
 		const events = this.state.recentevents.map(event => (
 			<Col key={event.id} span={8}>
 				<Card
@@ -242,11 +242,11 @@ export default class ManageHome extends Component {
 						</a>
 					}
 					actions={[
-						<Icon onClick={() => this.deleteEvent(event.id)} type="delete" />, 
+						<Icon onClick={() => this.deleteEvent(event.id)} type="delete" />,
 						<Icon onClick={() => this.showModal(event.id)} type="edit" />
 					]}
 				>
-					<div style={{textIndent: '2em'}}>{event.text}</div>
+					<div style={{ textIndent: '2em' }}>{event.text}</div>
 				</Card>
 			</Col>
 		));
@@ -256,24 +256,20 @@ export default class ManageHome extends Component {
 					title={
 						<div>
 							Banner编辑
-							<div style={{float: 'right'}}>
-								<Upload
-									{...props}
-								>
-									<Button type="primary">
-										<Icon type="upload" />
-									</Button>
-								</Upload>
-							</div>
 						</div>
 					}
 				>
-					<Carousel>
-						{banners}
-					</Carousel>
+					<Upload
+						{...props}
+					>
+						<div>
+							<Icon type="plus" />
+							<div className="ant-upload-text">Upload</div>
+						</div>
+					</Upload>
 				</Card>
 				<Card
-					style={{marginTop: 20}}
+					style={{ marginTop: 20 }}
 					title={
 						<div>
 							近期事件编辑编辑
@@ -286,7 +282,7 @@ export default class ManageHome extends Component {
 					}
 				>
 					<Row gutter={16}>
-						{ events }
+						{events}
 					</Row>
 					<Modal
 						visible={this.state.visible}

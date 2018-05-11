@@ -35,9 +35,14 @@ const getDepartments = require('./controller/manage-deparintr').getDepartments;
 const delDepartment = require('./controller/manage-deparintr').delDepartment;
 const addDepartment = require('./controller/manage-deparintr').addDepartment;
 const updateDepartment = require('./controller/manage-deparintr').updateDepartment;
-// const createEvent = require('./controller/event').createEvent;
-// const getEvents = require('./controller/event').getEvents;
-// const getEvent = require('./controller/event').getEvent;
+const getDiaries = require('./controller/event').getDiaries;
+const delDiary = require('./controller/event').delDiary;
+const addDiary = require('./controller/event').addDiary;
+const updateDiary = require('./controller/event').updateDiary;
+const getEvents = require('./controller/event').getEvents;
+const addEvent = require('./controller/event').addEvent;
+const delEvent = require('./controller/event').delEvent;
+const updateEvent = require('./controller/event').updateEvent;
 
 const router = Router();
 
@@ -51,12 +56,16 @@ router.get('/recentevents', getRecEve);
 router.get('/achievements', getAchievements);
 router.get('/historys', getHistorys);
 router.get('/departments', getDepartments);
+router.get('/diaries', getDiaries);
+router.get('/events', getEvents);
 //del
 router.delete('/manage/banner/:id', authAdminLogin, delBanner);
 router.delete('/manage/recentevent/:id', authAdminLogin, delRecEve);
 router.delete('/manage/history/:id', authAdminLogin, delHistory);
 router.delete('/manage/achievement/:id', authAdminLogin, delAchievement);
 router.delete('/manage/department/:id', authAdminLogin, delDepartment);
+router.delete('/manage/diary/:id', authAdminLogin, delDiary);
+router.delete('/manage/event/:id', authAdminLogin, delEvent);
 
 //upload file
 router.post('/api/upload/img', authAdminLogin, multer().single('image'), uploadImg);
@@ -76,5 +85,9 @@ router.post('/manage/history', authAdminLogin, addHistory);
 router.post('/manage/achievement', authAdminLogin, addAchievement);
 router.post('/manage/department', authAdminLogin, addDepartment);
 router.post('/manage/department/:id/update', authAdminLogin, updateDepartment);
+router.post('/manage/diary', authAdminLogin, addDiary);
+router.post('/manage/diary/:id/update', authAdminLogin, updateDiary);
+router.post('/manage/event', authAdminLogin, addEvent);
+router.post('/manage/event/:id/update', authAdminLogin, updateEvent);
 
 module.exports = router;

@@ -73,7 +73,7 @@ class Manage extends Component {
 					<Content>
 						<Layout>
 							<Header style={{ background: '#fff', padding: 0 }} className="shadow">
-								<a onClick={this.handleLogout} href="javascript:;" className="logout-wrap">
+								<a onClick={this.handleLogout} className="logout-wrap">
 									<Icon type="logout" />
 									<span>退出登陆</span>
 								</a>

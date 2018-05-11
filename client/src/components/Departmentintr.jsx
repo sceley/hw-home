@@ -17,7 +17,7 @@ export default class Departmentintr extends Component {
         });
         if (id) {
             this.state.departments.forEach(department => {
-                if (department.id == id) {
+                if (department.id === id) {
                     this.setState({
                         current_id: id,
                         title: department.title,
@@ -109,7 +109,7 @@ export default class Departmentintr extends Component {
             }
         }).then(json => {
             if (json && !json.err) {
-                const departments = this.state.departments.filter(department => department.id != id);
+                const departments = this.state.departments.filter(department => department.id !== id);
                 this.setState({
                     departments: departments
                 });

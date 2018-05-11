@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Layout } from 'antd';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import Manage from './components/Manage';
 import Login from './components/Login';
